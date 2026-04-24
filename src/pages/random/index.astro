@@ -33,6 +33,18 @@ const tabs = [
         desc: "a terminal. type `help` or `which <tool>`.",
         cmd: "cd ~/random/toolbox",
     },
+    {
+        slug: "friends",
+        title: "friends",
+        desc: "shoutout wall — the people who make the work worth it.",
+        cmd: "cd ~/random/friends",
+    },
+    {
+        slug: "links",
+        title: "links",
+        desc: "one-stop directory — socials, projects, resume.",
+        cmd: "cd ~/random/links",
+    },
 ];
 ---
 
@@ -84,7 +96,7 @@ const tabs = [
 
     .random-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 12px;
     }
     .random-tile {
@@ -124,7 +136,10 @@ const tabs = [
         line-height: 1.45;
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 960px) {
+        .random-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
         .random-grid { grid-template-columns: 1fr; }
     }
 </style>

@@ -1,0 +1,110 @@
+---
+import RandomLayout from "~/layouts/RandomLayout.astro";
+
+type Link = { label: string; href: string; note?: string };
+
+const primary: Link[] = [
+    { label: "email", href: "mailto:jotomu@uh.edu", note: "best place to reach me" },
+    { label: "linkedin", href: "https://linkedin.com/in/jordanotomu/" },
+    { label: "github", href: "https://github.com/jordanotomu" },
+    { label: "resume (pdf)", href: "https://drive.google.com/file/d/1OQeiWgLJotFbbodUTydgI_5ONuYs7wyO/view?usp=sharing" },
+];
+
+const social: Link[] = [
+    { label: "x / twitter", href: "https://x.com/jordanvsdaworld" },
+    { label: "instagram", href: "https://instagram.com/nott.jordan" },
+    { label: "tiktok", href: "https://tiktok.com/@nott.jordan_" },
+    { label: "spotify", href: "https://open.spotify.com/user/qnooztog40bez8my4wzrvvy2d" },
+];
+
+const projects: Link[] = [
+    { label: "atsify", href: "https://atsify.io", note: "TODO: confirm live link" },
+    { label: "sanctify (app)", href: "https://apps.apple.com/", note: "TODO: swap with the real app store link" },
+    { label: "coog grid · houston", href: "https://github.com/jordanotomu/cooggrid-houston" },
+];
+---
+
+<RandomLayout
+    slug="links"
+    title="Jordan Otomu · random / links"
+    description="One-stop directory of where to find Jordan online."
+>
+    <h2>links</h2>
+
+    <p class="note">
+        everything in one place. if you came here from a video, start with the
+        socials. if you came here to hire me, start with resume + linkedin.
+    </p>
+
+    <div class="link-group">
+        <div class="link-head">primary</div>
+        <ul class="link-list">
+            {primary.map((l) => (
+                <li class="link-row">
+                    <a class="link-a" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
+                    {l.note && <span class="link-note">— {l.note}</span>}
+                </li>
+            ))}
+        </ul>
+    </div>
+
+    <div class="link-group">
+        <div class="link-head">socials</div>
+        <ul class="link-list">
+            {social.map((l) => (
+                <li class="link-row">
+                    <a class="link-a" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
+                    {l.note && <span class="link-note">— {l.note}</span>}
+                </li>
+            ))}
+        </ul>
+    </div>
+
+    <div class="link-group">
+        <div class="link-head">things i've built</div>
+        <ul class="link-list">
+            {projects.map((l) => (
+                <li class="link-row">
+                    <a class="link-a" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
+                    {l.note && <span class="link-note">— {l.note}</span>}
+                </li>
+            ))}
+        </ul>
+    </div>
+</RandomLayout>
+
+<style>
+    .link-group { margin: 14px 0; }
+    .link-head {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        margin-bottom: 6px;
+    }
+    .link-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        border-top: 1px solid var(--faint);
+        padding-top: 8px;
+    }
+    .link-row {
+        display: flex;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        flex-wrap: wrap;
+    }
+    .link-a {
+        color: var(--ink);
+        font-weight: 600;
+        text-decoration: underline;
+        text-decoration-color: var(--faint);
+        text-underline-offset: 2px;
+    }
+    .link-a:hover { text-decoration-color: var(--ink); }
+    .link-note { color: var(--muted); }
+</style>
