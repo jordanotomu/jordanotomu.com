@@ -2,26 +2,23 @@
 import RandomLayout from "~/layouts/RandomLayout.astro";
 
 const lived = [
-    { city: "Dallas-Fort Worth", label: "dfw, tx", lat: 32.7767, lng: -96.797, kind: "lived" },
-    { city: "Houston", label: "houston, tx", lat: 29.7604, lng: -95.3698, kind: "lived" },
-    { city: "Grand Prairie", label: "grand prairie, tx", lat: 32.7459, lng: -96.998, kind: "lived" },
-    { city: "New York City", label: "nyc · yahoo ibp", lat: 40.7128, lng: -74.006, kind: "lived" },
-    { city: "Plano", label: "plano · jpmc c4g", lat: 33.0198, lng: -96.6989, kind: "lived" },
-    { city: "San Francisco", label: "sf · snap summer '26", lat: 37.7749, lng: -122.4194, kind: "lived" },
+    { city: "Dallas-Fort Worth", lat: 32.7767, lng: -96.797, kind: "lived" },
+    { city: "Houston", lat: 29.7604, lng: -95.3698, kind: "lived" },
+    { city: "Grand Prairie", lat: 32.7459, lng: -96.998, kind: "lived" },
+    { city: "New York City", lat: 40.7128, lng: -74.006, kind: "lived" },
+    { city: "Plano", lat: 33.0198, lng: -96.6989, kind: "lived" },
+    { city: "San Francisco", lat: 37.7749, lng: -122.4194, kind: "lived" },
 ];
 const wishlist = [
-    { city: "Tokyo", label: "tokyo", lat: 35.6762, lng: 139.6503, kind: "wishlist" },
-    { city: "Seoul", label: "seoul", lat: 37.5665, lng: 126.978, kind: "wishlist" },
-    { city: "Lisbon", label: "lisbon", lat: 38.7223, lng: -9.1393, kind: "wishlist" },
-    { city: "London", label: "london", lat: 51.5074, lng: -0.1278, kind: "wishlist" },
-    { city: "Kyoto", label: "kyoto", lat: 35.0116, lng: 135.7681, kind: "wishlist" },
-    { city: "Lagos", label: "lagos", lat: 6.5244, lng: 3.3792, kind: "wishlist" },
+    { city: "Tokyo", lat: 35.6762, lng: 139.6503, kind: "wishlist" },
+    { city: "Seoul", lat: 37.5665, lng: 126.978, kind: "wishlist" },
+    { city: "Lisbon", lat: 38.7223, lng: -9.1393, kind: "wishlist" },
+    { city: "London", lat: 51.5074, lng: -0.1278, kind: "wishlist" },
+    { city: "Kyoto", lat: 35.0116, lng: 135.7681, kind: "wishlist" },
+    { city: "Lagos", lat: 6.5244, lng: 3.3792, kind: "wishlist" },
 ];
 const allPoints = [...lived, ...wishlist];
 
-// Blank placeholder tiles. Swap `caption` with real city names and drop
-// matching images at `public/assets/travel/<slug>.jpg` when ready, then
-// set the `img` field per tile to show the photo.
 const photos = [
     { caption: "houston, tx" },
     { caption: "dallas-fort worth" },
@@ -115,17 +112,18 @@ const photos = [
             .then((r) => (r.ok ? r.json() : { features: [] }))
             .catch(() => ({ features: [] }));
 
-        // Andrew-style: always a light cream globe with soft gray continents
-        // and a faint graticule grid, regardless of dark/light mode.
-        const GLOBE_CREAM = 0xeeeae0;
-        const LAND_FILL = "rgba(26, 26, 26, 0.12)";
-        const LAND_SIDE = "rgba(26, 26, 26, 0.04)";
-        const LAND_STROKE = "rgba(26, 26, 26, 0.45)";
-        const ATMOSPHERE = "#bbb";
+        // Andrew-style light globe (same look in dark + light mode).
+        // Cream sphere, soft-gray continent fills + dark outlines, faint
+        // graticule grid, subtle gray atmosphere.
+        const GLOBE_COLOR = 0xdedbce;
+        const LAND_CAP = "rgba(26, 26, 26, 0.35)";
+        const LAND_SIDE = "rgba(26, 26, 26, 0.12)";
+        const LAND_STROKE = "rgba(26, 26, 26, 0.75)";
+        const ATMOSPHERE = "#9a9a9a";
 
         const size = () => {
             const w = el.clientWidth || 600;
-            const h = Math.min(440, Math.max(320, w * 0.6));
+            const h = Math.min(420, Math.max(300, Math.round(w * 0.55)));
             return { w, h };
         };
         let { w, h } = size();
@@ -143,11 +141,10 @@ const photos = [
             .showGraticules(true)
             .showAtmosphere(true)
             .atmosphereColor(ATMOSPHERE)
-            .atmosphereAltitude(0.15)
-            .globeImageUrl(null as any)
+            .atmosphereAltitude(0.18)
             .polygonsData((countries as any).features || [])
-            .polygonAltitude(0.004)
-            .polygonCapColor(() => LAND_FILL)
+            .polygonAltitude(0.006)
+            .polygonCapColor(() => LAND_CAP)
             .polygonSideColor(() => LAND_SIDE)
             .polygonStrokeColor(() => LAND_STROKE)
             .htmlElementsData(allPoints)
@@ -172,11 +169,14 @@ const photos = [
             .width(w)
             .height(h);
 
+        // Override the globe texture with a flat cream color so the sphere
+        // reads against the cream page background via its atmosphere + polygons.
         const mat: any = globe.globeMaterial();
-        if (mat?.color?.set) mat.color.set(GLOBE_CREAM);
+        if (mat?.color?.set) mat.color.set(GLOBE_COLOR);
         if (mat) {
             mat.opacity = 1;
             mat.transparent = false;
+            if ("needsUpdate" in mat) mat.needsUpdate = true;
         }
 
         const controls: any = globe.controls();
@@ -186,7 +186,7 @@ const photos = [
         controls.maxDistance = 800;
         controls.rotateSpeed = 0.6;
 
-        globe.pointOfView({ lat: 25, lng: -40, altitude: 2.4 }, 0);
+        globe.pointOfView({ lat: 20, lng: -40, altitude: 2.4 }, 0);
 
         const onResize = () => {
             const next = size();
@@ -206,24 +206,13 @@ const photos = [
 </script>
 
 <style>
-    /* ---------- globe container ---------- */
     .globe-wrap {
         position: relative;
         width: 100%;
-        aspect-ratio: auto;
+        max-width: 680px;
+        margin: 4px auto 14px;
         border: 1px solid var(--faint);
-        margin: 4px 0 14px;
-        background:
-            linear-gradient(
-                135deg,
-                rgba(26, 26, 26, 0.02),
-                transparent 60%
-            ),
-            var(--bg);
-        background-image:
-            linear-gradient(0deg, var(--faint) 1px, transparent 1px),
-            linear-gradient(90deg, var(--faint) 1px, transparent 1px);
-        background-size: 28px 28px, 28px 28px;
+        background: var(--bg);
         overflow: hidden;
     }
     .globe-stage {
@@ -236,7 +225,6 @@ const photos = [
         max-width: 100%;
     }
 
-    /* ---------- hud + legend ---------- */
     .globe-hud,
     .globe-legend {
         position: absolute;
@@ -270,7 +258,6 @@ const photos = [
         justify-content: center;
     }
 
-    /* ---------- marquee carousel ---------- */
     .photo-scroll {
         overflow: hidden;
         border: 1px solid var(--faint);
@@ -322,12 +309,11 @@ const photos = [
         width: 100%;
         aspect-ratio: 1 / 1;
         background-color: var(--faint);
-        background-image:
-            repeating-linear-gradient(
-                45deg,
-                rgba(26, 26, 26, 0.06) 0 8px,
-                transparent 8px 16px
-            );
+        background-image: repeating-linear-gradient(
+            45deg,
+            rgba(26, 26, 26, 0.06) 0 8px,
+            transparent 8px 16px
+        );
         border-bottom: 1px solid var(--faint);
     }
     .photo-caption {
@@ -338,10 +324,7 @@ const photos = [
     }
 
     @media (max-width: 720px) {
-        .globe-hud, .globe-legend {
-            font-size: 10.5px;
-            padding: 6px 8px;
-        }
+        .globe-hud, .globe-legend { font-size: 10.5px; padding: 6px 8px; }
         .photo-card { flex-basis: 148px; }
     }
 

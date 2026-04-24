@@ -16,12 +16,6 @@ const social: Link[] = [
     { label: "tiktok", href: "https://tiktok.com/@nott.jordan_" },
     { label: "spotify", href: "https://open.spotify.com/user/qnooztog40bez8my4wzrvvy2d" },
 ];
-
-const projects: Link[] = [
-    { label: "atsify", href: "https://atsify.io", note: "TODO: confirm live link" },
-    { label: "sanctify (app)", href: "https://apps.apple.com/", note: "TODO: swap with the real app store link" },
-    { label: "coog grid · houston", href: "https://github.com/jordanotomu/cooggrid-houston" },
-];
 ---
 
 <RandomLayout
@@ -52,18 +46,6 @@ const projects: Link[] = [
         <div class="link-head">socials</div>
         <ul class="link-list">
             {social.map((l) => (
-                <li class="link-row">
-                    <a class="link-a" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
-                    {l.note && <span class="link-note">— {l.note}</span>}
-                </li>
-            ))}
-        </ul>
-    </div>
-
-    <div class="link-group">
-        <div class="link-head">things i've built</div>
-        <ul class="link-list">
-            {projects.map((l) => (
                 <li class="link-row">
                     <a class="link-a" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
                     {l.note && <span class="link-note">— {l.note}</span>}
