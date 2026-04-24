@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Jordan Otomu — CS @ University of Houston, Incoming SWE Intern @ Snap. Engineer, content creator, student." />
+    <meta name="theme-color" content="#121212" />
+    <title>Jordan Otomu</title>
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem("jotheme") || "dark";
+                if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="page">
+        <!-- ============ HEADER ============ -->
+        <header class="site-header">
+            <h1 class="name"><i>Jordan Otomu</i></h1>
+            <nav class="socials" aria-label="social links">
+                <a class="chip" href="https://linkedin.com/in/jordanotomu/" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22zM8 8h4.37v1.92h.06c.61-1.15 2.1-2.36 4.32-2.36 4.62 0 5.47 3.04 5.47 7v7.44h-4.56v-6.6c0-1.57-.03-3.6-2.19-3.6-2.2 0-2.53 1.72-2.53 3.49V22H8z"/></svg>
+                    <span>LinkedIn</span>
+                </a>
+                <a class="chip" href="https://github.com/jordanotomu" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path fill="currentColor" d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.38.6.11.82-.26.82-.58v-2.05c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.39 1.24-3.23-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.23 0 4.62-2.81 5.64-5.49 5.94.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 22.3 24 17.8 24 12.5 24 5.87 18.63.5 12 .5z"/></svg>
+                    <span>GitHub</span>
+                </a>
+                <a class="chip" href="https://x.com/jordanvsdaworld" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <span>X</span>
+                </a>
+                <a class="chip" href="https://open.spotify.com/user/qnooztog40bez8my4wzrvvy2d?si=390aea0c7b624827" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.52 17.34c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.38-1.32 9.78-.66 13.5 1.62.36.18.48.78.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.62.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/></svg>
+                    <span>Spotify</span>
+                </a>
+                <a class="chip" href="https://instagram.com/nott.jordan" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 2.8h10A4.2 4.2 0 0 1 21.2 7v10a4.2 4.2 0 0 1-4.2 4.2H7A4.2 4.2 0 0 1 2.8 17V7A4.2 4.2 0 0 1 7 2.8zm5 4.7a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm5.4-.9a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z"/></svg>
+                    <span>Instagram</span>
+                </a>
+                <a class="chip chip-resume" href="https://drive.google.com/file/d/1OQeiWgLJotFbbodUTydgI_5ONuYs7wyO/view?usp=sharing" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8l-5-5z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M14 3v5h5"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M8.5 13h7M8.5 16.5h7M8.5 9.5h2"/></svg>
+                    <span>Resume</span>
+                </a>
+                <button class="chip chip-icon" id="theme-toggle" type="button" aria-label="toggle color theme">
+                    <svg class="ico moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                    <svg class="ico sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
+                </button>
+            </nav>
+        </header>
+
+        <!-- ============ FOR VISITORS ============ -->
+        <fieldset class="box">
+            <legend><i>cat ~/for-visitors.md</i></legend>
+            <div class="row">
+                <div class="row-text">
+                    <span class="tiny-icons" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.85a8.16 8.16 0 0 0 4.77 1.52V6.93a4.85 4.85 0 0 1-1.84-.24z"/></svg>
+                        <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 2.8h10A4.2 4.2 0 0 1 21.2 7v10a4.2 4.2 0 0 1-4.2 4.2H7A4.2 4.2 0 0 1 2.8 17V7A4.2 4.2 0 0 1 7 2.8zm5 4.7a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm5.4-.9a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z"/></svg>
+                    </span>
+                    visiting from one of my videos or posts? i put a little collection of things together for you.
+                </div>
+                <a class="btn" href="#toolbox">resources</a>
+            </div>
+        </fieldset>
+
+        <!-- ============ WHOAMI ============ -->
+        <fieldset class="box">
+            <legend><i>whoami</i></legend>
+            <div class="whoami">
+                <div class="whoami-text">
+                    <p>hi, i'm jordan. a cs student at the <b>university of houston</b> and an incoming <b>software engineering intern at snap</b> this summer.</p>
+                    <p>most of my time goes into building: systems, infra, saas, and the occasional side experiment. when i'm not writing code i'm trenching highly volatile crypto markets (memecoins), watching tv and documentaries, listening to music, or deep in history and geography.</p>
+                    <p>i like small, well-crafted things. i think the best way to learn is to build it badly first, then do it well.</p>
+                    <p>reach out on <a href="https://linkedin.com/in/jordanotomu/" target="_blank" rel="noopener">linkedin</a> or <a href="mailto:jotomu@uh.edu">email</a>.</p>
+                </div>
+                <figure class="whoami-photo">
+                    <img src="/assets/photos/jordan-dc.jpg" alt="Jordan Otomu" />
+                    <figcaption><i>// user.png</i></figcaption>
+                </figure>
+            </div>
+        </fieldset>
+
+        <!-- ============ MUSIC ============ -->
+        <fieldset class="box" id="music">
+            <legend><i>cat ~/music.md</i></legend>
+
+            <p class="lead">the soundtrack to everything i build.</p>
+
+            <!-- live-updating now-playing card (Spotify API, via /api/now-playing) -->
+            <a class="now-playing" id="now-playing" data-state="loading" href="#" target="_blank" rel="noopener" aria-live="polite">
+                <div class="np-art" aria-hidden="true"></div>
+                <div class="np-body">
+                    <div class="np-label">
+                        <span class="np-dot" aria-hidden="true"></span>
+                        <span class="np-label-text">checking...</span>
+                    </div>
+                    <div class="np-title">—</div>
+                    <div class="np-artist">—</div>
+                </div>
+                <div class="np-bars" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+            </a>
+
+            <div class="subhead"><i>// on repeat</i></div>
+            <ul class="track-list">
+                <li>
+                    <a class="track-row" href="https://open.spotify.com/track/0bmVH05tjN9jVh3kB1TfpR" target="_blank" rel="noopener">
+                        <span class="track-idx">01</span>
+                        <img class="track-art" src="https://i.scdn.co/image/ab67616d00001e02787a0dbfa43cdc88d0c484dc" alt="" loading="lazy" />
+                        <span class="track-info">
+                            <span class="track-name">In This Darkness</span>
+                            <span class="track-artist">Clara La San</span>
+                        </span>
+                        <span class="track-album">In This Darkness · 2023</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="track-row" href="https://open.spotify.com/track/5JqCmd41S3PZ2AS6GuHqcR" target="_blank" rel="noopener">
+                        <span class="track-idx">02</span>
+                        <img class="track-art" src="https://i.scdn.co/image/ab67616d00001e021c40418d1c37d727e8e91b04" alt="" loading="lazy" />
+                        <span class="track-info">
+                            <span class="track-name">Pimper's Paradise</span>
+                            <span class="track-artist">Bob Marley &amp; The Wailers</span>
+                        </span>
+                        <span class="track-album">Uprising · 1980</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="track-row" href="https://open.spotify.com/track/0pNeVovbiZHkulpGeOx1Gj" target="_blank" rel="noopener">
+                        <span class="track-idx">03</span>
+                        <img class="track-art" src="https://i.scdn.co/image/ab67616d00001e02dc30583ba717007b00cceb25" alt="" loading="lazy" />
+                        <span class="track-info">
+                            <span class="track-name">Something</span>
+                            <span class="track-artist">The Beatles</span>
+                        </span>
+                        <span class="track-album">Abbey Road · 1969</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="track-row" href="https://open.spotify.com/track/5zkrN4e4gxDTQ9JQrjEC9S" target="_blank" rel="noopener">
+                        <span class="track-idx">04</span>
+                        <img class="track-art" src="https://i.scdn.co/image/ab67616d00001e0294f462b19a59c288c0b1f9dc" alt="" loading="lazy" />
+                        <span class="track-info">
+                            <span class="track-name">Habits</span>
+                            <span class="track-artist">Baby Smoove</span>
+                        </span>
+                        <span class="track-album">Baby · 2019</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="track-row" href="https://open.spotify.com/track/6MbH1QiphMCPTqVEVC7UYi" target="_blank" rel="noopener">
+                        <span class="track-idx">05</span>
+                        <img class="track-art" src="https://i.scdn.co/image/ab67616d00001e024f0fd9dad63977146e685700" alt="" loading="lazy" />
+                        <span class="track-info">
+                            <span class="track-name">Nothings Into Somethings</span>
+                            <span class="track-artist">Drake</span>
+                        </span>
+                        <span class="track-album">More Life · 2017</span>
+                    </a>
+                </li>
+            </ul>
+
+        </fieldset>
+
+        <!-- ============ UGC ============ -->
+        <fieldset class="box">
+            <legend><i>cat ~/ugc.md</i></legend>
+
+            <p class="lead">the stuff i make on the internet — mostly about building, being a cs student, and the occasional unhinged take.</p>
+
+            <div class="ugc-grid">
+                <a class="ugc-card" href="https://www.tiktok.com/@nott.jordan_/photo/7621280827179027726" target="_blank" rel="noopener">
+                    <div class="ugc-thumb">
+                        <img src="/assets/ugc/tiktok-7621280827179027726.jpg" alt="had to hop on the trend — resume post" loading="lazy" />
+                    </div>
+                    <div class="ugc-platform">TikTok · photo</div>
+                    <div class="ugc-title">had to hop on the trend #resume #swe</div>
+                    <div class="ugc-stats">21.2k likes · 186 comments · 821 shares</div>
+                </a>
+                <a class="ugc-card" href="https://www.tiktok.com/@nott.jordan_/video/7588833715019648311" target="_blank" rel="noopener">
+                    <div class="ugc-thumb">
+                        <img src="/assets/ugc/tiktok-7588833715019648311.jpg" alt="last tiktok ever" loading="lazy" />
+                    </div>
+                    <div class="ugc-platform">TikTok · video</div>
+                    <div class="ugc-title">last tiktok ever</div>
+                    <div class="ugc-stats">6.1k plays · 194 likes</div>
+                </a>
+            </div>
+        </fieldset>
+
+        <!-- ============ EXPERIENCE ============ -->
+        <fieldset class="box">
+            <legend><i>cat ~/experience.md</i></legend>
+            <p class="muted-lead">the more professional-looking part of this.</p>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="snap">SNAP</div>
+                    <div class="exp-main">
+                        <div class="exp-company">Snap Inc. <span class="exp-sub">(Snapchat)</span></div>
+                        <div class="exp-role">software engineering intern · summer '26 cohort</div>
+                        <div class="exp-place">San Francisco, CA · hybrid</div>
+                    </div>
+                    <div class="exp-dates">May 2026 – Aug 2026</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li>Joining the <b>Friending</b> product area this summer to ship features on Snapchat's iOS (UIKit) client — serving hundreds of millions of users.</li>
+                    <li>Expected to work across <b>Objective-C / Swift</b>, client-side architecture, performance, and backend integrations over REST/GraphQL.</li>
+                </ul>
+            </article>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="mlt">
+                        <img src="/assets/logos/mlt.png" alt="MLT" />
+                    </div>
+                    <div class="exp-main">
+                        <div class="exp-company">Management Leadership for Tomorrow</div>
+                        <div class="exp-role">career prep fellow · software engineering track</div>
+                        <div class="exp-place">hybrid · cohort '28</div>
+                    </div>
+                    <div class="exp-dates">Oct 2025 – Present</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li>Selected for MLT's 20-month <b>Career Prep Fellowship</b> — a national cohort of high-potential students partnering with top employers across business and tech.</li>
+                    <li>Personalized coaching across software engineering and data-driven career paths, plus leadership seminars and technical interview prep with partners like <b>Google, Dell, and Capital One</b>.</li>
+                    <li>Building a long-term career roadmap while refining technical projects and professional branding through mentorship and peer collaboration.</li>
+                </ul>
+            </article>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="nsbe">
+                        <img src="/assets/logos/nsbe.png" alt="NSBE" />
+                    </div>
+                    <div class="exp-main">
+                        <div class="exp-company">National Society of Black Engineers</div>
+                        <div class="exp-role">freshman executive board · business intelligence</div>
+                        <div class="exp-place">Houston, TX · UH chapter</div>
+                    </div>
+                    <div class="exp-dates">Sep 2025 – Present</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li>Maintain the <b>UH NSBE Chapter website</b> — keeping functionality, accessibility, and content up to date.</li>
+                    <li>Run the chapter <b>Discord server</b> to coordinate events, member communication, and day-to-day engagement.</li>
+                    <li>Partner with the <b>Black in Tech Committee</b> to support members pursuing SWE and other tech careers through digital initiatives and skill-building programs.</li>
+                </ul>
+            </article>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="jpmc">
+                        <img src="/assets/logos/jpmc.png" alt="JPMorgan Chase" />
+                    </div>
+                    <div class="exp-main">
+                        <div class="exp-company">JPMorgan Chase</div>
+                        <div class="exp-role">code for good hackathon</div>
+                        <div class="exp-place">Plano, TX · on-site</div>
+                    </div>
+                    <div class="exp-dates">Oct 2025</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li>Built a full-stack mentorship web app in <b>24 hours</b> to connect girls in STEM with mentors.</li>
+                    <li>Developed a <b>React + TypeScript</b> frontend and <b>FastAPI</b> backend on <b>SQLite Cloud</b>.</li>
+                    <li>Integrated AI-based mentor matching, <b>Firebase</b> authentication, and event hosting with RSVP tools.</li>
+                    <li>Presented the project to JPMorgan engineers and nonprofit leaders at the closing showcase.</li>
+                </ul>
+            </article>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="yahoo">
+                        <img src="/assets/logos/yahoo.png" alt="Yahoo" />
+                    </div>
+                    <div class="exp-main">
+                        <div class="exp-company">Yahoo</div>
+                        <div class="exp-role">industry breakers leadership program</div>
+                        <div class="exp-place">New York City, NY · on-site</div>
+                    </div>
+                    <div class="exp-dates">Aug 2025</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li>Selected as <b>1 of 25</b> students nationwide (from <b>6,000+</b> applicants) for a 3-day leadership program focused on AI, cybersecurity, and product management.</li>
+                    <li>Hands-on workshops, mentorship, and networking with Yahoo executives, engineers, and product leaders.</li>
+                </ul>
+            </article>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="walmart">WM</div>
+                    <div class="exp-main">
+                        <div class="exp-company">Walmart</div>
+                        <div class="exp-role">associate · part-time</div>
+                        <div class="exp-place">Arlington, TX · on-site</div>
+                    </div>
+                    <div class="exp-dates">Jul 2023 – Jul 2025</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li>Processed customer transactions and supported the self-checkout floor in a high-volume retail environment.</li>
+                    <li>Delivered fast, clear service to resolve issues and maintain store efficiency.</li>
+                    <li>Organized merchandise, returned misplaced items, and supported day-to-day operations across shifts.</li>
+                </ul>
+            </article>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="gpisd">
+                        <img src="/assets/logos/gpisd.png" alt="Grand Prairie ISD" />
+                    </div>
+                    <div class="exp-main">
+                        <div class="exp-company">Grand Prairie ISD</div>
+                        <div class="exp-role">information technology intern</div>
+                        <div class="exp-place">Grand Prairie, TX · on-site</div>
+                    </div>
+                    <div class="exp-dates">Sep 2024 – May 2025</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li><b>Device imaging & setup</b> — re-imaged <b>500+</b> MacBooks and laptops across macOS and Windows for students and staff.</li>
+                    <li><b>Technology distribution</b> — refurbished and distributed <b>800+</b> laptops, headphones, and keyboards across multiple campuses.</li>
+                    <li><b>Testing & event support</b> — set up and troubleshot devices for district-wide standardized testing, reducing technical issues by <b>20%</b>.</li>
+                    <li><b>Community impact</b> — helped enhance digital accessibility for <b>10,000+ K-12 students</b> by maintaining and deploying essential learning tech.</li>
+                </ul>
+            </article>
+
+        </fieldset>
+
+        <!-- ============ EDUCATION ============ -->
+        <fieldset class="box">
+            <legend><i>cat ~/education.md</i></legend>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="uh">
+                        <img src="/assets/logos/uh.svg" alt="University of Houston" />
+                    </div>
+                    <div class="exp-main">
+                        <div class="exp-company">University of Houston</div>
+                        <div class="exp-role">b.s. computer science · gpa 4.0</div>
+                        <div class="exp-place">Houston, TX</div>
+                    </div>
+                    <div class="exp-dates">Expected May 2027</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li>Relevant coursework: Data Structures &amp; Algorithms, Databases, Software Engineering, Cloud Technologies, AI/ML Concepts, Calculus I &amp; II.</li>
+                    <li>Active in <b>CougarCS · CougarAI · INROADS · NSBE · MLT · ColorStack</b>.</li>
+                </ul>
+            </article>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="dallas">
+                        <img src="/assets/logos/dallas-college.svg" alt="Dallas College" />
+                    </div>
+                    <div class="exp-main">
+                        <div class="exp-company">Dallas College</div>
+                        <div class="exp-role">associate of science · gpa 4.0</div>
+                        <div class="exp-place">Dallas, TX · dual-credit</div>
+                    </div>
+                    <div class="exp-dates">Aug 2021 – May 2025</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li><b>3x Chancellor's Honor Roll</b> — awarded to full-time students averaging 3.8 – 4.0 across 12+ college-credit hours.</li>
+                    <li><b>3x Academic Recognition</b> — awarded to part-time students maintaining 3.5+ across 6 – 11 college-credit hours.</li>
+                </ul>
+            </article>
+
+            <article class="exp">
+                <div class="exp-head">
+                    <div class="exp-logo" data-logo="sgp">SGP</div>
+                    <div class="exp-main">
+                        <div class="exp-company">South Grand Prairie Early College High School</div>
+                        <div class="exp-role">high school diploma · gpa 4.3</div>
+                        <div class="exp-place">Grand Prairie, TX</div>
+                    </div>
+                    <div class="exp-dates">Aug 2021 – May 2025</div>
+                </div>
+                <ul class="exp-bullets">
+                    <li>Coursework: Principles of IT, Advanced Cloud Computing, Computer Science I – III, Practicum in STEM I &amp; II.</li>
+                    <li>Activities: <b>African Student Organization (Executive)</b>, National Beta Club, National Honor Society, TSA, DECA, Computer Application Design.</li>
+                </ul>
+            </article>
+        </fieldset>
+
+        <!-- ============ PROJECTS ============ -->
+        <fieldset class="box" id="projects">
+            <legend><i>cat ~/projects.md</i></legend>
+
+            <article class="proj featured">
+                <div class="proj-head">
+                    <h3><a href="https://atsify.io" target="_blank" rel="noopener">ATSify</a></h3>
+                    <span class="proj-tag">featured · shipped</span>
+                </div>
+                <p>full-stack SaaS platform with an AI-powered ATS resume scanner and LinkedIn automation. built a RESTful backend on <b>Deno serverless</b>, <b>Stripe</b> subscription &amp; webhook-based payment processing, and a Chrome extension with real-time data sync.</p>
+                <div class="proj-metrics">
+                    <div><b>500+</b> <span>active users</span></div>
+                    <div><b>$6,000+</b> <span>net revenue</span></div>
+                    <div><b>2 weeks</b> <span>to revenue</span></div>
+                </div>
+                <div class="proj-stack">
+                    <span>React</span>·<span>TypeScript</span>·<span>Deno</span>·<span>Stripe</span>·<span>Tailwind</span>
+                </div>
+            </article>
+
+            <div class="proj-featured-row">
+                <article class="proj featured-sm">
+                    <div class="proj-head">
+                        <h3><a href="https://github.com/jordanotomu/CoogGrid-Houston" target="_blank" rel="noopener">CoogGrid Houston</a></h3>
+                        <span class="proj-tag">open source</span>
+                    </div>
+                    <p>community microgrid simulator for historically underserved Houston neighborhoods. built at <b>CFE Hackathon Spring 2026</b>.</p>
+                    <div class="proj-stack">
+                        <span>React&nbsp;19</span>·<span>TypeScript</span>·<span>Leaflet</span>·<span>Recharts</span>·<span>Three.js</span>
+                    </div>
+                </article>
+                <article class="proj featured-sm">
+                    <div class="proj-head">
+                        <h3>Sanctify <span class="proj-muted">(Verse)</span></h3>
+                        <span class="proj-tag">mobile · shipped</span>
+                    </div>
+                    <p>led development of a cross-platform mobile app with an OpenAI-powered chatbot, <b>Supabase</b> for prayer storage, and <b>Firebase</b> auth.</p>
+                    <div class="proj-metrics">
+                        <div><b>4.8 / 5</b> <span>rating</span></div>
+                        <div><b>200+</b> <span>downloads</span></div>
+                    </div>
+                    <div class="proj-stack">
+                        <span>React&nbsp;Native</span>·<span>TypeScript</span>·<span>Supabase</span>·<span>Firebase</span>·<span>OpenAI</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="subhead"><i>// smaller repos &amp; sandboxes</i></div>
+            <div class="proj-grid">
+                <article class="proj">
+                    <div class="proj-head"><h3><a href="https://github.com/jordanotomu/go-tutorial" target="_blank" rel="noopener">go-tutorial</a></h3><span class="proj-tag">go</span></div>
+                    <p>learning Go the hard way — notes, mini projects, distributed systems practice.</p>
+                </article>
+                <article class="proj">
+                    <div class="proj-head"><h3><a href="https://github.com/jordanotomu/cpp" target="_blank" rel="noopener">cpp</a></h3><span class="proj-tag">c++</span></div>
+                    <p>coursework, algorithms, and systems practice — from UH DSA &amp; SWE classes.</p>
+                </article>
+                <article class="proj">
+                    <div class="proj-head"><h3><a href="https://github.com/jordanotomu/rblx" target="_blank" rel="noopener">rblx</a></h3><span class="proj-tag">lua</span></div>
+                    <p>roblox experiments and misc scripts — where the whole coding thing started.</p>
+                </article>
+                <article class="proj">
+                    <div class="proj-head"><h3><a href="https://github.com/jordanotomu/console_calculator" target="_blank" rel="noopener">console_calculator</a></h3><span class="proj-tag">c#</span></div>
+                    <p>a console calculator — classics never die.</p>
+                </article>
+            </div>
+        </fieldset>
+
+        <!-- ============ RANDOM ============ -->
+        <fieldset class="box">
+            <legend><i>cat ~/random.md</i></legend>
+
+            <div class="motto">
+                <div class="motto-label">my life motto</div>
+                <div class="motto-text"><i>"do the thing badly before you do it well."</i></div>
+            </div>
+
+            <div class="tab-row" role="tablist">
+                <button class="tab active" data-tab="toolbox" id="toolbox">Toolbox</button>
+                <button class="tab" data-tab="music-life">Music Life</button>
+                <button class="tab" data-tab="wins">Wins</button>
+                <button class="tab" data-tab="lore">Lore</button>
+                <button class="tab" data-tab="travel">Travel</button>
+            </div>
+
+            <div class="tab-panels">
+                <div class="tab-panel active" data-panel="toolbox">
+                    <ul class="toolbox">
+                        <li><b>languages</b><span>Python · TypeScript · JavaScript · Java · C++ · C# · Swift · Objective-C · Go · Lua · SQL · HTML/CSS</span></li>
+                        <li><b>frameworks</b><span>React · React Native · Next.js · Node.js · Express · FastAPI · Deno · Tailwind CSS</span></li>
+                        <li><b>ml / data</b><span>TensorFlow · PyTorch · Pandas · NumPy · Jupyter</span></li>
+                        <li><b>databases</b><span>MongoDB · MySQL · Supabase · SQLite · Firebase</span></li>
+                        <li><b>cloud</b><span>AWS · Azure · Google Cloud · Vercel</span></li>
+                        <li><b>payments / chain</b><span>Stripe · Solana</span></li>
+                        <li><b>build / tools</b><span>Git · Maven · Linux · Figma</span></li>
+                        <li><b>editor</b><span>Cursor · Neovim · VS Code</span></li>
+                        <li><b>terminal</b><span>Ghostty + zsh</span></li>
+                        <li><b>notes</b><span>Obsidian</span></li>
+                    </ul>
+                </div>
+                <div class="tab-panel" data-panel="music-life" hidden>
+                    <ul class="bullets">
+                        <li>mostly listen while shipping — R&amp;B, reggae, 2010s hip-hop, the occasional Beatles detour.</li>
+                        <li>the now-playing card at the top of <a href="#music">music</a> is live — if it's green, i'm listening right now.</li>
+                        <li>soft spot for crate-digging lesser-known producers on spotify.</li>
+                    </ul>
+                </div>
+                <div class="tab-panel" data-panel="wins" hidden>
+                    <ul class="bullets">
+                        <li><b>4.0 GPA</b> across UH &amp; Dallas College (dual-credit, 2021 – present)</li>
+                        <li><b>Snap Inc.</b> SWE intern offer — Summer 2026 (iOS · Friending org)</li>
+                        <li><b>Yahoo Industry Breakers</b> — 1 of 25 selected from <b>6,000+</b> applicants (2025)</li>
+                        <li><b>ATSify</b> — hit 500+ users &amp; $6K+ net revenue within 2 weeks of launch</li>
+                        <li><b>Sanctify</b> — 4.8/5 rating, 200+ downloads</li>
+                        <li><b>JPMorgan Code for Good</b> — built a mentorship web app for 100+ girls in STEM in 24 hours</li>
+                        <li><b>CFE Hackathon</b> Spring 2026 — CoogGrid Houston</li>
+                    </ul>
+                </div>
+                <div class="tab-panel" data-panel="lore" hidden>
+                    <ul class="bullets">
+                        <li>based in <b>Houston, TX</b> — grew up in the DFW area.</li>
+                        <li>first language I really loved: <b>Lua</b> (from Roblox, obviously).</li>
+                        <li>did <b>dual-credit at Dallas College</b> through all four years of high school — earned an A.S. before starting UH.</li>
+                        <li>currently deep in <b>Objective-C + iOS client work</b> prepping for Snap, plus Go on the side.</li>
+                        <li>communities: <b>CougarCS · CougarAI · INROADS · NSBE · MLT · ColorStack</b>.</li>
+                        <li>off-hours: trenching <b>memecoins</b>, documentaries, and anything <b>history / geography</b>.</li>
+                    </ul>
+                </div>
+                <div class="tab-panel" data-panel="travel" hidden>
+                    <ul class="bullets">
+                        <li><b>lived:</b> Dallas-Fort Worth · Houston</li>
+                        <li><b>worked:</b> New York City (Yahoo IBP) · Plano (JPMC) · San Francisco (Snap, summer '26)</li>
+                        <li><b>want to go:</b> Tokyo · Seoul · Lisbon · anywhere with good trains.</li>
+                    </ul>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- ============ FOOTER ============ -->
+        <footer class="site-footer">
+            <div><i>last updated · april 2026</i></div>
+            <div><a href="https://github.com/jordanotomu/jordanotomu.com" target="_blank" rel="noopener">// view source</a></div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
