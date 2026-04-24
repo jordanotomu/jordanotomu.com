@@ -5,8 +5,6 @@ const lived = [
     { city: "Dallas-Fort Worth", label: "dfw, tx", lat: 32.7767, lng: -96.797, kind: "lived" },
     { city: "Houston", label: "houston, tx", lat: 29.7604, lng: -95.3698, kind: "lived" },
     { city: "Grand Prairie", label: "grand prairie, tx", lat: 32.7459, lng: -96.998, kind: "lived" },
-];
-const worked = [
     { city: "New York City", label: "nyc · yahoo ibp", lat: 40.7128, lng: -74.006, kind: "lived" },
     { city: "Plano", label: "plano · jpmc c4g", lat: 33.0198, lng: -96.6989, kind: "lived" },
     { city: "San Francisco", label: "sf · snap summer '26", lat: 37.7749, lng: -122.4194, kind: "lived" },
@@ -19,23 +17,23 @@ const wishlist = [
     { city: "Kyoto", label: "kyoto", lat: 35.0116, lng: 135.7681, kind: "wishlist" },
     { city: "Lagos", label: "lagos", lat: 6.5244, lng: 3.3792, kind: "wishlist" },
 ];
+const allPoints = [...lived, ...wishlist];
 
-const allPoints = [...lived, ...worked, ...wishlist];
-
-// Placeholder images for the photo carousel. picsum seeds are deterministic,
-// so you get the same images every reload. Replace the `src` paths with your
-// actual travel photos in /public/assets/travel/ when ready.
+// Blank placeholder tiles. Swap `caption` with real city names and drop
+// matching images at `public/assets/travel/<slug>.jpg` when ready, then
+// set the `img` field per tile to show the photo.
 const photos = [
-    { caption: "TODO: houston, tx", seed: "jo-1" },
-    { caption: "TODO: dallas-fort worth", seed: "jo-2" },
-    { caption: "TODO: nyc", seed: "jo-3" },
-    { caption: "TODO: plano", seed: "jo-4" },
-    { caption: "TODO: san francisco", seed: "jo-5" },
-    { caption: "TODO: tokyo", seed: "jo-6" },
-    { caption: "TODO: seoul", seed: "jo-7" },
-    { caption: "TODO: lisbon", seed: "jo-8" },
-    { caption: "TODO: london", seed: "jo-9" },
-    { caption: "TODO: kyoto", seed: "jo-10" },
+    { caption: "houston, tx" },
+    { caption: "dallas-fort worth" },
+    { caption: "nyc" },
+    { caption: "plano, tx" },
+    { caption: "san francisco" },
+    { caption: "tokyo" },
+    { caption: "seoul" },
+    { caption: "lisbon" },
+    { caption: "london" },
+    { caption: "kyoto" },
+    { caption: "lagos" },
 ];
 ---
 
@@ -44,20 +42,18 @@ const photos = [
     title="Jordan Otomu · random / travel"
     description="Cities Jordan's lived, worked, and wants to visit."
 >
-    <h2>travel</h2>
-
     <div class="globe-wrap">
-        <div id="globe" class="globe-stage" aria-hidden="true"></div>
+        <div class="globe-stage" id="globe" aria-hidden="true"></div>
 
         <div class="globe-hud">
-            <div class="hud-line"><b>travel.exe</b></div>
-            <div class="hud-line">drag to rotate</div>
-            <div class="hud-line">scroll or pinch to zoom</div>
+            <div>travel.exe</div>
+            <div>drag to rotate</div>
+            <div>wheel or pinch to zoom</div>
         </div>
 
         <div class="globe-legend">
             <div class="legend-row">
-                <span class="legend-mark legend-been">
+                <span class="legend-mark">
                     <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
                         <rect x="1" y="1" width="18" height="18" fill="#22c55e" stroke="#1a1a1a" stroke-width="1.5" rx="2"/>
                         <path d="M5 10 L9 14 L15 6" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -66,7 +62,7 @@ const photos = [
                 <span>been there</span>
             </div>
             <div class="legend-row">
-                <span class="legend-mark legend-wish">
+                <span class="legend-mark">
                     <svg viewBox="0 0 20 28" width="11" height="16" aria-hidden="true">
                         <path d="M10 0.8C4.9 0.8 1 4.5 1 9.5C1 16.8 10 27 10 27C10 27 19 16.8 19 9.5C19 4.5 15.1 0.8 10 0.8Z"
                             fill="#e55" stroke="#1a1a1a" stroke-width="1.4"/>
@@ -78,48 +74,27 @@ const photos = [
         </div>
     </div>
 
-    <div class="photo-scroll" aria-label="travel photos" tabindex="0">
-        <div class="photo-strip">
+    <div class="photo-scroll" aria-label="travel photos">
+        <div class="photo-marquee">
             {photos.map((p) => (
                 <figure class="photo-card">
-                    <div class="photo-thumb">
-                        <img
-                            src={`https://picsum.photos/seed/${p.seed}/480/480`}
-                            alt={p.caption}
-                            loading="lazy"
-                        />
-                    </div>
+                    <div class="photo-thumb" aria-hidden="true"></div>
+                    <figcaption class="photo-caption">{p.caption}</figcaption>
+                </figure>
+            ))}
+            {/* duplicate for seamless infinite scroll */}
+            {photos.map((p) => (
+                <figure class="photo-card" aria-hidden="true">
+                    <div class="photo-thumb" aria-hidden="true"></div>
                     <figcaption class="photo-caption">{p.caption}</figcaption>
                 </figure>
             ))}
         </div>
     </div>
 
-    <div class="travel-lists">
-        <div class="travel-col">
-            <div class="travel-col-head">
-                <span class="mark-dot mark-been"></span>
-                been there
-            </div>
-            <ul>
-                {[...lived, ...worked].map((p) => <li>{p.label}</li>)}
-            </ul>
-        </div>
-        <div class="travel-col">
-            <div class="travel-col-head">
-                <span class="mark-dot mark-wish"></span>
-                bucket list
-            </div>
-            <ul>
-                {wishlist.map((p) => <li>{p.label}</li>)}
-            </ul>
-        </div>
-    </div>
-
     <p class="note">
-        TODO: share your actual list of cities + drop your own photos into
-        <code>public/assets/travel/</code> and swap the <code>src</code> in
-        <code>src/pages/random/travel.astro</code>.
+        TODO: share your list of cities and i'll pin them. drop photos into
+        <code>public/assets/travel/</code> and i'll wire them into the carousel.
     </p>
 </RandomLayout>
 
@@ -135,21 +110,25 @@ const photos = [
         if (!el) return;
 
         const allPoints = (window as any).__travelPoints || [];
-        const isDark = document.documentElement.getAttribute("data-theme") === "dark";
 
         const countries = await fetch("/assets/data/countries.geojson")
             .then((r) => (r.ok ? r.json() : { features: [] }))
             .catch(() => ({ features: [] }));
 
-        const landColor = isDark ? "#f3f1e7" : "#1a1a1a";
-        const globeColor = isDark ? 0x121212 : 0xf3f1e7;
+        // Andrew-style: always a light cream globe with soft gray continents
+        // and a faint graticule grid, regardless of dark/light mode.
+        const GLOBE_CREAM = 0xeeeae0;
+        const LAND_FILL = "rgba(26, 26, 26, 0.12)";
+        const LAND_SIDE = "rgba(26, 26, 26, 0.04)";
+        const LAND_STROKE = "rgba(26, 26, 26, 0.45)";
+        const ATMOSPHERE = "#bbb";
 
         const size = () => {
-            const w = el.clientWidth;
-            const h = Math.min(560, Math.max(380, w * 0.7));
+            const w = el.clientWidth || 600;
+            const h = Math.min(440, Math.max(320, w * 0.6));
             return { w, h };
         };
-        const { w, h } = size();
+        let { w, h } = size();
 
         const pinSvg = (kind: string) => {
             if (kind === "wishlist") {
@@ -161,15 +140,16 @@ const photos = [
         const globe = new Globe(el, { animateIn: true })
             .backgroundColor("rgba(0,0,0,0)")
             .showGlobe(true)
+            .showGraticules(true)
             .showAtmosphere(true)
-            .atmosphereColor(isDark ? "#f3f1e7" : "#1a1a1a")
-            .atmosphereAltitude(0.12)
+            .atmosphereColor(ATMOSPHERE)
+            .atmosphereAltitude(0.15)
             .globeImageUrl(null as any)
-            .hexPolygonsData((countries as any).features || [])
-            .hexPolygonResolution(3)
-            .hexPolygonMargin(0.35)
-            .hexPolygonUseDots(true)
-            .hexPolygonColor(() => landColor)
+            .polygonsData((countries as any).features || [])
+            .polygonAltitude(0.004)
+            .polygonCapColor(() => LAND_FILL)
+            .polygonSideColor(() => LAND_SIDE)
+            .polygonStrokeColor(() => LAND_STROKE)
             .htmlElementsData(allPoints)
             .htmlLat("lat")
             .htmlLng("lng")
@@ -192,9 +172,8 @@ const photos = [
             .width(w)
             .height(h);
 
-        // cream-colored globe base (no world texture).
         const mat: any = globe.globeMaterial();
-        if (mat?.color?.set) mat.color.set(globeColor);
+        if (mat?.color?.set) mat.color.set(GLOBE_CREAM);
         if (mat) {
             mat.opacity = 1;
             mat.transparent = false;
@@ -207,13 +186,19 @@ const photos = [
         controls.maxDistance = 800;
         controls.rotateSpeed = 0.6;
 
-        globe.pointOfView({ lat: 31, lng: -60, altitude: 2.2 }, 0);
+        globe.pointOfView({ lat: 25, lng: -40, altitude: 2.4 }, 0);
 
         const onResize = () => {
-            const { w, h } = size();
+            const next = size();
+            w = next.w;
+            h = next.h;
             globe.width(w).height(h);
         };
         window.addEventListener("resize", onResize);
+        if ("ResizeObserver" in window) {
+            const ro = new ResizeObserver(onResize);
+            ro.observe(el);
+        }
     }
 
     if (document.readyState !== "loading") mountGlobe();
@@ -225,16 +210,20 @@ const photos = [
     .globe-wrap {
         position: relative;
         width: 100%;
-        min-height: 380px;
+        aspect-ratio: auto;
         border: 1px solid var(--faint);
-        margin: 14px 0;
+        margin: 4px 0 14px;
         background:
-            linear-gradient(0deg, var(--faint), transparent 60%),
+            linear-gradient(
+                135deg,
+                rgba(26, 26, 26, 0.02),
+                transparent 60%
+            ),
             var(--bg);
         background-image:
             linear-gradient(0deg, var(--faint) 1px, transparent 1px),
             linear-gradient(90deg, var(--faint) 1px, transparent 1px);
-        background-size: 32px 32px, 32px 32px;
+        background-size: 28px 28px, 28px 28px;
         overflow: hidden;
     }
     .globe-stage {
@@ -244,37 +233,30 @@ const photos = [
     :global(.globe-stage canvas) {
         display: block;
         margin: 0 auto;
+        max-width: 100%;
     }
 
     /* ---------- hud + legend ---------- */
     .globe-hud,
     .globe-legend {
         position: absolute;
-        padding: 8px 10px;
+        padding: 7px 10px;
         background: var(--bg);
         border: 1px solid var(--border);
         font-family: var(--font-mono);
         font-size: 11.5px;
-        line-height: 1.5;
+        line-height: 1.45;
         color: var(--ink);
         pointer-events: none;
         z-index: 3;
     }
-    .globe-hud {
-        top: 14px;
-        left: 14px;
-    }
-    .globe-hud .hud-line b {
-        font-weight: 700;
-        margin-right: 2px;
-    }
-
+    .globe-hud { top: 12px; left: 12px; }
     .globe-legend {
-        bottom: 14px;
-        left: 14px;
+        bottom: 12px;
+        left: 12px;
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 5px;
     }
     .legend-row {
         display: flex;
@@ -288,104 +270,82 @@ const photos = [
         justify-content: center;
     }
 
-    /* ---------- photo carousel ---------- */
+    /* ---------- marquee carousel ---------- */
     .photo-scroll {
-        overflow-x: auto;
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: thin;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
         border: 1px solid var(--faint);
-        padding: 12px;
+        padding: 14px 0;
         background: var(--bg);
         margin: 14px 0;
+        position: relative;
     }
-    .photo-strip {
+    .photo-scroll::before,
+    .photo-scroll::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 40px;
+        z-index: 2;
+        pointer-events: none;
+    }
+    .photo-scroll::before {
+        left: 0;
+        background: linear-gradient(to right, var(--bg), transparent);
+    }
+    .photo-scroll::after {
+        right: 0;
+        background: linear-gradient(to left, var(--bg), transparent);
+    }
+
+    .photo-marquee {
         display: flex;
         gap: 12px;
+        width: max-content;
+        animation: marquee 55s linear infinite;
+        padding: 0 12px;
     }
+    .photo-scroll:hover .photo-marquee { animation-play-state: paused; }
+
+    @keyframes marquee {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+    }
+
     .photo-card {
-        flex: 0 0 220px;
-        scroll-snap-align: start;
+        flex: 0 0 180px;
         border: 1px solid var(--border);
         background: var(--bg);
         overflow: hidden;
-        transition: transform 0.18s ease;
-    }
-    .photo-card:hover {
-        transform: translateY(-2px);
     }
     .photo-thumb {
         width: 100%;
         aspect-ratio: 1 / 1;
-        overflow: hidden;
-        background: var(--faint);
-    }
-    .photo-thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
+        background-color: var(--faint);
+        background-image:
+            repeating-linear-gradient(
+                45deg,
+                rgba(26, 26, 26, 0.06) 0 8px,
+                transparent 8px 16px
+            );
+        border-bottom: 1px solid var(--faint);
     }
     .photo-caption {
         font-family: var(--font-mono);
         font-size: 12px;
         color: var(--ink);
-        padding: 8px 10px;
-        border-top: 1px solid var(--faint);
-    }
-
-    /* ---------- legend list columns ---------- */
-    .travel-lists {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        margin: 14px 0;
-    }
-    .travel-col {
-        border: 1px solid var(--faint);
-        padding: 12px 14px;
-    }
-    .travel-col-head {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-family: var(--font-mono);
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin-bottom: 8px;
-    }
-    .travel-col ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-    .travel-col li {
-        font-family: var(--font-mono);
-        font-size: 13px;
-    }
-
-    .mark-dot {
-        width: 10px;
-        height: 10px;
-        display: inline-block;
-        border: 1px solid #1a1a1a;
-    }
-    .mark-been {
-        background: #22c55e;
-        border-radius: 2px;
-    }
-    .mark-wish {
-        background: #e55;
-        border-radius: 50%;
+        padding: 7px 10px;
     }
 
     @media (max-width: 720px) {
-        .travel-lists { grid-template-columns: 1fr; }
-        .photo-card { flex-basis: 180px; }
-        .globe-hud, .globe-legend { font-size: 10.5px; padding: 6px 8px; }
+        .globe-hud, .globe-legend {
+            font-size: 10.5px;
+            padding: 6px 8px;
+        }
+        .photo-card { flex-basis: 148px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .photo-marquee { animation: none; }
     }
 </style>

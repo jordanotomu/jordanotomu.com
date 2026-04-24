@@ -1,11 +1,50 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Portrait from "~/components/Portrait.astro";
+import RandomTabs from "~/components/RandomTabs.astro";
+import ExpCard from "~/components/ExpCard.astro";
+import ProjectCard from "~/components/ProjectCard.astro";
+import { getCollection, render } from "astro:content";
+
+const exp = (await getCollection("experience")).sort(
+    (a, b) => b.data.order - a.data.order
+);
+const edu = (await getCollection("education")).sort(
+    (a, b) => b.data.order - a.data.order
+);
+const projects = (await getCollection("projects")).sort(
+    (a, b) => b.data.order - a.data.order
+);
+
+const hero = projects.find((p) => p.data.tier === "hero");
+const featured = projects.filter((p) => p.data.tier === "featured");
+const sandbox = projects.filter((p) => p.data.tier === "sandbox");
+
+async function renderOne(entry: any) {
+    const { Content } = await render(entry);
+    return Content;
+}
+
+const expRendered = await Promise.all(
+    exp.map(async (e) => ({ data: e.data, Content: await renderOne(e) }))
+);
+const eduRendered = await Promise.all(
+    edu.map(async (e) => ({ data: e.data, Content: await renderOne(e) }))
+);
+const heroRendered = hero
+    ? { data: hero.data, Content: await renderOne(hero) }
+    : null;
+const featuredRendered = await Promise.all(
+    featured.map(async (p) => ({ data: p.data, Content: await renderOne(p) }))
+);
+const sandboxRendered = await Promise.all(
+    sandbox.map(async (p) => ({ data: p.data, Content: await renderOne(p) }))
+);
 ---
 
 <BaseLayout
     title="Jordan Otomu"
-    description="Jordan Otomu — CS @ University of Houston, Incoming SWE Intern @ Snap. Engineer, content creator, student."
+    description="Jordan Otomu — CS @ University of Houston, incoming SWE Intern @ Snap. Engineer, content creator, student."
 >
     <fieldset class="box">
         <legend><i>whoami</i></legend>
@@ -37,83 +76,491 @@ import Portrait from "~/components/Portrait.astro";
     </fieldset>
 
     <fieldset class="box">
-        <legend><i>ls ~/</i></legend>
-        <nav class="home-nav" aria-label="site sections">
-            <a class="nav-card" href="/work">
-                <div class="nav-card-head">
-                    <span class="nav-card-prompt">$</span>
-                    <span class="nav-card-path">cd ~/work</span>
+        <legend><i>cat ~/random.md</i></legend>
+
+        <div class="motto">
+            <div class="motto-label">my life motto</div>
+            <div class="motto-text"><i>"do the thing badly before you do it well."</i></div>
+        </div>
+
+        <RandomTabs />
+    </fieldset>
+
+    <fieldset class="box">
+        <legend><i>cat ~/experience.md</i></legend>
+        <p class="muted-lead">the more professional-looking part of this.</p>
+        {expRendered.map(({ data, Content }) => (
+            <ExpCard
+                logo={data.logo}
+                logoAlt={data.logoAlt}
+                company={data.company}
+                sub={data.sub}
+                role={data.role}
+                place={data.place}
+                dates={data.dates}
+            >
+                <Content />
+            </ExpCard>
+        ))}
+    </fieldset>
+
+    <fieldset class="box">
+        <legend><i>cat ~/education.md</i></legend>
+        {eduRendered.map(({ data, Content }) => (
+            <ExpCard
+                logo={data.logo}
+                logoAlt={data.logoAlt}
+                school={data.school}
+                degree={data.degree}
+                place={data.place}
+                dates={data.dates}
+            >
+                <Content />
+            </ExpCard>
+        ))}
+    </fieldset>
+
+    <fieldset class="box">
+        <legend><i>ls ~/projects.md</i></legend>
+        <p class="muted-lead">a few things i want people to actually click on.</p>
+
+        {heroRendered && (
+            <ProjectCard
+                title={heroRendered.data.title}
+                url={heroRendered.data.url}
+                tag={heroRendered.data.tag}
+                tier={heroRendered.data.tier}
+                stack={heroRendered.data.stack}
+                metrics={heroRendered.data.metrics}
+            >
+                <heroRendered.Content />
+            </ProjectCard>
+        )}
+
+        {featuredRendered.length > 0 && (
+            <div class="proj-featured-row">
+                {featuredRendered.map(({ data, Content }) => (
+                    <ProjectCard
+                        title={data.title}
+                        url={data.url}
+                        tag={data.tag}
+                        tier={data.tier}
+                        stack={data.stack}
+                        metrics={data.metrics}
+                    >
+                        <Content />
+                    </ProjectCard>
+                ))}
+            </div>
+        )}
+
+        {sandboxRendered.length > 0 && (
+            <>
+                <div class="subhead"><i>// smaller repos & sandboxes</i></div>
+                <div class="proj-grid">
+                    {sandboxRendered.map(({ data, Content }) => (
+                        <ProjectCard
+                            title={data.title}
+                            url={data.url}
+                            tag={data.tag}
+                            tier={data.tier}
+                            stack={data.stack}
+                            metrics={data.metrics}
+                        >
+                            <Content />
+                        </ProjectCard>
+                    ))}
                 </div>
-                <div class="nav-card-title">work</div>
-                <div class="nav-card-desc">
-                    experience, education, projects, and the stuff i make on the internet.
+            </>
+        )}
+    </fieldset>
+
+    <fieldset class="box">
+        <legend><i>cat ~/ugc.md</i></legend>
+        <p class="muted-lead">
+            the stuff i make on the internet — mostly about building, being a cs
+            student, and the occasional unhinged take.
+        </p>
+        <div class="ugc-grid">
+            <a
+                class="ugc-card"
+                href="https://www.tiktok.com/@nott.jordan_/photo/7621280827179027726"
+                target="_blank"
+                rel="noopener"
+            >
+                <div class="ugc-thumb">
+                    <img
+                        src="/assets/ugc/tiktok-7621280827179027726.jpg"
+                        alt="had to hop on the trend — resume post"
+                        loading="lazy"
+                    />
                 </div>
+                <div class="ugc-platform">TikTok · photo</div>
+                <div class="ugc-title">had to hop on the trend #resume #swe</div>
+                <div class="ugc-stats">21.2k likes · 186 comments · 821 shares</div>
             </a>
-            <a class="nav-card" href="/random">
-                <div class="nav-card-head">
-                    <span class="nav-card-prompt">$</span>
-                    <span class="nav-card-path">cd ~/random</span>
+            <a
+                class="ugc-card"
+                href="https://www.tiktok.com/@nott.jordan_/video/7588833715019648311"
+                target="_blank"
+                rel="noopener"
+            >
+                <div class="ugc-thumb">
+                    <img
+                        src="/assets/ugc/tiktok-7588833715019648311.jpg"
+                        alt="last tiktok ever"
+                        loading="lazy"
+                    />
                 </div>
-                <div class="nav-card-title">random</div>
-                <div class="nav-card-desc">
-                    travel, music, wins, lore, and a toolbox. the less serious half.
-                </div>
+                <div class="ugc-platform">TikTok · video</div>
+                <div class="ugc-title">last tiktok ever</div>
+                <div class="ugc-stats">6.1k plays · 194 likes</div>
             </a>
-        </nav>
+        </div>
     </fieldset>
 </BaseLayout>
 
 <style>
-    .home-nav {
+    .motto {
+        padding-bottom: 16px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid var(--faint);
+    }
+    .motto-label {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        color: var(--muted);
+        margin-bottom: 4px;
+    }
+    .motto-text {
+        font-size: 17px;
+        font-family: var(--font-mono);
+    }
+</style>
+
+<style is:global>
+    /* ============ experience / education ============ */
+    .exp {
+        padding: 16px 4px 18px;
+        border-top: 1px solid var(--faint);
+    }
+    .exp:first-of-type { border-top: none; padding-top: 6px; }
+
+    .exp-head {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        grid-template-columns: 52px 1fr auto;
+        gap: 16px;
+        align-items: center;
     }
-    .nav-card {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        padding: 18px 20px;
+
+    .exp-logo {
+        width: 52px;
+        height: 52px;
+        flex-shrink: 0;
+        display: grid;
+        place-items: center;
         border: 1px solid var(--border);
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        background: transparent;
+        overflow: hidden;
+    }
+    .exp-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 6px;
+        display: block;
+    }
+    .exp-logo[data-logo="snap"] { background: #fffc00; color: #1a1a1a; border-color: #1a1a1a; }
+    .exp-logo[data-logo="sgp"] { background: #8b1a1a; color: #ffffff; border-color: #8b1a1a; font-size: 11px; }
+    .exp-logo[data-logo="walmart"] { background: #0071ce; color: #ffc220; border-color: #0071ce; font-size: 11.5px; }
+
+    .exp-logo[data-logo="uh"],
+    .exp-logo[data-logo="dallas"],
+    .exp-logo[data-logo="mlt"],
+    .exp-logo[data-logo="gpisd"] {
+        background: #ffffff;
+        border-color: var(--border);
+    }
+    [data-theme="dark"] .exp-logo[data-logo="uh"],
+    [data-theme="dark"] .exp-logo[data-logo="dallas"],
+    [data-theme="dark"] .exp-logo[data-logo="mlt"],
+    [data-theme="dark"] .exp-logo[data-logo="gpisd"] {
+        background: #f3f1e7;
+        border-color: rgba(243, 241, 231, 0.35);
+    }
+
+    .exp-logo[data-logo="jpmc"],
+    .exp-logo[data-logo="yahoo"],
+    .exp-logo[data-logo="nsbe"] {
+        background: transparent;
+        border-color: var(--border);
+    }
+    .exp-logo[data-logo="jpmc"] img,
+    .exp-logo[data-logo="yahoo"] img,
+    .exp-logo[data-logo="nsbe"] img {
+        padding: 0;
+        object-fit: cover;
+    }
+
+    .exp-company {
+        font-weight: 600;
+        font-size: 15.5px;
+    }
+    .exp-sub {
+        font-weight: 400;
+        color: var(--muted);
+        font-size: 13.5px;
+        font-family: var(--font-mono);
+        margin-left: 6px;
+    }
+    .exp-role {
+        font-family: var(--font-mono);
+        font-style: italic;
+        font-size: 13px;
         color: var(--ink);
-        text-decoration: none;
-        transition: background 0.15s ease, transform 0.15s ease;
+        margin-top: 1px;
     }
-    .nav-card:hover {
-        background: var(--faint);
-        text-decoration: none;
-        transform: translateY(-1px);
-    }
-    .nav-card-head {
-        display: flex;
-        gap: 8px;
+    .exp-place {
         font-family: var(--font-mono);
         font-size: 12px;
         color: var(--muted);
-        letter-spacing: 0.02em;
+        margin-top: 1px;
     }
-    .nav-card-prompt {
+    .exp-dates {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
         color: var(--muted);
+        white-space: nowrap;
     }
-    .nav-card-path {
+
+    .exp-bullets {
+        list-style: none;
+        margin: 12px 0 0 68px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .exp-bullets ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin: 0;
+    }
+    .exp-bullets li {
+        position: relative;
+        padding-left: 16px;
+        font-size: 14px;
+        line-height: 1.55;
+    }
+    .exp-bullets li::before {
+        content: "•";
+        position: absolute;
+        left: 2px;
+        top: 0;
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        line-height: 1.8;
+    }
+    .exp-bullets p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink); }
+
+    /* ============ projects ============ */
+    .proj {
+        border: 1px solid var(--faint);
+        padding: 14px 16px;
+    }
+    .proj.featured {
+        border-color: var(--border);
+        margin-bottom: 14px;
+        padding: 18px 20px;
+    }
+    .proj.featured-sm {
+        border-color: var(--border);
+        padding: 16px 18px;
+    }
+
+    .proj-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 6px;
+    }
+    .proj-head h3 {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 15px;
+    }
+    .proj.featured .proj-head h3 { font-size: 18px; }
+    .proj-head h3 a { text-decoration: none; }
+    .proj-head h3 a:hover { text-decoration: underline; }
+
+    .proj-muted {
+        color: var(--muted);
+        font-weight: 400;
+        font-size: 0.85em;
+        margin-left: 4px;
+    }
+
+    .proj-tag {
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border: 1px solid var(--faint);
+        padding: 2px 6px;
+        white-space: nowrap;
+    }
+    .proj.featured .proj-tag {
+        color: var(--bg);
+        background: var(--ink);
+        border-color: var(--ink);
+    }
+
+    .proj p {
+        font-size: 14px;
+        color: var(--ink);
+        margin: 4px 0;
+    }
+
+    .proj-metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 22px;
+        margin: 12px 0 10px;
+        padding: 10px 0;
+        border-top: 1px solid var(--faint);
+        border-bottom: 1px solid var(--faint);
+    }
+    .proj-metrics div {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+    }
+    .proj-metrics b {
+        font-family: var(--font-mono);
+        font-size: 17px;
+        font-weight: 700;
         color: var(--ink);
     }
-    .nav-card-title {
+    .proj-metrics span {
         font-family: var(--font-mono);
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-    }
-    .nav-card-desc {
-        font-size: 13.5px;
+        font-size: 11px;
         color: var(--muted);
-        line-height: 1.55;
-        max-width: 44ch;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .proj-stack {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+    }
+    .proj-stack span { margin: 0 4px; }
+
+    .proj-featured-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+    .proj-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    /* ============ ugc ============ */
+    .ugc-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 14px;
+    }
+    .ugc-card {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+        border: 1px solid var(--faint);
+        padding: 10px;
+        transition: border-color 0.15s, transform 0.15s;
+    }
+    .ugc-card:hover {
+        border-color: var(--border);
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+    .ugc-thumb {
+        background:
+            linear-gradient(135deg, var(--faint), transparent),
+            repeating-linear-gradient(0deg, var(--faint) 0 1px, transparent 1px 8px);
+        border: 1px solid var(--faint);
+        margin-bottom: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+    .ugc-thumb img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.35s ease;
+    }
+    .ugc-card:hover .ugc-thumb img {
+        transform: scale(1.03);
+    }
+    .ugc-platform {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        margin-bottom: 6px;
+    }
+    .ugc-title {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.35;
+    }
+    .ugc-stats {
+        font-family: var(--font-mono);
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-top: 4px;
+    }
+
+    .muted-lead {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        margin: -4px 0 12px;
+    }
+    .subhead {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        margin: 14px 0 8px;
     }
 
     @media (max-width: 720px) {
-        .home-nav {
-            grid-template-columns: 1fr;
+        .proj-grid { grid-template-columns: 1fr; }
+        .proj-featured-row { grid-template-columns: 1fr; }
+        .proj-metrics { gap: 18px; }
+        .exp-head { grid-template-columns: 44px 1fr; }
+        .exp-logo { width: 44px; height: 44px; }
+        .exp-dates {
+            grid-column: 2;
+            font-size: 11.5px;
+            margin-top: 4px;
         }
+        .exp-bullets { margin-left: 0; }
     }
 </style>
