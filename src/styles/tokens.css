@@ -1,0 +1,27 @@
+/* ==========================================================================
+   design tokens · cream + ink
+   ========================================================================== */
+
+:root {
+    --bg: #f3f1e7;
+    --ink: #1a1a1a;
+    --muted: rgba(26, 26, 26, 0.56);
+    --faint: rgba(26, 26, 26, 0.12);
+    --border: rgba(26, 26, 26, 0.85);
+    --accent: #1a1a1a;
+
+    --font-mono: "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+    --pad: 22px;
+    --max: 960px;
+}
+
+[data-theme="dark"] {
+    --bg: #121212;
+    --ink: #f3f1e7;
+    --muted: rgba(243, 241, 231, 0.56);
+    --faint: rgba(243, 241, 231, 0.12);
+    --border: rgba(243, 241, 231, 0.85);
+    --accent: #f3f1e7;
+}

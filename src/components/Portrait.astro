@@ -1,0 +1,11 @@
+---
+interface Props {
+    caption?: string;
+}
+const { caption = "// user.png" } = Astro.props;
+---
+
+<figure class="whoami-photo">
+    <img src="/assets/photos/jordan-dc.jpg" alt="Jordan Otomu" />
+    <figcaption><i>{caption}</i></figcaption>
+</figure>

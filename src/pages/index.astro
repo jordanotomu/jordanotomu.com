@@ -1,0 +1,119 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Portrait from "~/components/Portrait.astro";
+---
+
+<BaseLayout
+    title="Jordan Otomu"
+    description="Jordan Otomu — CS @ University of Houston, Incoming SWE Intern @ Snap. Engineer, content creator, student."
+>
+    <fieldset class="box">
+        <legend><i>whoami</i></legend>
+        <div class="whoami">
+            <div class="whoami-text">
+                <p>
+                    hi, i'm jordan. a cs student at the <b>university of houston</b>
+                    and an incoming <b>software engineering intern at snap</b>
+                    this summer.
+                </p>
+                <p>
+                    most of my time goes into building: systems, infra, saas, and the
+                    occasional side experiment. when i'm not writing code i'm trenching
+                    highly volatile crypto markets (memecoins), watching tv and
+                    documentaries, listening to music, or deep in history and geography.
+                </p>
+                <p>
+                    i like small, well-crafted things. i think the best way to learn is
+                    to build it badly first, then do it well.
+                </p>
+                <p>
+                    reach out on
+                    <a href="https://linkedin.com/in/jordanotomu/" target="_blank" rel="noopener">linkedin</a>
+                    or <a href="mailto:jotomu@uh.edu">email</a>.
+                </p>
+            </div>
+            <Portrait />
+        </div>
+    </fieldset>
+
+    <fieldset class="box">
+        <legend><i>ls ~/</i></legend>
+        <nav class="home-nav" aria-label="site sections">
+            <a class="nav-card" href="/work">
+                <div class="nav-card-head">
+                    <span class="nav-card-prompt">$</span>
+                    <span class="nav-card-path">cd ~/work</span>
+                </div>
+                <div class="nav-card-title">work</div>
+                <div class="nav-card-desc">
+                    experience, education, projects, and the stuff i make on the internet.
+                </div>
+            </a>
+            <a class="nav-card" href="/random">
+                <div class="nav-card-head">
+                    <span class="nav-card-prompt">$</span>
+                    <span class="nav-card-path">cd ~/random</span>
+                </div>
+                <div class="nav-card-title">random</div>
+                <div class="nav-card-desc">
+                    travel, music, wins, lore, and a toolbox. the less serious half.
+                </div>
+            </a>
+        </nav>
+    </fieldset>
+</BaseLayout>
+
+<style>
+    .home-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+    .nav-card {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 20px;
+        border: 1px solid var(--border);
+        color: var(--ink);
+        text-decoration: none;
+        transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .nav-card:hover {
+        background: var(--faint);
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+    .nav-card-head {
+        display: flex;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+    }
+    .nav-card-prompt {
+        color: var(--muted);
+    }
+    .nav-card-path {
+        color: var(--ink);
+    }
+    .nav-card-title {
+        font-family: var(--font-mono);
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+    .nav-card-desc {
+        font-size: 13.5px;
+        color: var(--muted);
+        line-height: 1.55;
+        max-width: 44ch;
+    }
+
+    @media (max-width: 720px) {
+        .home-nav {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

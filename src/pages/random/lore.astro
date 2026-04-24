@@ -1,0 +1,318 @@
+---
+import RandomLayout from "~/layouts/RandomLayout.astro";
+import { getCollection, render } from "astro:content";
+
+const lore = (await getCollection("lore")).sort(
+    (a, b) => b.data.order - a.data.order
+);
+const rendered = await Promise.all(
+    lore.map(async (l) => {
+        const { Content } = await render(l);
+        return { data: l.data, Content };
+    })
+);
+
+// typing-speed mini-game prompt
+const typingPhrase =
+    "the best way to learn is to build it badly first, then do it well.";
+
+// TODO: replace with jordan's real count of failed projects (roblox + side repos).
+const FAILED_PROJECTS = 27;
+---
+
+<RandomLayout
+    slug="lore"
+    title="Jordan Otomu · random / lore"
+    description="Life's FAQs — the long-form 'tell me about yourself'."
+>
+    <h2>lore</h2>
+    <p>my life's faqs.</p>
+
+    <div class="faq">
+        {rendered.map(({ data, Content }, i) => (
+            <details class="faq-item" open={i === 0}>
+                <summary>
+                    <span class="faq-hash">#</span>
+                    <span class="faq-q">{data.q}</span>
+                    <span class="faq-plus" aria-hidden="true">+</span>
+                </summary>
+                <div class="faq-body">
+                    <Content />
+                </div>
+            </details>
+        ))}
+    </div>
+
+    <h2>random</h2>
+
+    <div class="mini">
+        <div class="mini-head">
+            <span class="mini-kind">what's your typing speed?</span>
+            <span class="mini-hint">type the phrase below — see if you can beat me.</span>
+        </div>
+        <div class="mini-phrase" id="typing-phrase">{typingPhrase}</div>
+        <input
+            id="typing-input"
+            class="mini-input"
+            type="text"
+            placeholder="start typing…"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+        />
+        <div class="mini-result" id="typing-result" aria-live="polite">
+            <span class="mini-result-label">your wpm:</span>
+            <span class="mini-wpm" id="typing-wpm">—</span>
+            <span class="mini-accuracy" id="typing-acc"></span>
+        </div>
+    </div>
+
+    <div class="mini">
+        <div class="mini-head">
+            <span class="mini-kind">how many side projects did i abandon?</span>
+            <span class="mini-hint">
+                (a "failed" project = something i spent 50+ hours on that never shipped.)
+            </span>
+        </div>
+        <form class="mini-guess" id="guess-form">
+            <input
+                id="guess-input"
+                class="mini-input"
+                type="number"
+                min="0"
+                max="200"
+                placeholder="enter a number"
+                autocomplete="off"
+            />
+            <button type="submit" class="btn">submit</button>
+            <button type="button" class="btn" id="guess-give-up">give up</button>
+        </form>
+        <div class="mini-result" id="guess-result" aria-live="polite"></div>
+    </div>
+
+    <p class="note">
+        TODO: if <code>FAILED_PROJECTS</code> in <code>src/pages/random/lore.astro</code>
+        isn't right, swap the number.
+    </p>
+</RandomLayout>
+
+<script define:vars={{ FAILED_PROJECTS, typingPhrase }}>
+    // ---------- typing speed game ----------
+    const input = document.getElementById("typing-input");
+    const wpmEl = document.getElementById("typing-wpm");
+    const accEl = document.getElementById("typing-acc");
+    const phraseEl = document.getElementById("typing-phrase");
+
+    let startedAt = 0;
+    if (input && wpmEl && accEl && phraseEl) {
+        input.addEventListener("input", (e) => {
+            const val = e.target.value;
+            if (!startedAt && val.length > 0) startedAt = performance.now();
+
+            const expected = typingPhrase.slice(0, val.length);
+            let correct = 0;
+            for (let i = 0; i < val.length; i++) {
+                if (val[i] === typingPhrase[i]) correct++;
+            }
+            const acc = val.length ? Math.round((correct / val.length) * 100) : 100;
+            accEl.textContent = val.length ? `· ${acc}% accuracy` : "";
+
+            if (val.length >= typingPhrase.length) {
+                const secs = (performance.now() - startedAt) / 1000;
+                const words = typingPhrase.split(" ").length;
+                const wpm = Math.round((words / secs) * 60);
+                wpmEl.textContent = String(wpm);
+                const beatMe = wpm >= 90;
+                accEl.textContent =
+                    `· ${acc}% accuracy · ` + (beatMe ? "you beat me. gg." : "nice. my avg is ~90 wpm.");
+                input.disabled = true;
+            } else if (val.length > 0) {
+                const secs = (performance.now() - startedAt) / 1000;
+                const words = val.trim().split(/\s+/).length;
+                const wpm = secs > 0.5 ? Math.round((words / secs) * 60) : 0;
+                wpmEl.textContent = String(wpm);
+            } else {
+                wpmEl.textContent = "—";
+                startedAt = 0;
+            }
+        });
+    }
+
+    // ---------- guess failed projects game ----------
+    const form = document.getElementById("guess-form");
+    const guessInput = document.getElementById("guess-input");
+    const giveUp = document.getElementById("guess-give-up");
+    const result = document.getElementById("guess-result");
+
+    function reveal(userGuess) {
+        if (!result) return;
+        const diff = userGuess == null ? null : Math.abs(userGuess - FAILED_PROJECTS);
+        if (userGuess == null) {
+            result.innerHTML =
+                `the answer was <b>${FAILED_PROJECTS}</b>. no shame. refresh to try again.`;
+        } else if (userGuess === FAILED_PROJECTS) {
+            result.innerHTML =
+                `<b>${userGuess}</b>? exact. uncanny. i'm almost suspicious.`;
+        } else if (diff !== null && diff <= 3) {
+            result.innerHTML =
+                `close — it was <b>${FAILED_PROJECTS}</b>. you were off by ${diff}.`;
+        } else {
+            const tooHigh = userGuess > FAILED_PROJECTS;
+            result.innerHTML =
+                `it was <b>${FAILED_PROJECTS}</b>. you went ` +
+                (tooHigh ? "high." : "low.");
+        }
+    }
+
+    if (form && guessInput && result) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const n = parseInt(guessInput.value, 10);
+            if (Number.isFinite(n)) reveal(n);
+        });
+    }
+    if (giveUp) giveUp.addEventListener("click", () => reveal(null));
+</script>
+
+<style>
+    .faq {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin: 14px 0 24px;
+        border: 1px solid var(--faint);
+    }
+    .faq-item {
+        border-top: 1px solid var(--faint);
+    }
+    .faq-item:first-child { border-top: none; }
+
+    .faq-item summary {
+        list-style: none;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: 14px 1fr 20px;
+        gap: 10px;
+        padding: 12px 14px;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        align-items: center;
+        transition: background 0.12s;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary:hover { background: var(--faint); }
+
+    .faq-hash { color: var(--muted); }
+    .faq-q { color: var(--ink); }
+    .faq-plus {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 16px;
+        line-height: 1;
+        text-align: center;
+        transition: transform 0.15s;
+    }
+    .faq-item[open] .faq-plus {
+        transform: rotate(45deg);
+        color: var(--ink);
+    }
+
+    .faq-body {
+        padding: 0 14px 14px 38px;
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: var(--ink);
+    }
+    .faq-body :global(p) { margin-bottom: 8px; }
+    .faq-body :global(p:last-child) { margin-bottom: 0; }
+    .faq-body :global(ul) {
+        list-style: none;
+        padding-left: 0;
+    }
+    .faq-body :global(li) {
+        position: relative;
+        padding-left: 14px;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.55;
+    }
+    .faq-body :global(li)::before {
+        content: "·";
+        position: absolute;
+        left: 4px;
+        color: var(--muted);
+    }
+
+    .mini {
+        border: 1px solid var(--faint);
+        padding: 14px 16px;
+        margin: 12px 0;
+    }
+    .mini-head {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 10px;
+    }
+    .mini-kind {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 13.5px;
+    }
+    .mini-hint {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+    }
+
+    .mini-phrase {
+        font-family: var(--font-mono);
+        font-size: 14px;
+        padding: 10px;
+        border: 1px dashed var(--faint);
+        margin-bottom: 10px;
+        color: var(--muted);
+    }
+
+    .mini-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: 14px;
+        outline: none;
+        transition: background 0.12s;
+    }
+    .mini-input:focus {
+        background: var(--faint);
+    }
+
+    .mini-guess {
+        display: flex;
+        gap: 8px;
+        align-items: stretch;
+    }
+    .mini-guess .mini-input { flex: 1; }
+    .mini-guess .btn { flex-shrink: 0; }
+
+    .mini-result {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 8px;
+        min-height: 1.2em;
+    }
+    .mini-result-label { margin-right: 6px; color: var(--muted); }
+    .mini-wpm {
+        color: var(--ink);
+        font-weight: 700;
+        font-size: 15px;
+    }
+    .mini-accuracy { margin-left: 4px; }
+
+    @media (max-width: 480px) {
+        .mini-guess { flex-direction: column; }
+    }
+</style>

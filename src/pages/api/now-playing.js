@@ -1,10 +1,4 @@
-// Vercel serverless function. Returns the user's current Spotify track,
-// or the most recently played track when nothing is currently playing.
-//
-// Required env vars (set in Vercel dashboard):
-//   SPOTIFY_CLIENT_ID
-//   SPOTIFY_CLIENT_SECRET
-//   SPOTIFY_REFRESH_TOKEN
+export const prerender = false;
 
 const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 const NOW_PLAYING_ENDPOINT =
@@ -59,23 +53,24 @@ function shape(track, { isPlaying, lastPlayed } = {}) {
     };
 }
 
-export default async function handler(_req, res) {
+function json(body, { status = 200, cache } = {}) {
+    const headers = { "Content-Type": "application/json" };
+    if (cache) headers["Cache-Control"] = cache;
+    return new Response(JSON.stringify(body), { status, headers });
+}
+
+export async function GET() {
     try {
         const { access_token } = await getAccessToken();
         const headers = { Authorization: `Bearer ${access_token}` };
 
         const now = await fetch(NOW_PLAYING_ENDPOINT, { headers });
-
         if (now.status === 200) {
             const data = await now.json();
             if (data?.is_playing && data?.item?.type === "track") {
-                res.setHeader(
-                    "Cache-Control",
-                    "public, s-maxage=20, stale-while-revalidate=60"
-                );
-                return res.status(200).json(
-                    shape(data.item, { isPlaying: true })
-                );
+                return json(shape(data.item, { isPlaying: true }), {
+                    cache: "public, s-maxage=20, stale-while-revalidate=60",
+                });
             }
         }
 
@@ -84,19 +79,18 @@ export default async function handler(_req, res) {
             const data = await recent.json();
             const track = data?.items?.[0]?.track;
             if (track) {
-                res.setHeader(
-                    "Cache-Control",
-                    "public, s-maxage=60, stale-while-revalidate=120"
-                );
-                return res.status(200).json(
-                    shape(track, { isPlaying: false, lastPlayed: true })
+                return json(
+                    shape(track, { isPlaying: false, lastPlayed: true }),
+                    {
+                        cache: "public, s-maxage=60, stale-while-revalidate=120",
+                    }
                 );
             }
         }
 
-        return res.status(200).json({ isPlaying: false });
+        return json({ isPlaying: false });
     } catch (err) {
         console.error("now-playing error:", err);
-        return res.status(500).json({ isPlaying: false, error: "unavailable" });
+        return json({ isPlaying: false, error: "unavailable" }, { status: 500 });
     }
 }

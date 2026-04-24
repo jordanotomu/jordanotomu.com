@@ -1,0 +1,226 @@
+---
+import RandomLayout from "~/layouts/RandomLayout.astro";
+import { getCollection, render } from "astro:content";
+
+const wins = (await getCollection("wins")).sort(
+    (a, b) => b.data.order - a.data.order
+);
+
+const imageLogos = new Set(["uh", "dallas", "mlt", "gpisd", "jpmc", "yahoo", "nsbe"]);
+const imageExt: Record<string, string> = { uh: "svg", dallas: "svg" };
+
+const rendered = await Promise.all(
+    wins.map(async (w) => {
+        const { Content } = await render(w);
+        return { data: w.data, Content };
+    })
+);
+---
+
+<RandomLayout
+    slug="wins"
+    title="Jordan Otomu · random / wins"
+    description="A trophy case — programs, offers, and moments worth keeping."
+>
+    <h2>wins</h2>
+    <p>
+        trophy case. hover or tap a card to see the story behind it.
+    </p>
+
+    <div class="win-grid">
+        {rendered.map(({ data, Content }) => {
+            const emblem = data.emblem ?? "";
+            const isImage = imageLogos.has(emblem);
+            const src = isImage
+                ? `/assets/logos/${emblem}.${imageExt[emblem] ?? "png"}`
+                : null;
+            return (
+                <div
+                    class="win-card"
+                    tabindex="0"
+                    role="button"
+                    aria-label={data.title}
+                >
+                    <div class="win-inner">
+                        <div class="win-face win-front" data-logo={emblem}>
+                            <div class="win-emblem">
+                                {isImage && src ? (
+                                    <img src={src} alt={data.org} />
+                                ) : (
+                                    <span>{emblem}</span>
+                                )}
+                            </div>
+                            <div class="win-title">{data.title}</div>
+                            <div class="win-meta">
+                                <span>{data.org}</span>
+                                <span>·</span>
+                                <span>{data.year}</span>
+                            </div>
+                        </div>
+                        <div class="win-face win-back">
+                            <div class="win-back-body"><Content /></div>
+                            <div class="win-back-foot">
+                                <span>{data.year}</span>
+                                <span>{data.org}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        })}
+    </div>
+
+    <p class="note">
+        TODO: add more cards as things happen — each is just a markdown file in
+        <code>src/content/wins/</code>.
+    </p>
+</RandomLayout>
+
+<script>
+    document.querySelectorAll<HTMLDivElement>(".win-card").forEach((c) => {
+        const flip = () => c.classList.toggle("is-flipped");
+        c.addEventListener("click", flip);
+        c.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                flip();
+            }
+        });
+    });
+</script>
+
+<style>
+    .win-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 14px 0 22px;
+    }
+
+    .win-card {
+        perspective: 900px;
+        aspect-ratio: 1 / 1.05;
+        cursor: pointer;
+        outline: none;
+    }
+    .win-card:focus-visible .win-inner {
+        outline: 2px solid var(--ink);
+        outline-offset: 2px;
+    }
+
+    .win-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.55s cubic-bezier(0.4, 0.1, 0.3, 1);
+    }
+    .win-card:hover .win-inner,
+    .win-card.is-flipped .win-inner {
+        transform: rotateY(180deg);
+    }
+
+    .win-face {
+        position: absolute;
+        inset: 0;
+        border: 1px solid var(--border);
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        backface-visibility: hidden;
+        background: var(--bg);
+    }
+
+    .win-front {
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .win-emblem {
+        width: 64px;
+        height: 64px;
+        border: 1px solid var(--border);
+        display: grid;
+        place-items: center;
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: 0.04em;
+        overflow: hidden;
+        background: #ffffff;
+    }
+    .win-emblem img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 6px;
+        display: block;
+    }
+    [data-theme="dark"] .win-emblem { background: #f3f1e7; color: #1a1a1a; }
+
+    .win-front[data-logo="snap"] .win-emblem { background: #fffc00; color: #1a1a1a; }
+    .win-front[data-logo="jpmc"] .win-emblem img,
+    .win-front[data-logo="yahoo"] .win-emblem img,
+    .win-front[data-logo="nsbe"] .win-emblem img {
+        padding: 0;
+        object-fit: cover;
+    }
+
+    .win-title {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 13.5px;
+        line-height: 1.3;
+        color: var(--ink);
+    }
+    .win-meta {
+        display: flex;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+    }
+
+    .win-back {
+        transform: rotateY(180deg);
+        gap: 10px;
+        justify-content: space-between;
+        background: var(--ink);
+        color: var(--bg);
+        border-color: var(--ink);
+    }
+    .win-back-body {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        line-height: 1.55;
+        overflow: hidden;
+    }
+    .win-back-body :global(strong),
+    .win-back-body :global(b) { color: var(--bg); }
+    .win-back-body :global(p) { margin: 0 0 8px; }
+    .win-back-body :global(p:last-child) { margin-bottom: 0; }
+
+    .win-back-foot {
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        opacity: 0.7;
+    }
+
+    @media (max-width: 720px) {
+        .win-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+        .win-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .win-inner { transition: none; }
+    }
+</style>

@@ -1,0 +1,387 @@
+---
+import RandomLayout from "~/layouts/RandomLayout.astro";
+
+// The toolbox is a live terminal. Tools live here so the client script
+// can render them without refetching anything.
+
+type Tool = { name: string; category: string; blurb: string };
+
+const tools: Tool[] = [
+    // languages
+    { name: "python", category: "languages", blurb: "my ml + backend go-to. fastapi & pandas are home base." },
+    { name: "typescript", category: "languages", blurb: "default for anything frontend or shared-type. strict mode or bust." },
+    { name: "javascript", category: "languages", blurb: "the substrate. sometimes you just need a quick <script>." },
+    { name: "java", category: "languages", blurb: "uh dsa coursework, leetcode heavy lifting." },
+    { name: "c++", category: "languages", blurb: "uh systems track. where i built a real feel for memory." },
+    { name: "c#", category: "languages", blurb: "throwbacks — console apps and unity dabbling." },
+    { name: "swift", category: "languages", blurb: "prepping for snap. paired with uikit and objective-c." },
+    { name: "objective-c", category: "languages", blurb: "snap's ios codebase runs on it. learning to love brackets." },
+    { name: "go", category: "languages", blurb: "side-learning. distributed systems feel natural here." },
+    { name: "lua", category: "languages", blurb: "first language i really loved — roblox days." },
+    { name: "sql", category: "languages", blurb: "everywhere. nothing replaces a well-written join." },
+    { name: "html", category: "languages", blurb: "the canvas. paired with css, still one of the best tools ever shipped." },
+    { name: "css", category: "languages", blurb: "this whole site is hand-rolled css. no tailwind on personal craft." },
+
+    // frameworks
+    { name: "react", category: "frameworks", blurb: "default ui stack. atsify, sanctify, cooggrid — all react." },
+    { name: "react-native", category: "frameworks", blurb: "shipped sanctify on it. the 'write once' dream, mostly true." },
+    { name: "next.js", category: "frameworks", blurb: "for projects that need ssr + the vercel pipeline." },
+    { name: "astro", category: "frameworks", blurb: "you're using it right now. content + islands = perfect personal-site stack." },
+    { name: "node.js", category: "frameworks", blurb: "backend defaults. express or raw http." },
+    { name: "express", category: "frameworks", blurb: "still my go-to for quick api scaffolds." },
+    { name: "fastapi", category: "frameworks", blurb: "python api when i want types and speed. used at jpmc c4g." },
+    { name: "deno", category: "frameworks", blurb: "atsify runs on deno deploy. serverless typescript without the config hell." },
+    { name: "tailwind", category: "frameworks", blurb: "client projects only. this site is hand-rolled css on purpose." },
+
+    // ml / data
+    { name: "tensorflow", category: "ml/data", blurb: "coursework + a few experiments. mostly keras-level." },
+    { name: "pytorch", category: "ml/data", blurb: "prefer it over tf for research-y work." },
+    { name: "pandas", category: "ml/data", blurb: "default for anything csv-shaped." },
+    { name: "numpy", category: "ml/data", blurb: "the math spine under every ml thing i touch." },
+    { name: "jupyter", category: "ml/data", blurb: "scratchpad for data. half my learning happens in notebooks." },
+
+    // databases
+    { name: "mongodb", category: "databases", blurb: "nosql escape hatch when the schema is shifting fast." },
+    { name: "mysql", category: "databases", blurb: "classic relational. nothing beats it for reporting." },
+    { name: "supabase", category: "databases", blurb: "postgres + auth + realtime. powered sanctify's backend." },
+    { name: "sqlite", category: "databases", blurb: "perfect for hackathons. used sqlite cloud at jpmc c4g." },
+    { name: "firebase", category: "databases", blurb: "auth is where it earns its keep." },
+
+    // cloud
+    { name: "aws", category: "cloud", blurb: "used for compute + s3. ec2 for legacy side-projects." },
+    { name: "azure", category: "cloud", blurb: "touched it in coursework. mostly ad + storage blobs." },
+    { name: "gcp", category: "cloud", blurb: "firebase, bigquery, a little gemini api." },
+    { name: "vercel", category: "cloud", blurb: "where this site and atsify live. next/astro-native." },
+
+    // payments / chain
+    { name: "stripe", category: "payments/chain", blurb: "atsify subscriptions. webhooks, portals, the whole loop." },
+    { name: "solana", category: "payments/chain", blurb: "memecoin + defi experiments. web3.js + jupiter aggregator." },
+
+    // tools
+    { name: "git", category: "tools", blurb: "table stakes. rebase > merge, usually." },
+    { name: "maven", category: "tools", blurb: "java coursework. not my favorite build tool, but it works." },
+    { name: "linux", category: "tools", blurb: "arch btw — actually macos daily, but i know my way around." },
+    { name: "figma", category: "tools", blurb: "design handoffs + mock screens when i'm thinking in pixels." },
+
+    // editor
+    { name: "cursor", category: "editor", blurb: "daily driver. ai-native vscode fork — the productivity jump is real." },
+    { name: "neovim", category: "editor", blurb: "remote + quick edits. lazyvim setup." },
+    { name: "vscode", category: "editor", blurb: "fallback for anything cursor can't do." },
+
+    // terminal / notes
+    { name: "ghostty", category: "terminal", blurb: "daily terminal. fast, quiet, zsh + starship on top." },
+    { name: "zsh", category: "terminal", blurb: "shell. oh-my-zsh with aliases for days." },
+    { name: "obsidian", category: "notes", blurb: "my second brain. daily notes + project vaults." },
+];
+
+const categories: string[] = [...new Set(tools.map((t) => t.category))];
+---
+
+<RandomLayout
+    slug="toolbox"
+    title="Jordan Otomu · random / toolbox"
+    description="A live terminal of every tool, language, and service Jordan builds with."
+>
+    <h2>toolbox</h2>
+    <p>
+        a terminal. type <code>help</code> to get started, <code>ls</code> to see every tool,
+        or <code>which &lt;tool&gt;</code> to hear the story behind it.
+    </p>
+
+    <div class="term" id="term" role="region" aria-label="toolbox terminal">
+        <div class="term-scroll" id="term-scroll"></div>
+        <form class="term-form" id="term-form" autocomplete="off">
+            <label class="term-prompt" for="term-input">
+                <span class="term-user">jordan</span><span class="term-at">@</span><span class="term-host">toolbox</span><span class="term-sep">:</span><span class="term-path">~</span><span class="term-dollar">$</span>
+            </label>
+            <input
+                id="term-input"
+                class="term-input"
+                type="text"
+                autocapitalize="off"
+                autocomplete="off"
+                autocorrect="off"
+                spellcheck="false"
+                aria-label="terminal command"
+            />
+        </form>
+    </div>
+
+    <p class="note">
+        try: <code>help</code> · <code>ls</code> · <code>which react</code> ·
+        <code>which memecoins</code> · <code>whoami</code> · <code>clear</code>
+    </p>
+</RandomLayout>
+
+<script define:vars={{ tools, categories }}>
+    const scroll = document.getElementById("term-scroll");
+    const form = document.getElementById("term-form");
+    const input = document.getElementById("term-input");
+    if (!scroll || !form || !input) {
+        /* no-op */
+    } else {
+        const history = [];
+        let hIdx = -1;
+
+        const esc = (s) =>
+            String(s).replace(
+                /[&<>"']/g,
+                (c) =>
+                    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+            );
+
+        function writeLine(cls, html) {
+            const div = document.createElement("div");
+            div.className = "term-line " + (cls || "");
+            div.innerHTML = html;
+            scroll.appendChild(div);
+            scroll.scrollTop = scroll.scrollHeight;
+        }
+
+        function writePrompt(cmd) {
+            writeLine(
+                "term-echo",
+                `<span class="term-user">jordan</span><span class="term-at">@</span><span class="term-host">toolbox</span><span class="term-sep">:</span><span class="term-path">~</span><span class="term-dollar">$</span> <span class="term-cmd">${esc(cmd)}</span>`
+            );
+        }
+
+        function findTool(name) {
+            const n = name.toLowerCase().trim();
+            return tools.find(
+                (t) => t.name === n || t.name.replace(/[^a-z0-9]/g, "") === n.replace(/[^a-z0-9]/g, "")
+            );
+        }
+
+        const specials = {
+            "memecoins": "the real sport. pvp markets, real-time liquidity, and the best hackathon UX in crypto. bankroll you can lose, small edge, exit discipline.",
+            "spotify": "see /random/music for the live now-playing card.",
+        };
+
+        const commands = {
+            help() {
+                writeLine(
+                    "",
+                    [
+                        "<b>available commands:</b>",
+                        "  <span class=term-k>help</span>            show this help",
+                        "  <span class=term-k>ls</span>              list all tools, grouped by category",
+                        "  <span class=term-k>ls &lt;category&gt;</span> list tools in a category (e.g. <i>ls languages</i>)",
+                        "  <span class=term-k>which &lt;tool&gt;</span>   show what a tool is + a story",
+                        "  <span class=term-k>cat &lt;tool&gt;</span>     alias for <i>which</i>",
+                        "  <span class=term-k>whoami</span>          one-line bio",
+                        "  <span class=term-k>categories</span>      list all tool categories",
+                        "  <span class=term-k>random</span>          pick a random tool",
+                        "  <span class=term-k>clear</span>           clear the terminal",
+                    ].join("\n")
+                );
+            },
+            ls(arg) {
+                if (arg) {
+                    const inCat = tools.filter((t) => t.category === arg);
+                    if (!inCat.length) {
+                        writeLine(
+                            "term-err",
+                            `no category <b>${esc(arg)}</b>. try <i>categories</i>.`
+                        );
+                        return;
+                    }
+                    writeLine("", `<b>${esc(arg)}</b>`);
+                    writeLine("", inCat.map((t) => `  ${t.name}`).join("\n"));
+                    return;
+                }
+                const byCat = {};
+                tools.forEach((t) => {
+                    (byCat[t.category] = byCat[t.category] || []).push(t.name);
+                });
+                const out = categories
+                    .map(
+                        (c) =>
+                            `<span class=term-cat>${esc(c)}/</span>\n  ${byCat[c].join("  ")}`
+                    )
+                    .join("\n\n");
+                writeLine("", out);
+            },
+            categories() {
+                writeLine("", categories.map((c) => `  ${c}`).join("\n"));
+            },
+            which(arg) {
+                if (!arg) {
+                    writeLine("term-err", "usage: <i>which &lt;tool&gt;</i>");
+                    return;
+                }
+                if (specials[arg.toLowerCase()]) {
+                    writeLine(
+                        "",
+                        `<b>${esc(arg)}</b> — ${specials[arg.toLowerCase()]}`
+                    );
+                    return;
+                }
+                const t = findTool(arg);
+                if (!t) {
+                    writeLine(
+                        "term-err",
+                        `<b>${esc(arg)}</b>: not in the toolbox. try <i>ls</i>.`
+                    );
+                    return;
+                }
+                writeLine(
+                    "",
+                    `<span class=term-cat>${esc(t.category)}/</span><b>${esc(t.name)}</b>\n${esc(t.blurb)}`
+                );
+            },
+            whoami() {
+                writeLine(
+                    "",
+                    "jordan · cs @ university of houston · incoming swe intern @ snap '26 · builds saas, ships content."
+                );
+            },
+            random() {
+                const t = tools[Math.floor(Math.random() * tools.length)];
+                writeLine(
+                    "",
+                    `<span class=term-cat>${esc(t.category)}/</span><b>${esc(t.name)}</b>\n${esc(t.blurb)}`
+                );
+            },
+            clear() {
+                scroll.innerHTML = "";
+            },
+        };
+        commands.cat = commands.which;
+
+        function run(raw) {
+            const line = raw.trim();
+            if (!line) return;
+            history.unshift(line);
+            hIdx = -1;
+
+            const [cmd, ...rest] = line.split(/\s+/);
+            const arg = rest.join(" ").toLowerCase();
+            const fn = commands[cmd.toLowerCase()];
+            if (!fn) {
+                writeLine(
+                    "term-err",
+                    `<b>${esc(cmd)}</b>: command not found. try <i>help</i>.`
+                );
+                return;
+            }
+            fn(arg);
+        }
+
+        // boot message
+        writeLine(
+            "term-boot",
+            "jordanotomu toolbox v1.0 — type <i>help</i> for a list of commands."
+        );
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const val = input.value;
+            writePrompt(val);
+            run(val);
+            input.value = "";
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowUp") {
+                if (history.length && hIdx < history.length - 1) {
+                    hIdx += 1;
+                    input.value = history[hIdx];
+                    setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
+                }
+                e.preventDefault();
+            } else if (e.key === "ArrowDown") {
+                if (hIdx > 0) {
+                    hIdx -= 1;
+                    input.value = history[hIdx];
+                } else {
+                    hIdx = -1;
+                    input.value = "";
+                }
+                e.preventDefault();
+            } else if (e.key === "Tab") {
+                e.preventDefault();
+                const parts = input.value.split(/\s+/);
+                const last = parts[parts.length - 1].toLowerCase();
+                if (!last) return;
+                const matches = tools.map((t) => t.name).filter((n) => n.startsWith(last));
+                if (matches.length === 1) {
+                    parts[parts.length - 1] = matches[0];
+                    input.value = parts.join(" ");
+                } else if (matches.length > 1) {
+                    writePrompt(input.value);
+                    writeLine("", matches.join("  "));
+                }
+            }
+        });
+
+        document.getElementById("term")?.addEventListener("click", () => input.focus());
+        input.focus();
+    }
+</script>
+
+<style>
+    .term {
+        border: 1px solid var(--border);
+        background: var(--faint);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.55;
+        display: flex;
+        flex-direction: column;
+        min-height: 360px;
+        max-height: 520px;
+    }
+    [data-theme="dark"] .term {
+        background: rgba(0, 0, 0, 0.35);
+    }
+
+    .term-scroll {
+        flex: 1;
+        padding: 14px 16px 4px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        color: var(--ink);
+    }
+    .term-line { margin-bottom: 6px; }
+    .term-line b { color: var(--ink); }
+    .term-echo { opacity: 0.9; }
+    .term-err { color: #c04a4a; }
+    [data-theme="dark"] .term-err { color: #ff8080; }
+    .term-boot { color: var(--muted); }
+    .term-cat { color: var(--muted); }
+    .term-k { color: var(--ink); font-weight: 700; }
+    .term-cmd { color: var(--ink); }
+
+    .term-form {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 16px 12px;
+        border-top: 1px solid var(--faint);
+    }
+    .term-prompt {
+        display: inline-flex;
+        gap: 1px;
+        color: var(--muted);
+        white-space: nowrap;
+    }
+    .term-user { color: #22c55e; }
+    .term-host { color: #60a5fa; }
+    .term-path { color: #a78bfa; }
+    .term-at, .term-sep { color: var(--muted); }
+    .term-dollar { color: var(--muted); margin-left: 4px; }
+
+    .term-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        caret-color: var(--ink);
+    }
+    .term-input:focus {
+        outline: none;
+    }
+</style>

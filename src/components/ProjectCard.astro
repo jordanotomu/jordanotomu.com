@@ -1,0 +1,70 @@
+---
+interface Metric {
+    value: string;
+    label: string;
+}
+
+interface Props {
+    title: string;
+    url?: string;
+    tag?: string;
+    tier?: "hero" | "featured" | "sandbox";
+    stack?: string[];
+    metrics?: Metric[];
+}
+
+const {
+    title,
+    url,
+    tag,
+    tier = "sandbox",
+    stack = [],
+    metrics = [],
+} = Astro.props;
+
+const klass =
+    tier === "hero"
+        ? "proj featured"
+        : tier === "featured"
+        ? "proj featured-sm"
+        : "proj";
+
+const muted = title.match(/^(.*?)\s*\((.+)\)$/);
+const mainTitle = muted ? muted[1] : title;
+const mutedTitle = muted ? muted[2] : null;
+---
+
+<article class={klass}>
+    <div class="proj-head">
+        <h3>
+            {url ? (
+                <a href={url} target="_blank" rel="noopener">{mainTitle}</a>
+            ) : (
+                <span>{mainTitle}</span>
+            )}
+            {mutedTitle && <span class="proj-muted">({mutedTitle})</span>}
+        </h3>
+        {tag && <span class="proj-tag">{tag}</span>}
+    </div>
+    <p><slot /></p>
+    {metrics.length > 0 && (
+        <div class="proj-metrics">
+            {metrics.map((m) => (
+                <div>
+                    <b>{m.value}</b>
+                    <span>{m.label}</span>
+                </div>
+            ))}
+        </div>
+    )}
+    {stack.length > 0 && (
+        <div class="proj-stack">
+            {stack.map((s, i) => (
+                <>
+                    <span>{s}</span>
+                    {i < stack.length - 1 && <span aria-hidden="true">·</span>}
+                </>
+            ))}
+        </div>
+    )}
+</article>

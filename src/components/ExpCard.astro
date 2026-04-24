@@ -1,0 +1,68 @@
+---
+interface Props {
+    logo: string;
+    logoAlt?: string;
+    company?: string;
+    school?: string;
+    sub?: string;
+    role?: string;
+    degree?: string;
+    place: string;
+    dates: string;
+}
+
+const {
+    logo,
+    logoAlt,
+    company,
+    school,
+    sub,
+    role,
+    degree,
+    place,
+    dates,
+} = Astro.props;
+
+const title = company ?? school ?? "";
+const subtitle = role ?? degree ?? "";
+
+const imageLogos = ["uh", "dallas", "mlt", "gpisd", "jpmc", "yahoo", "nsbe"];
+const hasImage = imageLogos.includes(logo);
+const textLogos: Record<string, string> = {
+    snap: "SNAP",
+    walmart: "WM",
+    sgp: "SGP",
+};
+const textLabel = textLogos[logo] ?? logo.toUpperCase();
+
+const imageExt: Record<string, string> = {
+    uh: "svg",
+    dallas: "svg",
+};
+const ext = imageExt[logo] ?? "png";
+const imageSrc = `/assets/logos/${logo}.${ext}`;
+---
+
+<article class="exp">
+    <div class="exp-head">
+        <div class="exp-logo" data-logo={logo}>
+            {hasImage ? (
+                <img src={imageSrc} alt={logoAlt ?? title} />
+            ) : (
+                <span>{textLabel}</span>
+            )}
+        </div>
+        <div class="exp-main">
+            <div class="exp-company">
+                {title}
+                {sub && <span class="exp-sub">{sub}</span>}
+            </div>
+            <div class="exp-role">{subtitle}</div>
+            <div class="exp-place">{place}</div>
+        </div>
+        <div class="exp-dates">{dates}</div>
+    </div>
+    <ul class="exp-bullets">
+        <slot />
+    </ul>
+</article>

@@ -1,0 +1,31 @@
+---
+interface Segment {
+    label: string;
+    href?: string;
+}
+
+interface Props {
+    segments: Segment[];
+    prompt?: string;
+}
+
+const { segments, prompt = "cat" } = Astro.props;
+---
+
+<div class="pathbar">
+    <span class="caret">{prompt}</span>
+    <span class="path">~/</span>
+    {segments.map((seg, i) => {
+        const isLast = i === segments.length - 1;
+        return (
+            <>
+                {seg.href && !isLast ? (
+                    <a href={seg.href}>{seg.label}</a>
+                ) : (
+                    <span class={isLast ? "leaf" : "path"}>{seg.label}</span>
+                )}
+                {!isLast && <span class="sep">/</span>}
+            </>
+        );
+    })}
+</div>

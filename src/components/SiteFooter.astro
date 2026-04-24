@@ -1,0 +1,14 @@
+---
+const now = new Date();
+const month = now.toLocaleString("en-US", { month: "long" }).toLowerCase();
+const year = now.getFullYear();
+---
+
+<footer class="site-footer">
+    <div><i>last updated · {month} {year}</i></div>
+    <div>
+        <a href="https://github.com/jordanotomu/jordanotomu.com" target="_blank" rel="noopener">
+            // view source
+        </a>
+    </div>
+</footer>

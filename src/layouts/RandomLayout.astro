@@ -1,0 +1,68 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import PathBar from "~/components/PathBar.astro";
+
+interface Props {
+    slug: string;
+    title?: string;
+    description?: string;
+    legend?: string;
+}
+
+const { slug, title, description, legend } = Astro.props;
+const fileName = `${slug}.md`;
+const pageTitle = title ?? `Jordan Otomu · ${slug}`;
+---
+
+<BaseLayout title={pageTitle} description={description}>
+    <PathBar
+        prompt="cat"
+        segments={[
+            { label: "random", href: "/random" },
+            { label: fileName },
+        ]}
+    />
+
+    <fieldset class="box random-box">
+        <legend><i>{legend ?? `cat ~/random/${fileName}`}</i></legend>
+        <slot />
+    </fieldset>
+</BaseLayout>
+
+<style is:global>
+    .random-box {
+        font-family: var(--font-mono);
+    }
+    .random-box p { font-family: var(--font-mono); font-size: 14px; }
+    .random-box h2 {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+        margin: 24px 0 10px;
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+    }
+    .random-box h2::before {
+        content: "#";
+        color: var(--muted);
+    }
+    .random-box h2::after {
+        content: "+";
+        color: var(--muted);
+        font-size: 14px;
+        margin-left: auto;
+        margin-right: 2px;
+    }
+    .random-box h2:first-of-type { margin-top: 0; }
+
+    .random-box .note {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        color: var(--muted);
+        padding: 8px 10px;
+        border: 1px dashed var(--faint);
+        margin: 12px 0;
+    }
+</style>

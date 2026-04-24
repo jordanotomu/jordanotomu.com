@@ -1,0 +1,130 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import PathBar from "~/components/PathBar.astro";
+
+const tabs = [
+    {
+        slug: "travel",
+        title: "travel",
+        desc: "pins on a globe — where i've been, where i'm going.",
+        cmd: "cd ~/random/travel",
+    },
+    {
+        slug: "music",
+        title: "music",
+        desc: "now playing, on repeat, and a wall of cover art.",
+        cmd: "cd ~/random/music",
+    },
+    {
+        slug: "wins",
+        title: "wins",
+        desc: "trophy case — programs, offers, and moments worth keeping.",
+        cmd: "cd ~/random/wins",
+    },
+    {
+        slug: "lore",
+        title: "lore",
+        desc: "life's faqs. the long-form 'tell me about yourself'.",
+        cmd: "cd ~/random/lore",
+    },
+    {
+        slug: "toolbox",
+        title: "toolbox",
+        desc: "a terminal. type `help` or `which <tool>`.",
+        cmd: "cd ~/random/toolbox",
+    },
+];
+---
+
+<BaseLayout
+    title="Jordan Otomu · random"
+    description="Travel, music, wins, lore, and a toolbox. The less serious half of jordanotomu.com."
+>
+    <PathBar segments={[{ label: "random" }]} />
+
+    <fieldset class="box">
+        <legend><i>ls ~/random/</i></legend>
+
+        <div class="motto">
+            <div class="motto-label">my life motto</div>
+            <div class="motto-text"><i>"do the thing badly before you do it well."</i></div>
+        </div>
+
+        <nav class="random-grid" aria-label="random sub-pages">
+            {tabs.map((t) => (
+                <a class="random-tile" href={`/random/${t.slug}`}>
+                    <div class="random-tile-head">
+                        <span class="random-tile-prompt">$</span>
+                        <span class="random-tile-cmd">{t.cmd}</span>
+                    </div>
+                    <div class="random-tile-title">{t.title}</div>
+                    <div class="random-tile-desc">{t.desc}</div>
+                </a>
+            ))}
+        </nav>
+    </fieldset>
+</BaseLayout>
+
+<style>
+    .motto {
+        padding-bottom: 16px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid var(--faint);
+    }
+    .motto-label {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        color: var(--muted);
+        margin-bottom: 4px;
+    }
+    .motto-text {
+        font-size: 17px;
+        font-family: var(--font-mono);
+    }
+
+    .random-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .random-tile {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 16px 18px;
+        border: 1px solid var(--border);
+        color: var(--ink);
+        text-decoration: none;
+        transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .random-tile:hover {
+        background: var(--faint);
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+    .random-tile-head {
+        display: flex;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+    }
+    .random-tile-prompt { color: var(--muted); }
+    .random-tile-cmd { color: var(--ink); }
+    .random-tile-title {
+        font-family: var(--font-mono);
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+    .random-tile-desc {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.45;
+    }
+
+    @media (max-width: 720px) {
+        .random-grid { grid-template-columns: 1fr; }
+    }
+</style>

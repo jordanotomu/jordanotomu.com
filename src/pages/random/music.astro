@@ -1,0 +1,213 @@
+---
+import RandomLayout from "~/layouts/RandomLayout.astro";
+import NowPlaying from "~/components/NowPlaying.astro";
+
+const onRepeat = [
+    {
+        name: "In This Darkness",
+        artist: "Clara La San",
+        album: "In This Darkness · 2023",
+        url: "https://open.spotify.com/track/0bmVH05tjN9jVh3kB1TfpR",
+        art: "https://i.scdn.co/image/ab67616d00001e02787a0dbfa43cdc88d0c484dc",
+    },
+    {
+        name: "Pimper's Paradise",
+        artist: "Bob Marley & The Wailers",
+        album: "Uprising · 1980",
+        url: "https://open.spotify.com/track/5JqCmd41S3PZ2AS6GuHqcR",
+        art: "https://i.scdn.co/image/ab67616d00001e021c40418d1c37d727e8e91b04",
+    },
+    {
+        name: "Something",
+        artist: "The Beatles",
+        album: "Abbey Road · 1969",
+        url: "https://open.spotify.com/track/0pNeVovbiZHkulpGeOx1Gj",
+        art: "https://i.scdn.co/image/ab67616d00001e02dc30583ba717007b00cceb25",
+    },
+    {
+        name: "Habits",
+        artist: "Baby Smoove",
+        album: "Baby · 2019",
+        url: "https://open.spotify.com/track/5zkrN4e4gxDTQ9JQrjEC9S",
+        art: "https://i.scdn.co/image/ab67616d00001e0294f462b19a59c288c0b1f9dc",
+    },
+    {
+        name: "Nothings Into Somethings",
+        artist: "Drake",
+        album: "More Life · 2017",
+        url: "https://open.spotify.com/track/6MbH1QiphMCPTqVEVC7UYi",
+        art: "https://i.scdn.co/image/ab67616d00001e024f0fd9dad63977146e685700",
+    },
+];
+
+// mosaic art — reuses the on-repeat art and repeats them to fill a grid.
+// TODO: swap in your top 24 album arts if you want a richer wall.
+const mosaic = [
+    ...onRepeat.map((t) => t.art),
+    ...onRepeat.map((t) => t.art),
+    ...onRepeat.map((t) => t.art),
+    ...onRepeat.map((t) => t.art).slice(0, 3),
+];
+---
+
+<RandomLayout
+    slug="music"
+    title="Jordan Otomu · random / music"
+    description="Now playing, what's on repeat, and a mosaic of albums Jordan listens to."
+>
+    <h2>music</h2>
+    <p>the soundtrack to everything i build.</p>
+
+    <NowPlaying />
+
+    <h2>on repeat</h2>
+    <ul class="track-list">
+        {onRepeat.map((t, i) => (
+            <li>
+                <a class="track-row" href={t.url} target="_blank" rel="noopener">
+                    <span class="track-idx">{String(i + 1).padStart(2, "0")}</span>
+                    <img class="track-art" src={t.art} alt="" loading="lazy" />
+                    <span class="track-info">
+                        <span class="track-name">{t.name}</span>
+                        <span class="track-artist">{t.artist}</span>
+                    </span>
+                    <span class="track-album">{t.album}</span>
+                </a>
+            </li>
+        ))}
+    </ul>
+
+    <h2>album wall</h2>
+    <p class="note">
+        a slow-panning mosaic of covers i've been playing.
+        TODO: share ~24 more album links and i'll expand this wall.
+    </p>
+    <div class="mosaic-wrap" aria-hidden="true">
+        <div class="mosaic">
+            {mosaic.map((src) => <img src={src} alt="" loading="lazy" />)}
+        </div>
+    </div>
+</RandomLayout>
+
+<style is:global>
+    .track-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid var(--faint);
+        margin: 0;
+    }
+    .track-list li {
+        border-bottom: 1px solid var(--faint);
+    }
+    .track-row {
+        display: grid;
+        grid-template-columns: 28px 56px 1fr auto;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 10px 10px 6px;
+        font-family: var(--font-mono);
+        font-size: 13.5px;
+        color: var(--ink);
+        text-decoration: none;
+        transition: background 0.15s;
+        position: relative;
+    }
+    .track-row:hover {
+        background: var(--faint);
+        text-decoration: none;
+    }
+    .track-row::after {
+        content: "↗";
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 11px;
+        color: var(--muted);
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+    .track-row:hover::after { opacity: 1; }
+
+    .track-idx {
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+    }
+    .track-art {
+        width: 56px;
+        height: 56px;
+        display: block;
+        border: 1px solid var(--faint);
+        object-fit: cover;
+        background: var(--faint);
+    }
+    .track-info { display: flex; flex-direction: column; min-width: 0; }
+    .track-name {
+        color: var(--ink);
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .track-artist {
+        color: var(--muted);
+        font-size: 12.5px;
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .track-album {
+        color: var(--muted);
+        font-size: 11.5px;
+        letter-spacing: 0.03em;
+        padding-right: 16px;
+        white-space: nowrap;
+        text-align: right;
+    }
+
+    @media (max-width: 720px) {
+        .track-row {
+            grid-template-columns: 22px 48px 1fr;
+            gap: 10px;
+        }
+        .track-album { display: none; }
+        .track-art { width: 48px; height: 48px; }
+    }
+</style>
+
+<style>
+    .mosaic-wrap {
+        border: 1px solid var(--faint);
+        padding: 10px;
+        background: var(--faint);
+        overflow: hidden;
+    }
+    .mosaic {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+        animation: mosaic-pan 40s linear infinite;
+    }
+    .mosaic img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        display: block;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    @keyframes mosaic-pan {
+        0% { transform: translate3d(0, 0, 0); }
+        50% { transform: translate3d(-2%, -2%, 0); }
+        100% { transform: translate3d(0, 0, 0); }
+    }
+
+    @media (max-width: 720px) {
+        .mosaic { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .mosaic { animation: none; }
+    }
+</style>

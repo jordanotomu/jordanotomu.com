@@ -1,0 +1,198 @@
+---
+import RandomLayout from "~/layouts/RandomLayout.astro";
+
+const lived = [
+    { city: "Dallas-Fort Worth", label: "dfw, tx", lat: 32.7767, lng: -96.797, kind: "lived" },
+    { city: "Houston", label: "houston, tx", lat: 29.7604, lng: -95.3698, kind: "lived" },
+    { city: "Grand Prairie", label: "grand prairie, tx", lat: 32.7459, lng: -96.998, kind: "lived" },
+];
+const worked = [
+    { city: "New York City", label: "nyc · yahoo ibp", lat: 40.7128, lng: -74.006, kind: "worked" },
+    { city: "Plano", label: "plano · jpmc c4g", lat: 33.0198, lng: -96.6989, kind: "worked" },
+    { city: "San Francisco", label: "sf · snap summer '26", lat: 37.7749, lng: -122.4194, kind: "worked" },
+];
+const wishlist = [
+    { city: "Tokyo", label: "tokyo", lat: 35.6762, lng: 139.6503, kind: "wishlist" },
+    { city: "Seoul", label: "seoul", lat: 37.5665, lng: 126.978, kind: "wishlist" },
+    { city: "Lisbon", label: "lisbon", lat: 38.7223, lng: -9.1393, kind: "wishlist" },
+];
+
+const allPoints = [...lived, ...worked, ...wishlist];
+---
+
+<RandomLayout
+    slug="travel"
+    title="Jordan Otomu · random / travel"
+    description="Cities Jordan's lived, worked, and wants to visit."
+>
+    <h2>travel</h2>
+    <p class="note">
+        drag to spin the globe. green = lived, cream = worked, dashed = wishlist.
+    </p>
+
+    <div id="globe" class="globe-wrap" aria-hidden="true"></div>
+
+    <div class="travel-lists">
+        <div class="travel-col">
+            <div class="travel-col-head"><span class="dot dot-lived"></span> lived</div>
+            <ul>
+                {lived.map((p) => <li>{p.label}</li>)}
+            </ul>
+        </div>
+        <div class="travel-col">
+            <div class="travel-col-head"><span class="dot dot-worked"></span> worked</div>
+            <ul>
+                {worked.map((p) => <li>{p.label}</li>)}
+            </ul>
+        </div>
+        <div class="travel-col">
+            <div class="travel-col-head"><span class="dot dot-wishlist"></span> wishlist</div>
+            <ul>
+                {wishlist.map((p) => <li>{p.label}</li>)}
+            </ul>
+        </div>
+    </div>
+
+    <p class="note">
+        TODO: share your full list of cities visited / countries and i'll pin them. anywhere
+        you want on the wishlist side too (currently seeded with tokyo, seoul, lisbon).
+    </p>
+</RandomLayout>
+
+<script is:inline define:vars={{ allPoints }}>
+    window.__travelPoints = allPoints;
+</script>
+
+<script>
+    import Globe from "globe.gl";
+
+    async function mountGlobe() {
+        const el = document.getElementById("globe");
+        if (!el) return;
+
+        const allPoints = window.__travelPoints || [];
+        const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+
+        const colorFor = (kind) => {
+            if (kind === "lived") return "#22c55e";
+            if (kind === "worked") return isDark ? "#f3f1e7" : "#1a1a1a";
+            return isDark ? "rgba(243,241,231,0.55)" : "rgba(26,26,26,0.55)";
+        };
+
+        const width = el.clientWidth;
+        const height = Math.min(520, Math.max(320, width * 0.72));
+
+        const globe = new Globe(el, { animateIn: true })
+            .backgroundColor("rgba(0,0,0,0)")
+            .showGlobe(true)
+            .showAtmosphere(true)
+            .atmosphereColor(isDark ? "#f3f1e7" : "#1a1a1a")
+            .atmosphereAltitude(0.14)
+            .globeImageUrl(
+                isDark
+                    ? "https://unpkg.com/three-globe/example/img/earth-dark.jpg"
+                    : "https://unpkg.com/three-globe/example/img/earth-day.jpg"
+            )
+            .width(width)
+            .height(height)
+            .pointsData(allPoints)
+            .pointLat("lat")
+            .pointLng("lng")
+            .pointColor((d) => colorFor(d.kind))
+            .pointAltitude(0.02)
+            .pointRadius(0.55)
+            .pointLabel(
+                (d) =>
+                    `<div style="font-family:monospace;font-size:12px;color:#1a1a1a;background:#f3f1e7;padding:4px 8px;border:1px solid #1a1a1a;">
+                        <b>${d.city}</b><br/>${d.kind}
+                    </div>`
+            )
+            .labelsData(allPoints)
+            .labelLat("lat")
+            .labelLng("lng")
+            .labelText("")
+            .onPointClick((d) => {
+                globe.pointOfView({ lat: d.lat, lng: d.lng, altitude: 1.5 }, 900);
+            });
+
+        const controls = globe.controls();
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.35;
+        controls.enableZoom = false;
+
+        globe.pointOfView({ lat: 31, lng: -98, altitude: 2.2 }, 0);
+
+        window.addEventListener("resize", () => {
+            const w = el.clientWidth;
+            const h = Math.min(520, Math.max(320, w * 0.72));
+            globe.width(w).height(h);
+        });
+    }
+
+    if (document.readyState !== "loading") mountGlobe();
+    else document.addEventListener("DOMContentLoaded", mountGlobe);
+</script>
+
+<style>
+    .globe-wrap {
+        width: 100%;
+        min-height: 320px;
+        border: 1px solid var(--faint);
+        margin: 14px 0;
+        background:
+            radial-gradient(circle at 30% 20%, var(--faint), transparent 60%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .travel-lists {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 14px 0;
+    }
+    .travel-col {
+        border: 1px solid var(--faint);
+        padding: 12px 14px;
+    }
+    .travel-col-head {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 8px;
+    }
+    .travel-col ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .travel-col li {
+        font-family: var(--font-mono);
+        font-size: 13px;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        display: inline-block;
+        border-radius: 50%;
+    }
+    .dot-lived { background: #22c55e; }
+    .dot-worked { background: var(--ink); }
+    .dot-wishlist {
+        background: transparent;
+        border: 1px dashed var(--ink);
+    }
+
+    @media (max-width: 720px) {
+        .travel-lists { grid-template-columns: 1fr; }
+    }
+</style>

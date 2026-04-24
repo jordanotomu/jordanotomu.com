@@ -1,0 +1,89 @@
+---
+import "~/styles/globals.css";
+import Chips from "~/components/Chips.astro";
+import SiteFooter from "~/components/SiteFooter.astro";
+
+interface Props {
+    title?: string;
+    description?: string;
+    hideChips?: boolean;
+}
+
+const {
+    title = "Jordan Otomu",
+    description = "Jordan Otomu — CS @ University of Houston, Incoming SWE Intern @ Snap. Engineer, content creator, student.",
+    hideChips = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://jordanotomu.com").toString();
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={description} />
+        <meta name="theme-color" content="#121212" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content="/assets/photos/jordan-dc.jpg" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+
+        <link rel="canonical" href={canonical} />
+        <title>{title}</title>
+
+        <script is:inline>
+            (function () {
+                try {
+                    var t = localStorage.getItem("jotheme") || "dark";
+                    if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+                } catch (e) {}
+            })();
+        </script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <div class="page">
+            <header class="site-header">
+                <h1 class="name"><a href="/"><i>Jordan Otomu</i></a></h1>
+                {!hideChips && <Chips />}
+            </header>
+
+            <slot />
+
+            <SiteFooter />
+        </div>
+
+        <script is:inline>
+            (function () {
+                var root = document.documentElement;
+                var KEY = "jotheme";
+                function applyTheme(t) {
+                    if (t === "dark") root.setAttribute("data-theme", "dark");
+                    else root.removeAttribute("data-theme");
+                }
+                var toggle = document.getElementById("theme-toggle");
+                if (toggle) {
+                    toggle.addEventListener("click", function () {
+                        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                        applyTheme(next);
+                        try { localStorage.setItem(KEY, next); } catch (e) {}
+                    });
+                }
+            })();
+        </script>
+    </body>
+</html>

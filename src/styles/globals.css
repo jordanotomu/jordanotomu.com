@@ -1,0 +1,285 @@
+@import "./tokens.css";
+
+/* ==========================================================================
+   base
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15.5px;
+    line-height: 1.58;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+body {
+    min-height: 100vh;
+    padding: 28px 18px 60px;
+}
+
+.page {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+}
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+}
+
+::selection {
+    background: var(--ink);
+    color: var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+}
+
+/* ==========================================================================
+   header / top nav
+   ========================================================================== */
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 4px 2px 6px;
+}
+
+.name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(22px, 3.2vw, 30px);
+    letter-spacing: -0.01em;
+    word-spacing: -0.1em;
+}
+.name a { text-decoration: none; }
+.name a:hover { text-decoration: none; }
+
+.socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+/* ==========================================================================
+   chips (social links)
+   ========================================================================== */
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.chip:hover {
+    background: var(--ink);
+    color: var(--bg);
+    text-decoration: none;
+}
+.chip .ico {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.chip-icon { padding: 6px; }
+.chip-icon .ico { width: 16px; height: 16px; }
+
+.chip-resume {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+}
+.chip-resume:hover {
+    background: var(--bg);
+    color: var(--ink);
+}
+
+.chip-linkedin {
+    background: #0a66c2;
+    color: #ffffff;
+    border-color: #0a66c2;
+}
+.chip-linkedin:hover { filter: brightness(1.1); background: #0a66c2; color: #ffffff; }
+
+#theme-toggle .sun { display: none; }
+[data-theme="dark"] #theme-toggle .moon { display: none; }
+[data-theme="dark"] #theme-toggle .sun { display: block; }
+
+/* ==========================================================================
+   pathbar (terminal nav breadcrumb)
+   ========================================================================== */
+
+.pathbar {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    color: var(--ink);
+    padding: 8px 2px;
+    border-bottom: 1px solid var(--faint);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.pathbar .caret { color: var(--muted); }
+.pathbar .path { color: var(--muted); }
+.pathbar .leaf { color: var(--ink); font-weight: 700; }
+.pathbar .sep { color: var(--muted); }
+.pathbar a { text-decoration: none; color: var(--muted); }
+.pathbar a:hover { color: var(--ink); text-decoration: underline; }
+
+/* ==========================================================================
+   fieldset "box"
+   ========================================================================== */
+
+.box {
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 20px 22px 22px;
+    background: transparent;
+    position: relative;
+}
+
+.box legend {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    padding: 0 8px;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+}
+
+.box p + p { margin-top: 10px; }
+
+.lead { color: var(--ink); margin-bottom: 14px; }
+.muted-lead {
+    color: var(--muted);
+    font-size: 13.5px;
+    margin-bottom: 14px;
+}
+.subhead {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 18px 0 8px;
+}
+
+/* ==========================================================================
+   buttons
+   ========================================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    color: var(--ink);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+}
+.btn:hover {
+    background: var(--ink);
+    color: var(--bg);
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   whoami (portrait + bio)
+   ========================================================================== */
+
+.whoami {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 28px;
+    align-items: start;
+}
+.whoami-text p { max-width: 56ch; }
+
+.whoami-photo { text-align: center; }
+.whoami-photo img {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    border: 1px solid var(--border);
+    display: block;
+    margin: 0 auto;
+}
+.whoami-photo figcaption {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+/* ==========================================================================
+   footer
+   ========================================================================== */
+
+.site-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding: 20px 4px 8px;
+    border-top: 1px solid var(--faint);
+    margin-top: 10px;
+}
+.site-footer a { color: var(--muted); }
+
+/* ==========================================================================
+   responsive
+   ========================================================================== */
+
+@media (max-width: 720px) {
+    body { padding: 20px 12px 40px; }
+    .page { gap: 16px; }
+    .box { padding: 16px 14px 18px; }
+
+    .site-header { flex-direction: column; align-items: flex-start; }
+    .socials { width: 100%; justify-content: flex-start; }
+
+    .whoami { grid-template-columns: 1fr; gap: 16px; }
+    .whoami-photo img { max-width: 200px; }
+
+    .site-footer { flex-direction: column; gap: 6px; align-items: flex-start; }
+}

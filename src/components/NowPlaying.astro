@@ -1,0 +1,216 @@
+---
+---
+
+<a
+    class="now-playing"
+    id="now-playing"
+    data-state="loading"
+    href="#"
+    target="_blank"
+    rel="noopener"
+    aria-live="polite"
+>
+    <div class="np-art" aria-hidden="true"></div>
+    <div class="np-body">
+        <div class="np-label">
+            <span class="np-dot" aria-hidden="true"></span>
+            <span class="np-label-text">checking...</span>
+        </div>
+        <div class="np-title">—</div>
+        <div class="np-artist">—</div>
+    </div>
+    <div class="np-bars" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+    </div>
+</a>
+
+<script>
+    const np = document.getElementById("now-playing");
+    if (np) {
+        const els = {
+            label: np.querySelector(".np-label-text") as HTMLElement,
+            title: np.querySelector(".np-title") as HTMLElement,
+            artist: np.querySelector(".np-artist") as HTMLElement,
+        };
+
+        type NpData = {
+            isPlaying?: boolean;
+            lastPlayed?: boolean;
+            title?: string;
+            artist?: string;
+            albumArt?: string | null;
+            trackUrl?: string | null;
+        };
+
+        const setState = (state: string, data?: NpData) => {
+            np.setAttribute("data-state", state);
+            if (data?.trackUrl) {
+                (np as HTMLAnchorElement).setAttribute("href", data.trackUrl);
+            } else {
+                (np as HTMLAnchorElement).setAttribute("href", "#");
+            }
+            if (data?.albumArt) {
+                np.setAttribute("data-art", "1");
+                (np as HTMLElement).style.setProperty("--art", `url("${data.albumArt}")`);
+            } else {
+                np.removeAttribute("data-art");
+                (np as HTMLElement).style.removeProperty("--art");
+            }
+            const labels: Record<string, string> = {
+                playing: "now playing",
+                lastplayed: "last played",
+                idle: "not playing",
+                error: "unavailable",
+                loading: "checking...",
+            };
+            if (els.label) els.label.textContent = labels[state] || "";
+            if (els.title) els.title.textContent = data?.title || "—";
+            if (els.artist)
+                els.artist.textContent = data?.artist || (state === "idle" ? "offline" : "—");
+        };
+
+        async function poll() {
+            try {
+                const r = await fetch("/api/now-playing", { cache: "no-store" });
+                if (!r.ok) throw new Error(String(r.status));
+                const data: NpData = await r.json();
+                if (data.isPlaying) setState("playing", data);
+                else if (data.lastPlayed) setState("lastplayed", data);
+                else setState("idle");
+            } catch {
+                setState("error");
+            }
+        }
+
+        poll();
+        setInterval(poll, 30_000);
+    }
+</script>
+
+<style is:global>
+    .now-playing {
+        display: grid;
+        grid-template-columns: 72px 1fr auto;
+        gap: 16px;
+        align-items: center;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        color: inherit;
+        text-decoration: none;
+        margin-bottom: 22px;
+        transition: background 0.18s, transform 0.18s;
+    }
+    .now-playing:hover {
+        background: var(--faint);
+        text-decoration: none;
+    }
+    .now-playing[data-state="loading"],
+    .now-playing[data-state="idle"],
+    .now-playing[data-state="error"] {
+        pointer-events: none;
+    }
+
+    .np-art {
+        width: 72px;
+        height: 72px;
+        border: 1px solid var(--faint);
+        background: repeating-linear-gradient(
+            45deg,
+            var(--faint) 0 6px,
+            transparent 6px 12px
+        );
+        background-size: 100% 100%;
+    }
+    .now-playing[data-art] .np-art {
+        background-image: var(--art);
+        background-size: cover;
+        background-position: center;
+    }
+
+    .np-body { min-width: 0; }
+    .np-label {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 4px;
+    }
+    .np-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--muted);
+        display: inline-block;
+        flex-shrink: 0;
+    }
+    .now-playing[data-state="playing"] .np-dot {
+        background: #22c55e;
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+        animation: np-pulse 2s infinite;
+    }
+    .now-playing[data-state="lastplayed"] .np-dot { background: var(--muted); }
+    .now-playing[data-state="idle"] .np-dot,
+    .now-playing[data-state="error"] .np-dot {
+        background: var(--faint);
+        border: 1px solid var(--muted);
+        width: 6px;
+        height: 6px;
+    }
+
+    @keyframes np-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+        70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    .np-title {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 15.5px;
+        color: var(--ink);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 2px;
+    }
+    .np-artist {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 2px;
+    }
+
+    .np-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 22px;
+        width: 26px;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    .now-playing[data-state="playing"] .np-bars { opacity: 1; }
+    .np-bars span {
+        display: block;
+        width: 3px;
+        background: var(--ink);
+        animation: np-eq 0.9s ease-in-out infinite;
+        height: 40%;
+    }
+    .np-bars span:nth-child(1) { animation-delay: 0s; }
+    .np-bars span:nth-child(2) { animation-delay: 0.2s; }
+    .np-bars span:nth-child(3) { animation-delay: 0.4s; }
+    .np-bars span:nth-child(4) { animation-delay: 0.1s; }
+
+    @keyframes np-eq {
+        0%, 100% { height: 30%; }
+        50% { height: 100%; }
+    }
+</style>

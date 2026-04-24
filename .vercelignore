@@ -1,5 +1,6 @@
 profile
 scripts
+legacy
 .env
 .env.local
 .env.*.local

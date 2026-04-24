@@ -1,0 +1,19 @@
+{
+    "name": "jordanotomu.com",
+    "version": "2.0.0",
+    "private": true,
+    "description": "jordan otomu's personal site — astro + vercel",
+    "type": "module",
+    "scripts": {
+        "dev": "astro dev",
+        "start": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "astro": "astro"
+    },
+    "dependencies": {
+        "@astrojs/vercel": "^8.0.0",
+        "astro": "^5.0.0",
+        "globe.gl": "^2.33.0"
+    }
+}
