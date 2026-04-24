@@ -186,7 +186,7 @@ const photos = [
         controls.maxDistance = 800;
         controls.rotateSpeed = 0.6;
 
-        globe.pointOfView({ lat: 20, lng: -40, altitude: 2.4 }, 0);
+        globe.pointOfView({ lat: 25, lng: -30, altitude: 2.5 }, 0);
 
         const onResize = () => {
             const next = size();
@@ -209,7 +209,7 @@ const photos = [
     .globe-wrap {
         position: relative;
         width: 100%;
-        max-width: 680px;
+        max-width: 720px;
         margin: 4px auto 14px;
         border: 1px solid var(--faint);
         background: var(--bg);
@@ -217,7 +217,9 @@ const photos = [
     }
     .globe-stage {
         width: 100%;
-        display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     :global(.globe-stage canvas) {
         display: block;
@@ -287,10 +289,10 @@ const photos = [
 
     .photo-marquee {
         display: flex;
-        gap: 12px;
+        gap: 14px;
         width: max-content;
-        animation: marquee 55s linear infinite;
-        padding: 0 12px;
+        animation: marquee 60s linear infinite;
+        padding: 0 14px;
     }
     .photo-scroll:hover .photo-marquee { animation-play-state: paused; }
 
@@ -300,7 +302,7 @@ const photos = [
     }
 
     .photo-card {
-        flex: 0 0 180px;
+        flex: 0 0 210px;
         border: 1px solid var(--border);
         background: var(--bg);
         overflow: hidden;
@@ -325,7 +327,7 @@ const photos = [
 
     @media (max-width: 720px) {
         .globe-hud, .globe-legend { font-size: 10.5px; padding: 6px 8px; }
-        .photo-card { flex-basis: 148px; }
+        .photo-card { flex-basis: 160px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
