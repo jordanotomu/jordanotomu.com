@@ -171,6 +171,11 @@ a:hover { text-decoration-thickness: 2px; }
     padding: 20px 22px 22px;
     background: transparent;
     position: relative;
+    /* fieldsets default to min-width: min-content; force normal block sizing
+       so children with width: max-content (e.g. marquees) don't blow out the
+       page width. */
+    min-width: 0;
+    width: 100%;
 }
 
 .box legend {

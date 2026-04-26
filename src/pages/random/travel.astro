@@ -267,6 +267,12 @@ const photos = [
         background: var(--bg);
         margin: 14px 0;
         position: relative;
+        /* keep the marquee child clipped to the parent's width instead of
+           letting `width: max-content` push the carousel past the fieldset. */
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
     }
     .photo-scroll::before,
     .photo-scroll::after {
