@@ -9,4 +9,4 @@ metrics:
 order: 80
 ---
 
-led development of a cross-platform mobile app with an OpenAI-powered chatbot, **Supabase** for prayer storage, and **Firebase** auth.
+built a cross-platform mobile app with an OpenAI-powered chatbot, **Supabase** for prayer storage, and **Firebase** auth.
