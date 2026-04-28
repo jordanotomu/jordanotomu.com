@@ -101,7 +101,7 @@ const sandboxRendered = await Promise.all(
 
         <div class="motto">
             <div class="motto-label">my life motto</div>
-            <div class="motto-text"><i>"do the thing badly before you do it well."</i></div>
+            <div class="motto-text"><i>"be obsessed or be average."</i> <span class="motto-cite">— grant cardone</span></div>
         </div>
 
         <RandomTabs />
@@ -256,6 +256,11 @@ const sandboxRendered = await Promise.all(
     .motto-text {
         font-size: 17px;
         font-family: var(--font-mono);
+    }
+    .motto-cite {
+        color: var(--muted);
+        font-size: 13.5px;
+        margin-left: 4px;
     }
 
     /* ============ for-visitors block ============ */
