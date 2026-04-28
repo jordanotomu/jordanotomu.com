@@ -3,7 +3,6 @@ q: "why computer science?"
 order: 95
 ---
 
-because cs is the universal tool — you can ship in any discipline if you can
-code. the craft of shipping is what hooked me, not the coding itself.
-
-TODO: your actual origin story — first "aha" moment? first line of code?
+started young writing game cheats in c++ and c#. somewhere between hooking
+memory and dodging anti-cheats i realized i actually liked the programming
+part — bending a system into doing exactly what you want. that's what stuck.
