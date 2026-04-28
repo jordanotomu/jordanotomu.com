@@ -98,15 +98,16 @@ const albumWall = [
     </ul>
 
     <h2>album wall</h2>
-    <p class="note">a slow-panning mosaic of records i keep in rotation.</p>
+    <p class="note">records i keep in rotation. hover any cover.</p>
     <div class="mosaic-wrap">
         <div class="mosaic">
-            {albumWall.map((a) => (
+            {albumWall.map((a, i) => (
                 <img
                     src={a.art}
                     alt={`${a.album} — ${a.artist}`}
                     title={`${a.album} — ${a.artist}`}
                     loading="lazy"
+                    style={`--i: ${i};`}
                 />
             ))}
         </div>
@@ -204,15 +205,19 @@ const albumWall = [
 <style>
     .mosaic-wrap {
         border: 1px solid var(--faint);
-        padding: 10px;
+        padding: 14px;
         background: var(--faint);
         overflow: hidden;
+        position: relative;
+        /* a faint vignette so the wave reads on the cream backdrop */
+        box-shadow: inset 0 0 30px rgba(26, 26, 26, 0.04);
     }
     .mosaic {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
-        gap: 6px;
-        animation: mosaic-pan 40s linear infinite;
+        gap: 8px;
+        /* slow ambient drift — bigger than before so it's actually visible */
+        animation: mosaic-drift 28s ease-in-out infinite;
     }
     .mosaic img {
         width: 100%;
@@ -220,18 +225,54 @@ const albumWall = [
         object-fit: cover;
         display: block;
         border: 1px solid rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        position: relative;
+        transform-origin: center;
+        will-change: transform, opacity, filter;
+        /* per-tile rolling pulse, staggered by index — creates a wave that
+           sweeps the grid every ~9 seconds. */
+        animation: tile-wave 9s ease-in-out infinite;
+        animation-delay: calc(var(--i, 0) * -0.375s);
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            filter 0.25s ease,
+            opacity 0.25s ease;
+    }
+    .mosaic img:hover {
+        animation: none;
+        transform: scale(1.1);
+        opacity: 1;
+        filter: saturate(1.15);
+        box-shadow: 0 8px 22px rgba(26, 26, 26, 0.28);
+        z-index: 2;
     }
 
-    @keyframes mosaic-pan {
-        0% { transform: translate3d(0, 0, 0); }
-        50% { transform: translate3d(-2%, -2%, 0); }
-        100% { transform: translate3d(0, 0, 0); }
+    @keyframes tile-wave {
+        0%, 85%, 100% {
+            transform: scale(0.97);
+            opacity: 0.72;
+            filter: saturate(0.88);
+        }
+        7% {
+            transform: scale(1.04);
+            opacity: 1;
+            filter: saturate(1.05);
+        }
+    }
+
+    @keyframes mosaic-drift {
+        0%, 100% { transform: translate3d(0, 0, 0); }
+        25%      { transform: translate3d(-1.4%, -0.8%, 0); }
+        50%      { transform: translate3d(0.8%, -1.4%, 0); }
+        75%      { transform: translate3d(-0.8%, 0.8%, 0); }
     }
 
     @media (max-width: 720px) {
         .mosaic { grid-template-columns: repeat(4, 1fr); }
     }
     @media (prefers-reduced-motion: reduce) {
-        .mosaic { animation: none; }
+        .mosaic, .mosaic img { animation: none; }
+        .mosaic img { opacity: 1; transform: none; filter: none; }
     }
 </style>
