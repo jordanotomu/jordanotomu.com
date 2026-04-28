@@ -1,0 +1,152 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+
+type Resource = {
+    slug: string;
+    title: string;
+    description: string;
+    href: string;
+    cta: string;
+    note?: string;
+};
+
+const resources: Resource[] = [
+    {
+        slug: "resume-template",
+        title: "my resume template",
+        description:
+            "clean one-page latex resume template i recommend (jake's resume on overleaf). the accent color is one line to change, sections are easy to cut, and the readme walks you through overleaf, vs code, and local install.",
+        href: "https://www.overleaf.com/latex/templates/jakes-resume/syzfjbzwjncs",
+        cta: "Overleaf",
+        note: "not mine — just the one i actually use",
+    },
+];
+---
+
+<BaseLayout
+    title="Jordan Otomu · resources"
+    description="A small shelf of things Jordan's made or recommends — resume templates, guides, and tools."
+>
+    <fieldset class="box">
+        <legend><i>ls ~/resources</i></legend>
+        <p class="resources-lead">
+            a little shelf of things i've made or recommend. if you came here
+            from a video or post of mine, this is the stuff i was probably
+            pointing at.
+        </p>
+        <p class="resources-sub">more coming as i make it. bookmark if you want.</p>
+    </fieldset>
+
+    {resources.map((r) => (
+        <fieldset class="box">
+            <legend><i>cat ~/resources/{r.slug}.md</i></legend>
+            <article class="resource">
+                <h3 class="resource-title">{r.title}</h3>
+                <p class="resource-desc">{r.description}</p>
+                {r.note && <p class="resource-note">— {r.note}</p>}
+                <a class="resource-cta" href={r.href} target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                        <path
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"
+                        />
+                    </svg>
+                    <span>{r.cta}</span>
+                </a>
+            </article>
+        </fieldset>
+    ))}
+
+    <fieldset class="box">
+        <legend><i>cat README.md</i></legend>
+        <p class="resources-readme">
+            built with <a href="https://astro.build" target="_blank" rel="noopener">astro</a>.
+            source on <a href="https://github.com/jordanotomu/jordanotomu.com" target="_blank" rel="noopener">github</a>.
+        </p>
+    </fieldset>
+</BaseLayout>
+
+<style>
+    .resources-lead {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.6;
+        color: var(--ink);
+    }
+    .resources-sub {
+        margin: 8px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .resource { padding: 4px 2px; }
+    .resource-title {
+        margin: 0 0 6px;
+        font-size: 16.5px;
+        font-weight: 700;
+        color: var(--ink);
+    }
+    .resource-desc {
+        margin: 0;
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: var(--ink);
+    }
+    .resource-note {
+        margin: 6px 0 0;
+        font-size: 12.5px;
+        color: var(--muted);
+        font-family: var(--font-mono);
+    }
+
+    /* "stamp" link button — cream with hard offset shadow, ink outline */
+    .resource-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        padding: 8px 14px;
+        border: 1px solid var(--ink);
+        background: var(--bg);
+        color: var(--ink);
+        text-decoration: none;
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 13px;
+        box-shadow: var(--stamp-shadow);
+        transition:
+            background 0.15s ease,
+            color 0.15s ease,
+            box-shadow 0.12s ease,
+            transform 0.12s ease;
+    }
+    .resource-cta:hover {
+        text-decoration: none;
+        background: var(--ink);
+        color: var(--bg);
+        transform: translate(1px, 1px);
+        box-shadow: 2px 2px 0 1px rgba(26, 26, 26, 0.42);
+    }
+    [data-theme="dark"] .resource-cta:hover {
+        box-shadow: 2px 2px 0 1px rgba(243, 241, 231, 0.55);
+    }
+    .resource-cta:active {
+        transform: translate(3px, 3px);
+        box-shadow: var(--stamp-shadow-pressed);
+    }
+
+    .resources-readme {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+    }
+    .resources-readme a {
+        color: var(--ink);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+</style>

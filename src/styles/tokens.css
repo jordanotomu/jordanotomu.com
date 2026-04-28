@@ -3,16 +3,15 @@
    ========================================================================== */
 
 :root {
-    --bg: #f3f1e7;            /* page background — warm cream */
-    --tile: #ffffff;          /* tile / card surface — pops off the cream */
-    --tile-border: rgba(26, 26, 26, 0.10);
-    --tile-shadow: 0 2px 6px rgba(26, 26, 26, 0.06);
-    --tile-shadow-lift: 0 6px 18px rgba(26, 26, 26, 0.10);
+    --bg: #f3f1e7;            /* page + card background — warm cream */
     --ink: #1a1a1a;
     --muted: rgba(26, 26, 26, 0.56);
     --faint: rgba(26, 26, 26, 0.12);
     --border: rgba(26, 26, 26, 0.85);
     --accent: #1a1a1a;
+    /* hard "stamp" drop-shadow used by tabs / call-to-action buttons */
+    --stamp-shadow: 3px 3px 0 1px rgba(26, 26, 26, 0.42);
+    --stamp-shadow-pressed: 0 0 0 1px rgba(26, 26, 26, 0.42);
 
     --font-mono: "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, monospace;
     --font-body: "Inter", system-ui, -apple-system, sans-serif;
@@ -23,13 +22,11 @@
 
 [data-theme="dark"] {
     --bg: #121212;
-    --tile: #1c1c1c;
-    --tile-border: rgba(243, 241, 231, 0.12);
-    --tile-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
-    --tile-shadow-lift: 0 6px 18px rgba(0, 0, 0, 0.55);
     --ink: #f3f1e7;
     --muted: rgba(243, 241, 231, 0.56);
     --faint: rgba(243, 241, 231, 0.12);
     --border: rgba(243, 241, 231, 0.85);
     --accent: #f3f1e7;
+    --stamp-shadow: 3px 3px 0 1px rgba(243, 241, 231, 0.55);
+    --stamp-shadow-pressed: 0 0 0 1px rgba(243, 241, 231, 0.55);
 }

@@ -227,13 +227,8 @@ const photos = [
         width: 100%;
         max-width: 720px;
         margin: 4px auto 18px;
-        border: 1px solid var(--tile-border);
-        background:
-            linear-gradient(rgba(26,26,26,0.04) 1px, transparent 1px) 0 0 / 22px 22px,
-            linear-gradient(90deg, rgba(26,26,26,0.04) 1px, transparent 1px) 0 0 / 22px 22px,
-            var(--tile);
+        background: var(--bg);
         overflow: hidden;
-        box-shadow: var(--tile-shadow);
     }
     .globe-stage {
         width: 100%;
@@ -326,25 +321,24 @@ const photos = [
         to   { transform: translateX(-50%); }
     }
 
-    /* white photo tile — image inset, caption below, soft shadow for lift */
+    /* plain cream photo cards — bordered with a soft ink line, no fill */
     .photo-card {
         flex: 0 0 220px;
-        background: var(--tile);
-        border: 1px solid var(--tile-border);
-        box-shadow: var(--tile-shadow);
-        padding: 10px 10px 0;
+        background: var(--bg);
+        border: 1px solid var(--faint);
+        padding: 8px 8px 0;
         display: flex;
         flex-direction: column;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        transition: transform 0.25s ease, border-color 0.25s ease;
     }
     .photo-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--tile-shadow-lift);
+        transform: translateY(-2px);
+        border-color: var(--border);
     }
     .photo-frame {
         position: relative;
         overflow: hidden;
-        background: var(--faint);
+        background: rgba(26, 26, 26, 0.06);
     }
     .photo-img {
         width: 100%;
@@ -356,7 +350,7 @@ const photos = [
         font-family: var(--font-mono);
         font-size: 12.5px;
         color: var(--ink);
-        padding: 10px 2px 12px;
+        padding: 9px 2px 11px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
