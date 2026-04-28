@@ -4,8 +4,7 @@ order: 60
 ---
 
 - prepping for snap — deep in objective-c + swift + uikit
-- keeping atsify growing past the initial 500 users
+- building with ai agents — mcp servers, computer-use, the new tooling
+  around claude / gpt / gemini
 - experimenting with solana trading automation on the side
 - a few hackathons i keep saying yes to
-
-TODO: update this whenever priorities shift.

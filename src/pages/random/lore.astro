@@ -89,11 +89,6 @@ const FAILED_PROJECTS = 27;
         </form>
         <div class="mini-result" id="guess-result" aria-live="polite"></div>
     </div>
-
-    <p class="note">
-        TODO: if <code>FAILED_PROJECTS</code> in <code>src/pages/random/lore.astro</code>
-        isn't right, swap the number.
-    </p>
 </RandomLayout>
 
 <script define:vars={{ FAILED_PROJECTS, typingPhrase }}>
@@ -122,9 +117,9 @@ const FAILED_PROJECTS = 27;
                 const words = typingPhrase.split(" ").length;
                 const wpm = Math.round((words / secs) * 60);
                 wpmEl.textContent = String(wpm);
-                const beatMe = wpm >= 90;
+                const beatMe = wpm >= 185;
                 accEl.textContent =
-                    `· ${acc}% accuracy · ` + (beatMe ? "you beat me. gg." : "nice. my avg is ~90 wpm.");
+                    `· ${acc}% accuracy · ` + (beatMe ? "you beat me. gg." : "nice. my avg is ~185 wpm.");
                 input.disabled = true;
             } else if (val.length > 0) {
                 const secs = (performance.now() - startedAt) / 1000;
