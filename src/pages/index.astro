@@ -285,15 +285,16 @@ const sandboxRendered = await Promise.all(
         color: var(--ink);
     }
 
-    /* inline "stamp" cta — sized to content, with breathing room around
-       the shadow so it never overflows the fieldset on narrow screens */
+    /* full-width "stamp" cta — wrapper gives the 3px shadow a 6px gutter
+       so it never bleeds past the fieldset on narrow screens */
     .visitors-cta-wrap {
         margin-top: 14px;
         padding: 0 6px 6px 0;
     }
     .visitors-cta {
-        display: inline-block;
-        padding: 9px 18px;
+        display: block;
+        text-align: center;
+        padding: 11px 18px;
         border: 1px solid var(--ink);
         background: var(--bg);
         color: var(--ink);
