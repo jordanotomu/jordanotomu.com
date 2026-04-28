@@ -1,13 +1,15 @@
 ---
 import RandomLayout from "~/layouts/RandomLayout.astro";
 
-// places i've spent meaningful time. core four (houston, dc, nyc, kenya)
-// plus a sweep of east-coast cities i've passed through.
+// places i've spent meaningful time — core homes / repeat trips plus a
+// sweep of east-coast and international cities.
 const lived = [
     { city: "Houston, TX", lat: 29.7604, lng: -95.3698, kind: "lived" },
     { city: "Washington, DC", lat: 38.9072, lng: -77.0369, kind: "lived" },
     { city: "New York City, NY", lat: 40.7128, lng: -74.006, kind: "lived" },
     { city: "Nairobi, Kenya", lat: -1.2921, lng: 36.8219, kind: "lived" },
+    { city: "Dubai, UAE", lat: 25.2048, lng: 55.2708, kind: "lived" },
+    { city: "Amsterdam, NL", lat: 52.3676, lng: 4.9041, kind: "lived" },
     { city: "Boston, MA", lat: 42.3601, lng: -71.0589, kind: "lived" },
     { city: "Philadelphia, PA", lat: 39.9526, lng: -75.1652, kind: "lived" },
     { city: "Baltimore, MD", lat: 39.2904, lng: -76.6122, kind: "lived" },
@@ -27,10 +29,11 @@ const wishlist = [
 ];
 const allPoints = [...lived, ...wishlist];
 
-// placeholder tiles for the marquee — captions intentionally empty since
-// these aren't tied to specific cities. drop real images/videos in
-// public/assets/travel/ and wire them up here when ready.
-const photos = Array.from({ length: 12 }, () => ({}));
+// real travel photos. captionless on purpose — they're a vibe reel, not
+// a 1:1 map of the pinned cities. files live in public/assets/travel/.
+const photos = Array.from({ length: 15 }, (_, i) => ({
+    src: `/assets/travel/${String(i + 1).padStart(2, "0")}.png`,
+}));
 ---
 
 <RandomLayout
@@ -72,24 +75,19 @@ const photos = Array.from({ length: 12 }, () => ({}));
 
     <div class="photo-scroll" aria-label="travel photos">
         <div class="photo-marquee">
-            {photos.map(() => (
+            {photos.map((p) => (
                 <figure class="photo-card">
-                    <div class="photo-thumb" aria-hidden="true"></div>
+                    <img class="photo-img" src={p.src} alt="" loading="lazy" />
                 </figure>
             ))}
             {/* duplicate for seamless infinite scroll */}
-            {photos.map(() => (
+            {photos.map((p) => (
                 <figure class="photo-card" aria-hidden="true">
-                    <div class="photo-thumb" aria-hidden="true"></div>
+                    <img class="photo-img" src={p.src} alt="" loading="lazy" />
                 </figure>
             ))}
         </div>
     </div>
-
-    <p class="note">
-        TODO: share your list of cities and i'll pin them. drop photos into
-        <code>public/assets/travel/</code> and i'll wire them into the carousel.
-    </p>
 </RandomLayout>
 
 <script is:inline define:vars={{ allPoints }}>
@@ -310,15 +308,12 @@ const photos = Array.from({ length: 12 }, () => ({}));
         background: var(--bg);
         overflow: hidden;
     }
-    .photo-thumb {
+    .photo-img {
         width: 100%;
         aspect-ratio: 1 / 1;
-        background-color: var(--faint);
-        background-image: repeating-linear-gradient(
-            45deg,
-            rgba(26, 26, 26, 0.06) 0 8px,
-            transparent 8px 16px
-        );
+        object-fit: cover;
+        display: block;
+        background: var(--faint);
     }
 
     @media (max-width: 720px) {
