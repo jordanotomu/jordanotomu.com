@@ -3,7 +3,11 @@
    ========================================================================== */
 
 :root {
-    --bg: #f3f1e7;
+    --bg: #f3f1e7;            /* page background — warm cream */
+    --tile: #ffffff;          /* tile / card surface — pops off the cream */
+    --tile-border: rgba(26, 26, 26, 0.10);
+    --tile-shadow: 0 2px 6px rgba(26, 26, 26, 0.06);
+    --tile-shadow-lift: 0 6px 18px rgba(26, 26, 26, 0.10);
     --ink: #1a1a1a;
     --muted: rgba(26, 26, 26, 0.56);
     --faint: rgba(26, 26, 26, 0.12);
@@ -19,6 +23,10 @@
 
 [data-theme="dark"] {
     --bg: #121212;
+    --tile: #1c1c1c;
+    --tile-border: rgba(243, 241, 231, 0.12);
+    --tile-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+    --tile-shadow-lift: 0 6px 18px rgba(0, 0, 0, 0.55);
     --ink: #f3f1e7;
     --muted: rgba(243, 241, 231, 0.56);
     --faint: rgba(243, 241, 231, 0.12);

@@ -29,11 +29,26 @@ const wishlist = [
 ];
 const allPoints = [...lived, ...wishlist];
 
-// real travel photos. captionless on purpose — they're a vibe reel, not
-// a 1:1 map of the pinned cities. files live in public/assets/travel/.
-const photos = Array.from({ length: 15 }, (_, i) => ({
-    src: `/assets/travel/${String(i + 1).padStart(2, "0")}.png`,
-}));
+// travel photos with captions. files live in public/assets/travel/ —
+// numbered 01-15. captions are best-guess based on what's visible in
+// each shot; edit any that are wrong.
+const photos = [
+    { src: "/assets/travel/01.png", caption: "houston, tx" },
+    { src: "/assets/travel/02.png", caption: "washington, dc" },
+    { src: "/assets/travel/03.png", caption: "plano, tx" },
+    { src: "/assets/travel/04.png", caption: "plano, tx" },
+    { src: "/assets/travel/05.png", caption: "new york city" },
+    { src: "/assets/travel/06.png", caption: "new york city" },
+    { src: "/assets/travel/07.png", caption: "washington, dc" },
+    { src: "/assets/travel/08.png", caption: "dallas-fort worth" },
+    { src: "/assets/travel/09.png", caption: "plano, tx" },
+    { src: "/assets/travel/10.png", caption: "washington, dc" },
+    { src: "/assets/travel/11.png", caption: "washington, dc" },
+    { src: "/assets/travel/12.png", caption: "houston, tx" },
+    { src: "/assets/travel/13.png", caption: "nairobi, kenya" },
+    { src: "/assets/travel/14.png", caption: "houston, tx" },
+    { src: "/assets/travel/15.png", caption: "on the road" },
+];
 ---
 
 <RandomLayout
@@ -77,13 +92,19 @@ const photos = Array.from({ length: 15 }, (_, i) => ({
         <div class="photo-marquee">
             {photos.map((p) => (
                 <figure class="photo-card">
-                    <img class="photo-img" src={p.src} alt="" loading="lazy" />
+                    <div class="photo-frame">
+                        <img class="photo-img" src={p.src} alt={p.caption} loading="lazy" />
+                    </div>
+                    <figcaption class="photo-caption">{p.caption}</figcaption>
                 </figure>
             ))}
             {/* duplicate for seamless infinite scroll */}
             {photos.map((p) => (
                 <figure class="photo-card" aria-hidden="true">
-                    <img class="photo-img" src={p.src} alt="" loading="lazy" />
+                    <div class="photo-frame">
+                        <img class="photo-img" src={p.src} alt="" loading="lazy" />
+                    </div>
+                    <figcaption class="photo-caption">{p.caption}</figcaption>
                 </figure>
             ))}
         </div>
@@ -205,10 +226,14 @@ const photos = Array.from({ length: 15 }, (_, i) => ({
         position: relative;
         width: 100%;
         max-width: 720px;
-        margin: 4px auto 14px;
-        border: 1px solid var(--faint);
-        background: var(--bg);
+        margin: 4px auto 18px;
+        border: 1px solid var(--tile-border);
+        background:
+            linear-gradient(rgba(26,26,26,0.04) 1px, transparent 1px) 0 0 / 22px 22px,
+            linear-gradient(90deg, rgba(26,26,26,0.04) 1px, transparent 1px) 0 0 / 22px 22px,
+            var(--tile);
         overflow: hidden;
+        box-shadow: var(--tile-shadow);
     }
     .globe-stage {
         width: 100%;
@@ -257,10 +282,9 @@ const photos = Array.from({ length: 15 }, (_, i) => ({
 
     .photo-scroll {
         overflow: hidden;
-        border: 1px solid var(--faint);
-        padding: 14px 0;
-        background: var(--bg);
-        margin: 14px 0;
+        padding: 22px 0 6px;
+        background: transparent;
+        margin: 18px 0 0;
         position: relative;
         /* keep the marquee child clipped to the parent's width instead of
            letting `width: max-content` push the carousel past the fieldset. */
@@ -275,7 +299,7 @@ const photos = Array.from({ length: 15 }, (_, i) => ({
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 40px;
+        width: 48px;
         z-index: 2;
         pointer-events: none;
     }
@@ -290,10 +314,10 @@ const photos = Array.from({ length: 15 }, (_, i) => ({
 
     .photo-marquee {
         display: flex;
-        gap: 14px;
+        gap: 18px;
         width: max-content;
-        animation: marquee 60s linear infinite;
-        padding: 0 14px;
+        animation: marquee 70s linear infinite;
+        padding: 6px 18px 14px;
     }
     .photo-scroll:hover .photo-marquee { animation-play-state: paused; }
 
@@ -302,23 +326,47 @@ const photos = Array.from({ length: 15 }, (_, i) => ({
         to   { transform: translateX(-50%); }
     }
 
+    /* white photo tile — image inset, caption below, soft shadow for lift */
     .photo-card {
-        flex: 0 0 210px;
-        border: 1px solid var(--border);
-        background: var(--bg);
+        flex: 0 0 220px;
+        background: var(--tile);
+        border: 1px solid var(--tile-border);
+        box-shadow: var(--tile-shadow);
+        padding: 10px 10px 0;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .photo-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--tile-shadow-lift);
+    }
+    .photo-frame {
+        position: relative;
         overflow: hidden;
+        background: var(--faint);
     }
     .photo-img {
         width: 100%;
         aspect-ratio: 1 / 1;
         object-fit: cover;
         display: block;
-        background: var(--faint);
+    }
+    .photo-caption {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        color: var(--ink);
+        padding: 10px 2px 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     @media (max-width: 720px) {
         .globe-hud, .globe-legend { font-size: 10.5px; padding: 6px 8px; }
-        .photo-card { flex-basis: 160px; }
+        .photo-card { flex-basis: 168px; padding: 8px 8px 0; }
+        .photo-caption { font-size: 11.5px; padding: 8px 2px 10px; }
+        .photo-marquee { gap: 14px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
