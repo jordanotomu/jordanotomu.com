@@ -8,5 +8,3 @@ order: 65
 
 built **cooggrid houston** at cfe hackathon spring '26 — a community
 microgrid simulator for historically underserved houston neighborhoods.
-
-TODO: placement? prize? favorite feature that shipped?

@@ -1,37 +1,36 @@
 ---
 import RandomLayout from "~/layouts/RandomLayout.astro";
 
+// places i've spent meaningful time. core four (houston, dc, nyc, kenya)
+// plus a sweep of east-coast cities i've passed through.
 const lived = [
-    { city: "Dallas-Fort Worth", lat: 32.7767, lng: -96.797, kind: "lived" },
-    { city: "Houston", lat: 29.7604, lng: -95.3698, kind: "lived" },
-    { city: "Grand Prairie", lat: 32.7459, lng: -96.998, kind: "lived" },
-    { city: "New York City", lat: 40.7128, lng: -74.006, kind: "lived" },
-    { city: "Plano", lat: 33.0198, lng: -96.6989, kind: "lived" },
-    { city: "San Francisco", lat: 37.7749, lng: -122.4194, kind: "lived" },
+    { city: "Houston, TX", lat: 29.7604, lng: -95.3698, kind: "lived" },
+    { city: "Washington, DC", lat: 38.9072, lng: -77.0369, kind: "lived" },
+    { city: "New York City, NY", lat: 40.7128, lng: -74.006, kind: "lived" },
+    { city: "Nairobi, Kenya", lat: -1.2921, lng: 36.8219, kind: "lived" },
+    { city: "Boston, MA", lat: 42.3601, lng: -71.0589, kind: "lived" },
+    { city: "Philadelphia, PA", lat: 39.9526, lng: -75.1652, kind: "lived" },
+    { city: "Baltimore, MD", lat: 39.2904, lng: -76.6122, kind: "lived" },
+    { city: "Charlotte, NC", lat: 35.2271, lng: -80.8431, kind: "lived" },
+    { city: "Atlanta, GA", lat: 33.7490, lng: -84.3880, kind: "lived" },
+    { city: "Miami, FL", lat: 25.7617, lng: -80.1918, kind: "lived" },
 ];
+
+// bucket-list trips, all picked for scenery: aurora country, colonial
+// hill town, alpine lakes, north-atlantic cliffs, fairy-chimney valley.
 const wishlist = [
-    { city: "Tokyo", lat: 35.6762, lng: 139.6503, kind: "wishlist" },
-    { city: "Seoul", lat: 37.5665, lng: 126.978, kind: "wishlist" },
-    { city: "Lisbon", lat: 38.7223, lng: -9.1393, kind: "wishlist" },
-    { city: "London", lat: 51.5074, lng: -0.1278, kind: "wishlist" },
-    { city: "Kyoto", lat: 35.0116, lng: 135.7681, kind: "wishlist" },
-    { city: "Lagos", lat: 6.5244, lng: 3.3792, kind: "wishlist" },
+    { city: "Lapland, Finland", lat: 67.9222, lng: 26.5046, kind: "wishlist" },
+    { city: "Antigua, Guatemala", lat: 14.5586, lng: -90.7339, kind: "wishlist" },
+    { city: "Banff, Canada", lat: 51.4968, lng: -115.9281, kind: "wishlist" },
+    { city: "Faroe Islands", lat: 62.0, lng: -6.7833, kind: "wishlist" },
+    { city: "Cappadocia, Turkey", lat: 38.6431, lng: 34.8289, kind: "wishlist" },
 ];
 const allPoints = [...lived, ...wishlist];
 
-const photos = [
-    { caption: "houston, tx" },
-    { caption: "dallas-fort worth" },
-    { caption: "nyc" },
-    { caption: "plano, tx" },
-    { caption: "san francisco" },
-    { caption: "tokyo" },
-    { caption: "seoul" },
-    { caption: "lisbon" },
-    { caption: "london" },
-    { caption: "kyoto" },
-    { caption: "lagos" },
-];
+// placeholder tiles for the marquee — captions intentionally empty since
+// these aren't tied to specific cities. drop real images/videos in
+// public/assets/travel/ and wire them up here when ready.
+const photos = Array.from({ length: 12 }, () => ({}));
 ---
 
 <RandomLayout
@@ -73,17 +72,15 @@ const photos = [
 
     <div class="photo-scroll" aria-label="travel photos">
         <div class="photo-marquee">
-            {photos.map((p) => (
+            {photos.map(() => (
                 <figure class="photo-card">
                     <div class="photo-thumb" aria-hidden="true"></div>
-                    <figcaption class="photo-caption">{p.caption}</figcaption>
                 </figure>
             ))}
             {/* duplicate for seamless infinite scroll */}
-            {photos.map((p) => (
+            {photos.map(() => (
                 <figure class="photo-card" aria-hidden="true">
                     <div class="photo-thumb" aria-hidden="true"></div>
-                    <figcaption class="photo-caption">{p.caption}</figcaption>
                 </figure>
             ))}
         </div>
@@ -322,13 +319,6 @@ const photos = [
             rgba(26, 26, 26, 0.06) 0 8px,
             transparent 8px 16px
         );
-        border-bottom: 1px solid var(--faint);
-    }
-    .photo-caption {
-        font-family: var(--font-mono);
-        font-size: 12px;
-        color: var(--ink);
-        padding: 7px 10px;
     }
 
     @media (max-width: 720px) {
