@@ -51,10 +51,10 @@ const sandboxRendered = await Promise.all(
         <div class="visitors">
             <div class="visitors-icons" aria-hidden="true">
                 <a class="visitor-ico" href="https://tiktok.com/@nott.jordan_" target="_blank" rel="noopener" aria-label="TikTok">
-                    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M16.6 3a5.5 5.5 0 0 0 4.4 4.4v3.1a8.5 8.5 0 0 1-4.4-1.3v6.4a6 6 0 1 1-6-6c.34 0 .67.03.99.09v3.27a2.83 2.83 0 1 0 1.93 2.68V3z"/></svg>
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16.6 3a5.5 5.5 0 0 0 4.4 4.4v3.1a8.5 8.5 0 0 1-4.4-1.3v6.4a6 6 0 1 1-6-6c.34 0 .67.03.99.09v3.27a2.83 2.83 0 1 0 1.93 2.68V3z"/></svg>
                 </a>
                 <a class="visitor-ico" href="https://instagram.com/nott.jordan" target="_blank" rel="noopener" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 2.8h10A4.2 4.2 0 0 1 21.2 7v10a4.2 4.2 0 0 1-4.2 4.2H7A4.2 4.2 0 0 1 2.8 17V7A4.2 4.2 0 0 1 7 2.8zm5 4.7a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm5.4-.9a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z"/></svg>
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 2.8h10A4.2 4.2 0 0 1 21.2 7v10a4.2 4.2 0 0 1-4.2 4.2H7A4.2 4.2 0 0 1 2.8 17V7A4.2 4.2 0 0 1 7 2.8zm5 4.7a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm5.4-.9a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z"/></svg>
                 </a>
             </div>
             <p class="visitors-text">
@@ -259,15 +259,17 @@ const sandboxRendered = await Promise.all(
     }
 
     /* ============ for-visitors block ============ */
+    /* icons pinned to the left, text takes the rest of the row. flexbox
+       (vs grid) so it stays inline at every viewport without surprises. */
     .visitors {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 18px;
+        display: flex;
         align-items: center;
+        gap: 12px;
     }
     .visitors-icons {
         display: flex;
-        gap: 10px;
+        gap: 8px;
+        flex-shrink: 0;
     }
     .visitor-ico {
         color: var(--ink);
@@ -279,14 +281,16 @@ const sandboxRendered = await Promise.all(
         transform: translateY(-1px);
     }
     .visitors-text {
+        flex: 1 1 0;
+        min-width: 0;
         margin: 0;
         font-size: 15px;
         line-height: 1.55;
         color: var(--ink);
     }
 
-    /* full-width "stamp" cta — wrapper gives the 3px shadow a 6px gutter
-       so it never bleeds past the fieldset on narrow screens */
+    /* slim "stamp" cta — fills the row but the button itself is short, so
+       the bar reads as a tidy footer rather than a chunky block */
     .visitors-cta-wrap {
         margin-top: 14px;
         padding: 0 6px 6px 0;
@@ -294,14 +298,14 @@ const sandboxRendered = await Promise.all(
     .visitors-cta {
         display: block;
         text-align: center;
-        padding: 11px 18px;
+        padding: 5px 14px;
         border: 1px solid var(--ink);
         background: var(--bg);
         color: var(--ink);
         text-decoration: none;
         font-family: var(--font-mono);
-        font-weight: 700;
-        font-size: 14px;
+        font-weight: 400;
+        font-size: 12.5px;
         box-shadow: var(--stamp-shadow);
         transition:
             background 0.15s ease,
@@ -322,11 +326,6 @@ const sandboxRendered = await Promise.all(
     .visitors-cta:active {
         transform: translate(3px, 3px);
         box-shadow: var(--stamp-shadow-pressed);
-    }
-
-    @media (max-width: 520px) {
-        .visitors { gap: 14px; grid-template-columns: 1fr; }
-        .visitors-icons { order: 2; }
     }
 </style>
 
