@@ -62,7 +62,9 @@ const sandboxRendered = await Promise.all(
                 collection of things together for you.
             </p>
         </div>
-        <a class="visitors-cta" href="/resources">resources</a>
+        <div class="visitors-cta-wrap">
+            <a class="visitors-cta" href="/resources">resources</a>
+        </div>
     </fieldset>
 
     <fieldset class="box">
@@ -283,19 +285,22 @@ const sandboxRendered = await Promise.all(
         color: var(--ink);
     }
 
-    /* "stamp" call-to-action — same shape as random tabs */
+    /* inline "stamp" cta — sized to content, with breathing room around
+       the shadow so it never overflows the fieldset on narrow screens */
+    .visitors-cta-wrap {
+        margin-top: 14px;
+        padding: 0 6px 6px 0;
+    }
     .visitors-cta {
-        display: block;
-        text-align: center;
-        margin: 16px 0 4px;
-        padding: 12px 18px;
+        display: inline-block;
+        padding: 9px 18px;
         border: 1px solid var(--ink);
         background: var(--bg);
         color: var(--ink);
         text-decoration: none;
         font-family: var(--font-mono);
         font-weight: 700;
-        font-size: 14.5px;
+        font-size: 14px;
         box-shadow: var(--stamp-shadow);
         transition:
             background 0.15s ease,
