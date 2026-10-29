@@ -1,10 +1,10 @@
 ---
-title: "nsbe freshman exec"
+title: "nsbe business intelligence chair"
 org: "UH NSBE"
-year: "2025"
+year: "2026"
 emblem: "nsbe"
 order: 55
 ---
 
-freshman executive board — business intelligence — at uh's chapter of the
-national society of black engineers. own the chapter site and discord.
+business intelligence chair at uh's chapter of the national society of
+black engineers. own the chapter site and discord.

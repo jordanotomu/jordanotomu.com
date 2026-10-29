@@ -9,5 +9,5 @@ logo: "snap"
 order: 100
 ---
 
-- Joining the **Friending** product area this summer to ship features on Snapchat's iOS (UIKit) client — serving hundreds of millions of users.
-- Expected to work across **Objective-C / Swift**, client-side architecture, performance, and backend integrations over REST/GraphQL.
+- Worked in the **Friending** product area, shipping features on Snapchat's iOS (UIKit) client — serving hundreds of millions of users.
+- Worked across **Objective-C / Swift**, client-side architecture, performance, and backend integrations over REST/GraphQL.

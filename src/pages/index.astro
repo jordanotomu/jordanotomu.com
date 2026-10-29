@@ -44,7 +44,7 @@ const sandboxRendered = await Promise.all(
 
 <BaseLayout
     title="Jordan Otomu"
-    description="Jordan Otomu — CS @ University of Houston, incoming SWE Intern @ Snap. Engineer, content creator, student."
+    description="Jordan Otomu — CS @ University of Houston, Snap SWE Intern (Summer '26). Engineer, content creator, student."
 >
     <fieldset class="box visitors-box">
         <legend><i>cat ~/for-visitors.md</i></legend>
@@ -73,12 +73,14 @@ const sandboxRendered = await Promise.all(
             <div class="whoami-text">
                 <p>
                     hi, i'm jordan. a cs student at the <b>university of houston</b>
-                    and an incoming <b>software engineering intern at snap</b>
-                    this summer.
+                    who interned at <b>snap</b> this past summer and is heading
+                    back full-time as a <b>software engineer in nyc</b> in 2027.
                 </p>
                 <p>
                     most of my time goes into building: systems, infra, saas, and the
-                    occasional side experiment. when i'm not writing code i'm trenching
+                    occasional side experiment. i also make <a href="/ugc">ugc</a>:
+                    ai prank videos for consumer apps, 250m+ views, built with a
+                    tool i wrote. when i'm not writing code i'm trenching
                     highly volatile crypto markets (memecoins), watching tv and
                     documentaries, listening to music, or deep in history and geography.
                 </p>
@@ -123,6 +125,22 @@ const sandboxRendered = await Promise.all(
                 <Content />
             </ExpCard>
         ))}
+    </fieldset>
+
+    <fieldset class="box">
+        <legend><i>cat ~/ugc.md</i></legend>
+        <p class="muted-lead">the other job: ai prank videos for consumer apps.</p>
+        <div class="proj-metrics ugc-metrics">
+            <div><b>$30K/mo</b><span>ugc creator</span></div>
+            <div><b>250M+</b><span>total views</span></div>
+            <div><b>120K+</b><span>followers</span></div>
+            <div><b>10M+</b><span>on one video</span></div>
+        </div>
+        <p class="ugc-blurb">
+            text-prank videos for <b>cantina</b> and <b>halo ai</b>, made with
+            <b>fakechat</b>, the editor i built for it.
+        </p>
+        <a class="btn ugc-more" href="/ugc">see the work →</a>
     </fieldset>
 
     <fieldset class="box">
@@ -196,49 +214,6 @@ const sandboxRendered = await Promise.all(
         )}
     </fieldset>
 
-    <fieldset class="box">
-        <legend><i>cat ~/ugc.md</i></legend>
-        <p class="muted-lead">
-            the stuff i make on the internet — mostly about building, being a cs
-            student, and the occasional unhinged take.
-        </p>
-        <div class="ugc-grid">
-            <a
-                class="ugc-card"
-                href="https://www.tiktok.com/@nott.jordan_/photo/7621280827179027726"
-                target="_blank"
-                rel="noopener"
-            >
-                <div class="ugc-thumb">
-                    <img
-                        src="/assets/ugc/tiktok-7621280827179027726.jpg"
-                        alt="had to hop on the trend — resume post"
-                        loading="lazy"
-                    />
-                </div>
-                <div class="ugc-platform">TikTok · photo</div>
-                <div class="ugc-title">had to hop on the trend #resume #swe</div>
-                <div class="ugc-stats">21.2k likes · 186 comments · 821 shares</div>
-            </a>
-            <a
-                class="ugc-card"
-                href="https://www.tiktok.com/@nott.jordan_/video/7588833715019648311"
-                target="_blank"
-                rel="noopener"
-            >
-                <div class="ugc-thumb">
-                    <img
-                        src="/assets/ugc/tiktok-7588833715019648311.jpg"
-                        alt="last tiktok ever"
-                        loading="lazy"
-                    />
-                </div>
-                <div class="ugc-platform">TikTok · video</div>
-                <div class="ugc-title">last tiktok ever</div>
-                <div class="ugc-stats">6.1k plays · 194 likes</div>
-            </a>
-        </div>
-    </fieldset>
 </BaseLayout>
 
 <style>
@@ -578,64 +553,9 @@ const sandboxRendered = await Promise.all(
     }
 
     /* ============ ugc ============ */
-    .ugc-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 14px;
-    }
-    .ugc-card {
-        display: block;
-        color: inherit;
-        text-decoration: none;
-        border: 1px solid var(--faint);
-        padding: 10px;
-        transition: border-color 0.15s, transform 0.15s;
-    }
-    .ugc-card:hover {
-        border-color: var(--border);
-        text-decoration: none;
-        transform: translateY(-1px);
-    }
-    .ugc-thumb {
-        background:
-            linear-gradient(135deg, var(--faint), transparent),
-            repeating-linear-gradient(0deg, var(--faint) 0 1px, transparent 1px 8px);
-        border: 1px solid var(--faint);
-        margin-bottom: 10px;
-        position: relative;
-        overflow: hidden;
-    }
-    .ugc-thumb img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.35s ease;
-    }
-    .ugc-card:hover .ugc-thumb img {
-        transform: scale(1.03);
-    }
-    .ugc-platform {
-        display: inline-block;
-        font-family: var(--font-mono);
-        font-size: 10.5px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        border: 1px solid var(--border);
-        padding: 2px 6px;
-        margin-bottom: 6px;
-    }
-    .ugc-title {
-        font-family: var(--font-mono);
-        font-size: 13px;
-        font-weight: 700;
-        line-height: 1.35;
-    }
-    .ugc-stats {
-        font-family: var(--font-mono);
-        font-size: 11.5px;
-        color: var(--muted);
-        margin-top: 4px;
-    }
+    .ugc-metrics { margin-top: 0; }
+    .ugc-blurb { font-size: 14px; max-width: 64ch; }
+    .ugc-more { margin-top: 14px; }
 
     .muted-lead {
         color: var(--muted);

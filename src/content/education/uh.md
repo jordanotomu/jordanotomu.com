@@ -1,6 +1,6 @@
 ---
 school: "University of Houston"
-degree: "b.s. computer science · gpa 4.0"
+degree: "b.s. computer science · minor in mathematics · gpa 4.0"
 place: "Houston, TX"
 dates: "Expected May 2027"
 start: 2025-08-01
