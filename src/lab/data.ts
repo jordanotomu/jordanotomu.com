@@ -25,14 +25,14 @@ export const ugc = {
     headline: "$30K/mo ugc creator",
     sub: "ai prank videos for consumer apps.",
     stats: [
-        { value: "250M+", label: "views in 6 months" },
+        { value: "250M+", label: "views in ~6 months" },
         { value: "120K+", label: "followers" },
         { value: "16.1M", label: "on one video" },
     ],
     results: [
         { src: "/assets/ugc/yt-studio-28d.jpg", caption: "25M+ views in a single month on YouTube Shorts." },
-        { src: "/assets/ugc/tiktok-365d.jpg", caption: "85M+ views and 5M+ likes on TikTok in a year." },
-        { src: "/assets/ugc/fb-2026.jpg", caption: "65M+ views on Facebook this year." },
+        { src: "/assets/ugc/tiktok-365d.jpg", caption: "85M+ views and 5M+ likes on TikTok in ~6 months." },
+        { src: "/assets/ugc/fb-2026.jpg", caption: "65M+ views on Facebook in ~6 months." },
         { src: "/assets/ugc/sideshift-oct.jpg", caption: "$29K+ earned in October from one app program." },
     ],
     brands: [
