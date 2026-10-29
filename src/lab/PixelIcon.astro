@@ -2,7 +2,7 @@
 // original 16×16 pixel-art icons in a win9x palette, drawn as crisp svg rects.
 // "pc" reuses the site favicon.
 interface Props {
-    name: "folder" | "folder-open" | "doc" | "pdf" | "cd" | "globe" | "mail" | "film" | "pc" | "trash" | "star";
+    name: "folder" | "folder-open" | "doc" | "pdf" | "cd" | "globe" | "mail" | "film" | "pc" | "trash" | "star" | "back" | "up";
     size?: number;
 }
 const { name, size = 32 } = Astro.props;
@@ -10,7 +10,7 @@ const { name, size = 32 } = Astro.props;
 const P: Record<string, string> = {
     K: "#000000", W: "#ffffff", L: "#c0c0c0", D: "#808080",
     Y: "#ffe36e", O: "#c99a1e", V: "#fff6c2",
-    R: "#c00000", B: "#0000c0", C: "#00a0ff", G: "#00a000", N: "#000080",
+    R: "#c00000", B: "#0000c0", C: "#00a0ff", G: "#00a000", H: "#5ee05e", N: "#000080",
 };
 
 const G: Record<string, string[]> = {
@@ -159,6 +159,27 @@ const G: Record<string, string[]> = {
         "................",
     ],
 };
+
+// explorer toolbar arrows: a green left arrow, and the same rotated to point up
+G.back = [
+    "................",
+    "......K.........",
+    ".....KK.........",
+    "....KHK.........",
+    "...KHGKKKKKKKK..",
+    "..KHGGHHHHHHHK..",
+    ".KHGGGGGGGGGGK..",
+    "KHGGGGGGGGGGGK..",
+    ".KGGGGGGGGGGGK..",
+    "..KGGGGGGGGGGK..",
+    "...KGGKKKKKKKK..",
+    "....KGK.........",
+    ".....KK.........",
+    "......K.........",
+    "................",
+    "................",
+];
+G.up = Array.from({ length: 16 }, (_, y) => Array.from({ length: 16 }, (_, x) => G.back[15 - x][y]).join(""));
 
 // round icons are generated: a cd and a globe
 function circle(fill: (x: number, y: number, r: number) => string) {

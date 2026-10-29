@@ -45,8 +45,8 @@ const folders = [
             </div>
 
             <div class="toolbar">
-                <button class="tool" id="back" disabled><span class="arrow">◀</span>Back</button>
-                <button class="tool" id="up" disabled><span class="arrow">▲</span>Up</button>
+                <button class="tool" id="back" disabled><PixelIcon name="back" size={22} />Back</button>
+                <button class="tool" id="up" disabled><PixelIcon name="up" size={22} />Up</button>
                 <span class="tsep"></span>
                 <a class="tool" href={links.resume} target="_blank" rel="noopener"><PixelIcon name="pdf" size={22} />Resume</a>
                 <a class="tool" href={"mailto:" + links.email}><PixelIcon name="mail" size={22} />Mail</a>
@@ -189,9 +189,9 @@ const folders = [
                                 </div>
                                 <div class="seek"><span id="np-bar"></span></div>
                                 <div class="controls">
-                                    <button aria-label="previous" disabled>|◀</button>
-                                    <button aria-label="play" id="np-play">▶</button>
-                                    <button aria-label="next" disabled>▶|</button>
+                                    <button aria-label="previous" disabled>|◀&#xFE0E;</button>
+                                    <button aria-label="play" id="np-play">▶&#xFE0E;</button>
+                                    <button aria-label="next" disabled>▶&#xFE0E;|</button>
                                     <a href={links.spotify} target="_blank" rel="noopener">open spotify profile →</a>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@ const folders = [
     .tool:hover:not(:disabled) { box-shadow: inset -1px -1px #808080, inset 1px 1px #fff; }
     .tool:active:not(:disabled) { box-shadow: inset 1px 1px #808080, inset -1px -1px #fff; }
     .tool:disabled { color: #808080; text-shadow: 1px 1px #fff; cursor: default; }
-    .arrow { font-size: 18px; line-height: 22px; }
+    .tool:disabled :global(.px-icon) { filter: grayscale(1); opacity: 0.45; }
     .tsep { width: 2px; align-self: stretch; margin: 2px 4px; border-left: 1px solid #808080; border-right: 1px solid #fff; }
 
     .address { display: flex; align-items: center; gap: 6px; padding: 3px 6px; }
@@ -352,7 +352,6 @@ const folders = [
         .menubar > span { display: none; }
         .pane { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
         .webview { border: 2px inset #fff; border-bottom: 0; max-height: 38vh; padding: 10px; }
-        .webview .px-icon { display: none; }
         .webview h2 { font-size: 32px; margin-top: 0; }
         .hide-sm { display: none; }
         .details td { white-space: normal; }
@@ -381,12 +380,24 @@ const folders = [
     const count = document.getElementById("status-count")!;
     const sel = document.getElementById("status-sel")!;
     const names: Record<string, string> = { root: "Jordan Otomu", about: "About Me", experience: "Experience", projects: "Projects", ugc: "UGC", education: "Education", music: "Music" };
-    const historyStack: string[] = [];
+    // each folder change is a real history entry, so the browser's back
+    // (and safari's swipe) steps through folders instead of leaving the site.
+    // `depth` counts entries this visit pushed; the toolbar Back uses it too.
+    let depth = 0;
+    const current = () => views.find((v) => !v.hidden)?.dataset.view;
+    const urlFor = (id: string) => (id === "root" ? location.pathname : `#/${id}`);
+    const fromHash = () => location.hash.replace("#/", "") || "root";
 
-    function show(id: string, push = true) {
+    function go(id: string) {
         if (!names[id]) id = "root";
-        const cur = views.find((v) => !v.hidden)?.dataset.view;
-        if (push && cur && cur !== id) historyStack.push(cur);
+        if (id === current()) return;
+        depth++;
+        history.pushState({ view: id, depth }, "", urlFor(id));
+        show(id);
+    }
+
+    function show(id: string) {
+        if (!names[id]) id = "root";
         views.forEach((v) => (v.hidden = v.dataset.view !== id));
         sides.forEach((s) => (s.hidden = s.dataset.side !== id));
         details.forEach((d) => (d.hidden = true));
@@ -396,18 +407,21 @@ const folders = [
         const path = id === "root" ? "C:\\Jordan Otomu" : `C:\\Jordan Otomu\\${names[id]}`;
         addr.value = path;
         titleText.textContent = path;
-        back.disabled = historyStack.length === 0;
+        back.disabled = depth === 0;
         up.disabled = id === "root";
         const view = views.find((v) => v.dataset.view === id)!;
         const n = view.querySelectorAll("tbody tr, .bigicon").length;
         count.textContent = n ? `${n} object(s)` : "";
         sel.textContent = "";
-        if (location.hash.slice(2) !== (id === "root" ? "" : id)) history.replaceState(null, "", id === "root" ? "#" : `#/${id}`);
     }
 
-    document.querySelectorAll<HTMLElement>("[data-go]").forEach((b) => b.addEventListener("click", () => show(b.dataset.go!)));
-    back.addEventListener("click", () => { const prev = historyStack.pop(); if (prev) show(prev, false); });
-    up.addEventListener("click", () => show("root"));
+    document.querySelectorAll<HTMLElement>("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go!)));
+    back.addEventListener("click", () => { if (depth > 0) history.back(); });
+    up.addEventListener("click", () => go("root"));
+    addEventListener("popstate", (e) => {
+        depth = e.state?.depth ?? 0;
+        show(e.state?.view ?? fromHash());
+    });
 
     document.querySelectorAll<HTMLElement>("tr[data-row]").forEach((row) => {
         const pick = () => {
@@ -450,5 +464,6 @@ const folders = [
         player.dataset.state = player.dataset.state === "playing" ? "idle" : "playing";
     });
 
-    show(location.hash.replace("#/", "") || "root", false);
+    history.replaceState({ view: fromHash(), depth: 0 }, "", urlFor(fromHash()));
+    show(fromHash());
 </script>
