@@ -1,589 +1,454 @@
 ---
-import BaseLayout from "~/layouts/BaseLayout.astro";
-import Portrait from "~/components/Portrait.astro";
-import RandomTabs from "~/components/RandomTabs.astro";
-import ExpCard from "~/components/ExpCard.astro";
-import ProjectCard from "~/components/ProjectCard.astro";
-import { getCollection, render } from "astro:content";
+// homepage: the site as one win98 explorer window. sections are folders,
+// experience/projects are file lists in details view, and the classic
+// "web view" sidebar shows whatever row is selected.
+import LabLayout from "~/lab/LabLayout.astro";
+import PixelIcon from "~/lab/PixelIcon.astro";
+import { links, bio, motto, ugc, onRepeat, albumWall, loadContent, logoSrc } from "~/lab/data";
 
-const exp = (await getCollection("experience")).sort(
-    (a, b) => b.data.order - a.data.order
-);
-const edu = (await getCollection("education")).sort(
-    (a, b) => b.data.order - a.data.order
-);
-const projects = (await getCollection("projects")).sort(
-    (a, b) => b.data.order - a.data.order
-);
 
-const hero = projects.find((p) => p.data.tier === "hero");
-const featured = projects.filter((p) => p.data.tier === "featured");
-const sandbox = projects.filter((p) => p.data.tier === "sandbox");
+const { experience, education, projects } = await loadContent();
 
-async function renderOne(entry: any) {
-    const { Content } = await render(entry);
-    return Content;
-}
-
-const expRendered = await Promise.all(
-    exp.map(async (e) => ({ data: e.data, Content: await renderOne(e) }))
-);
-const eduRendered = await Promise.all(
-    edu.map(async (e) => ({ data: e.data, Content: await renderOne(e) }))
-);
-const heroRendered = hero
-    ? { data: hero.data, Content: await renderOne(hero) }
-    : null;
-const featuredRendered = await Promise.all(
-    featured.map(async (p) => ({ data: p.data, Content: await renderOne(p) }))
-);
-const sandboxRendered = await Promise.all(
-    sandbox.map(async (p) => ({ data: p.data, Content: await renderOne(p) }))
-);
+const folders = [
+    { id: "about", label: "About Me", icon: "doc", blurb: "who i am, in three paragraphs." },
+    { id: "experience", label: "Experience", icon: "folder", blurb: "select a file to see what i did there." },
+    { id: "projects", label: "Projects", icon: "folder", blurb: "things i've built, shipped, or sold." },
+    { id: "ugc", label: "UGC", icon: "film", blurb: "the other job: ugc for consumer apps." },
+    { id: "education", label: "Education", icon: "folder", blurb: "uh in two years, early college before that." },
+    { id: "music", label: "Music", icon: "cd", blurb: "what's on repeat right now." },
+] as const;
 ---
 
-<BaseLayout
-    title="Jordan Otomu"
-    description="Jordan Otomu — CS @ University of Houston, Snap SWE Intern (Summer '26). Engineer, content creator, student."
->
-    <fieldset class="box visitors-box">
-        <legend><i>cat ~/for-visitors.md</i></legend>
-        <div class="visitors">
-            <div class="visitors-icons" aria-hidden="true">
-                <a class="visitor-ico" href="https://tiktok.com/@nott.jordan_" target="_blank" rel="noopener" aria-label="TikTok">
-                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16.6 3a5.5 5.5 0 0 0 4.4 4.4v3.1a8.5 8.5 0 0 1-4.4-1.3v6.4a6 6 0 1 1-6-6c.34 0 .67.03.99.09v3.27a2.83 2.83 0 1 0 1.93 2.68V3z"/></svg>
-                </a>
-                <a class="visitor-ico" href="https://instagram.com/nott.jordan" target="_blank" rel="noopener" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7 2.8h10A4.2 4.2 0 0 1 21.2 7v10a4.2 4.2 0 0 1-4.2 4.2H7A4.2 4.2 0 0 1 2.8 17V7A4.2 4.2 0 0 1 7 2.8zm5 4.7a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm5.4-.9a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z"/></svg>
-                </a>
+<LabLayout title="Jordan Otomu" indexable description="Jordan Otomu — CS @ University of Houston, incoming Software Engineer at Snapchat in NYC, and UGC creator. A Windows 98-style portfolio.">
+    <div class="bg">
+        <div class="window explorer">
+            <div class="title-bar">
+                <div class="title-bar-text"><span id="title-text">C:\Jordan Otomu</span></div>
+                <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize"></button><button aria-label="Close" onclick="location.href='/classic'"></button></div>
             </div>
-            <p class="visitors-text">
-                visiting from one of my videos or posts? i put a little
-                collection of things together for you.
-            </p>
-        </div>
-        <div class="visitors-cta-wrap">
-            <a class="visitors-cta" href="/resources">resources</a>
-        </div>
-    </fieldset>
 
-    <fieldset class="box">
-        <legend><i>whoami</i></legend>
-        <div class="whoami">
-            <div class="whoami-text">
-                <p>
-                    hi, i'm jordan. a cs student at the <b>university of houston</b>
-                    who interned at <b>snap</b> this past summer and is heading
-                    back full-time as a <b>software engineer in nyc</b> in 2027.
-                </p>
-                <p>
-                    most of my time goes into building: systems, infra, saas, and the
-                    occasional side experiment. when i'm not writing code i'm trenching
-                    crypto markets, watching tv and
-                    documentaries, listening to music, or deep in history and geography.
-                </p>
-                <p>
-                    i like small, well-crafted things. i think the best way to learn is
-                    to build it badly first, then do it well.
-                </p>
-                <p>
-                    reach out on
-                    <a href="https://linkedin.com/in/jordanotomu/" target="_blank" rel="noopener">linkedin</a>
-                    or <a href="mailto:jotomu@uh.edu">email</a>.
-                </p>
+            <div class="menubar">
+                <span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>V</u>iew</span><span><u>G</u>o</span>
+                <details class="menu">
+                    <summary>F<u>a</u>vorites</summary>
+                    <div class="window menu-pop">
+                        <a href={links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+                        <a href={links.github} target="_blank" rel="noopener">GitHub</a>
+                        <a href={links.x} target="_blank" rel="noopener">X</a>
+                        <a href={links.instagram} target="_blank" rel="noopener">Instagram</a>
+                        <a href={links.spotify} target="_blank" rel="noopener">Spotify</a>
+                        <hr />
+                        <a href="/classic">Classic site</a>
+                    </div>
+                </details>
+                <span><u>H</u>elp</span>
             </div>
-            <Portrait />
-        </div>
-    </fieldset>
 
-    <fieldset class="box">
-        <legend><i>cat ~/random.md</i></legend>
-
-        <div class="motto">
-            <div class="motto-label">my life motto</div>
-            <div class="motto-text"><i>"be obsessed or be average."</i> <span class="motto-cite">— grant cardone</span></div>
-        </div>
-
-        <RandomTabs />
-    </fieldset>
-
-    <fieldset class="box">
-        <legend><i>cat ~/experience.md</i></legend>
-        <p class="muted-lead">the more professional-looking part of this.</p>
-        {expRendered.map(({ data, Content }) => (
-            <ExpCard
-                logo={data.logo}
-                logoAlt={data.logoAlt}
-                company={data.company}
-                sub={data.sub}
-                role={data.role}
-                place={data.place}
-                dates={data.dates}
-            >
-                <Content />
-            </ExpCard>
-        ))}
-    </fieldset>
-
-    <fieldset class="box">
-        <legend><i>cat ~/ugc.md</i></legend>
-        <p class="muted-lead">the other job: ugc for consumer apps.</p>
-        <div class="proj-metrics ugc-metrics">
-            <div><b>$30K/mo</b><span>ugc creator</span></div>
-            <div><b>250M+</b><span>total views</span></div>
-            <div><b>120K+</b><span>followers</span></div>
-            <div><b>16.1M</b><span>on one video</span></div>
-        </div>
-        <a class="btn ugc-more" href="/ugc">see the work →</a>
-    </fieldset>
-
-    <fieldset class="box">
-        <legend><i>cat ~/education.md</i></legend>
-        {eduRendered.map(({ data, Content }) => (
-            <ExpCard
-                logo={data.logo}
-                logoAlt={data.logoAlt}
-                school={data.school}
-                degree={data.degree}
-                place={data.place}
-                dates={data.dates}
-            >
-                <Content />
-            </ExpCard>
-        ))}
-    </fieldset>
-
-    <fieldset class="box">
-        <legend><i>ls ~/projects.md</i></legend>
-        <p class="muted-lead">things i've built, shipped, or sold.</p>
-
-        {heroRendered && (
-            <ProjectCard
-                title={heroRendered.data.title}
-                url={heroRendered.data.url}
-                tag={heroRendered.data.tag}
-                tier={heroRendered.data.tier}
-                stack={heroRendered.data.stack}
-                metrics={heroRendered.data.metrics}
-            >
-                <heroRendered.Content />
-            </ProjectCard>
-        )}
-
-        {featuredRendered.length > 0 && (
-            <div class="proj-featured-row">
-                {featuredRendered.map(({ data, Content }) => (
-                    <ProjectCard
-                        title={data.title}
-                        url={data.url}
-                        tag={data.tag}
-                        tier={data.tier}
-                        stack={data.stack}
-                        metrics={data.metrics}
-                    >
-                        <Content />
-                    </ProjectCard>
-                ))}
+            <div class="toolbar">
+                <button class="tool" id="back" disabled><span class="arrow">◀</span>Back</button>
+                <button class="tool" id="up" disabled><span class="arrow">▲</span>Up</button>
+                <span class="tsep"></span>
+                <a class="tool" href={links.resume} target="_blank" rel="noopener"><PixelIcon name="pdf" size={22} />Resume</a>
+                <a class="tool" href={"mailto:" + links.email}><PixelIcon name="mail" size={22} />Mail</a>
+                <a class="tool" href={links.linkedin} target="_blank" rel="noopener"><PixelIcon name="globe" size={22} />LinkedIn</a>
             </div>
-        )}
 
-        {sandboxRendered.length > 0 && (
-            <>
-                <div class="subhead"><i>// smaller builds</i></div>
-                <div class="proj-grid">
-                    {sandboxRendered.map(({ data, Content }) => (
-                        <ProjectCard
-                            title={data.title}
-                            url={data.url}
-                            tag={data.tag}
-                            tier={data.tier}
-                            stack={data.stack}
-                            metrics={data.metrics}
-                        >
-                            <Content />
-                        </ProjectCard>
+            <div class="address">
+                <label for="addr">Address</label>
+                <div class="addr-field"><PixelIcon name="folder-open" size={16} /><input id="addr" type="text" readonly value="C:\Jordan Otomu" /></div>
+            </div>
+
+            <div class="pane">
+                <!-- ============ web view sidebar ============ -->
+                <aside class="webview">
+                    <PixelIcon name="pc" size={48} />
+                    <h2 id="side-title">Jordan Otomu</h2>
+                    <div class="rule"></div>
+                    <div id="side-default">
+                        <p>cs @ university of houston. incoming software engineer at <b>snapchat</b> in nyc. <b>ugc creator</b> on the side.</p>
+                        <p class="muted">select an item to view its description.</p>
+                    </div>
+                    {folders.map((f) => <p class="side-blurb" data-side={f.id} hidden>{f.blurb}</p>)}
+
+                    {experience.map(({ data, Content }, i) => (
+                        <div class="detail" data-detail={`experience-${i}`} hidden>
+                            {logoSrc[data.logo] && <img class="logo" src={logoSrc[data.logo]} alt="" />}
+                            <b>{data.company}</b>
+                            <div class="muted">{data.role}</div>
+                            <div class="muted">{data.place} · {data.dates}</div>
+                            <div class="md"><Content /></div>
+                        </div>
                     ))}
-                </div>
-            </>
-        )}
-    </fieldset>
+                    {projects.map(({ data, Content }, i) => (
+                        <div class="detail" data-detail={`projects-${i}`} hidden>
+                            <b>{data.title}</b>
+                            {data.tag && <div class="muted">{data.tag}</div>}
+                            <div class="md"><Content /></div>
+                            {data.metrics.map((m: { value: string; label: string }) => <div class="kv"><span>{m.label}</span><b>{m.value}</b></div>)}
+                            <div class="muted small">{data.stack.join(" · ")}</div>
+                        </div>
+                    ))}
+                    {education.map(({ data, Content }, i) => (
+                        <div class="detail" data-detail={`education-${i}`} hidden>
+                            {logoSrc[data.logo] && <img class="logo" src={logoSrc[data.logo]} alt="" />}
+                            <b>{data.school}</b>
+                            <div class="muted">{data.degree}</div>
+                            <div class="md"><Content /></div>
+                        </div>
+                    ))}
+                </aside>
 
-</BaseLayout>
+                <!-- ============ views ============ -->
+                <main class="main sunken-panel">
+                    <section data-view="root">
+                        <ul class="bigicons">
+                            {folders.map((f) => (
+                                <li><button class="bigicon" data-go={f.id}><PixelIcon name={f.icon} size={40} /><span>{f.label}</span></button></li>
+                            ))}
+                            <li><a class="bigicon" href={links.resume} target="_blank" rel="noopener"><PixelIcon name="pdf" size={40} /><span>Resume.pdf</span></a></li>
+                            <li><a class="bigicon" href={"mailto:" + links.email}><PixelIcon name="mail" size={40} /><span>Contact</span></a></li>
+                        </ul>
+                    </section>
+
+                    <section data-view="about" hidden>
+                        <div class="notepad">
+                            <img src="/assets/photos/jordan-yosemite.jpg" alt="Jordan looking out over a river and pine forest" />
+                            <div>
+                                {bio.map((p) => <p>{p}</p>)}
+                                <p><i>"{motto.text}"</i> — {motto.by}</p>
+                                <p>reach out: <a href={links.linkedin} target="_blank" rel="noopener">linkedin</a> · {links.email}</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section data-view="experience" hidden>
+                        <table class="details">
+                            <thead><tr><th>Name</th><th>Role</th><th class="hide-sm">Location</th><th>Dates</th></tr></thead>
+                            <tbody>
+                                {experience.map(({ data }, i) => (
+                                    <tr data-row={`experience-${i}`} tabindex="0"><td><PixelIcon name="doc" size={16} />{data.company}</td><td>{data.role}</td><td class="hide-sm">{data.place}</td><td>{data.dates}</td></tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section data-view="projects" hidden>
+                        <table class="details">
+                            <thead><tr><th>Name</th><th>Type</th><th>Highlights</th></tr></thead>
+                            <tbody>
+                                {projects.map(({ data }, i) => (
+                                    <tr data-row={`projects-${i}`} tabindex="0"><td><PixelIcon name={data.tier === "sandbox" ? "doc" : "star"} size={16} />{data.title}</td><td>{data.tag ?? ""}</td><td>{data.metrics.map((m: { value: string }) => m.value).join(" · ")}</td></tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section data-view="education" hidden>
+                        <table class="details">
+                            <thead><tr><th>Name</th><th>Degree</th><th>Dates</th></tr></thead>
+                            <tbody>
+                                {education.map(({ data }, i) => (
+                                    <tr data-row={`education-${i}`} tabindex="0"><td><PixelIcon name="doc" size={16} />{data.school}</td><td>{data.degree}</td><td>{data.dates}</td></tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section data-view="ugc" hidden class="ugc">
+                        <div class="ugc-banner"><b>$30K/mo</b> ugc creator · {ugc.sub}</div>
+                        <div class="stats">
+                            {ugc.stats.map((s) => <div class="stat"><b>{s.value}</b><span>{s.label}</span></div>)}
+                        </div>
+                        <div class="shots">
+                            {ugc.results.map((r) => <figure><img src={r.src} alt="" loading="lazy" /><figcaption>{r.caption}</figcaption></figure>)}
+                        </div>
+                        <fieldset>
+                            <legend>Brands</legend>
+                            <div class="brands">
+                                {ugc.brands.map((b) => <div class="brand"><img class:list={[{ wordmark: b.wordmark }]} src={b.logo} alt="" /><span><b>{b.name}</b><br /><span class="muted">{b.dates}</span></span></div>)}
+                            </div>
+                        </fieldset>
+                        <p>{ugc.tool.blurb} <a href={ugc.tool.url} target="_blank" rel="noopener">fakechat →</a></p>
+                        <p>brand deals: <b>{links.ugcEmail}</b></p>
+                    </section>
+
+                    <section data-view="music" hidden class="music">
+                        <!-- media player: live from /api/now-playing, falls back to the top on-repeat track -->
+                        <div class="window player" id="player" data-state="loading">
+                            <div class="title-bar"><div class="title-bar-text">Media Player</div></div>
+                            <div class="window-body">
+                                <div class="screen">
+                                    <img id="np-art" src={onRepeat[0].art} alt="" />
+                                    <div class="np-text">
+                                        <span class="np-label" id="np-label">checking spotify…</span>
+                                        <a id="np-title" href={onRepeat[0].url} target="_blank" rel="noopener">{onRepeat[0].name}</a>
+                                        <span id="np-artist">{onRepeat[0].artist}</span>
+                                        <span class="np-album" id="np-album">{onRepeat[0].album}</span>
+                                    </div>
+                                    <div class="eq" aria-hidden="true">{Array.from({ length: 12 }, () => <i></i>)}</div>
+                                </div>
+                                <div class="seek"><span id="np-bar"></span></div>
+                                <div class="controls">
+                                    <button aria-label="previous" disabled>|◀</button>
+                                    <button aria-label="play" id="np-play">▶</button>
+                                    <button aria-label="next" disabled>▶|</button>
+                                    <a href={links.spotify} target="_blank" rel="noopener">open spotify profile →</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="group">On Repeat</h4>
+                        <table class="details">
+                            <thead><tr><th>#</th><th>Title</th><th>Artist</th><th class="hide-sm">Album</th></tr></thead>
+                            <tbody>
+                                {onRepeat.map((t, i) => (
+                                    <tr><td>{i + 1}</td><td><a href={t.url} target="_blank" rel="noopener"><img class="art" src={t.art} alt="" loading="lazy" />{t.name}</a></td><td>{t.artist}</td><td class="hide-sm">{t.album}</td></tr>
+                                ))}
+                            </tbody>
+                        </table>
+
+                        <h4 class="group">Album Wall <span class="muted">— {albumWall.length} records in rotation</span></h4>
+                        <ul class="thumbs">
+                            {albumWall.map((a) => (
+                                <li title={`${a.artist} — ${a.album}`}>
+                                    <div class="thumb"><img src={a.art} alt={`${a.album} by ${a.artist}`} loading="lazy" /></div>
+                                    <span>{a.album}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                </main>
+            </div>
+
+            <div class="status-bar">
+                <p class="status-bar-field" id="status-count">8 object(s)</p>
+                <p class="status-bar-field" id="status-sel"></p>
+                <p class="status-bar-field"><PixelIcon name="pc" size={14} /> My Computer</p>
+            </div>
+        </div>
+    </div>
+</LabLayout>
 
 <style>
-    .motto {
-        padding-bottom: 16px;
-        margin-bottom: 18px;
-        border-bottom: 1px solid var(--faint);
+    .bg { min-height: 100vh; background: #008080; padding: 24px; font-size: 11px; }
+    .explorer { max-width: 1040px; margin: 0 auto; height: calc(100vh - 48px); display: flex; flex-direction: column; }
+    /* reading text: WIN95FA (a win95 system-font revival) at its native 16px,
+       so it stays pixel-crisp but readable; 98.css's 11px font stays on the chrome */
+    .webview, .main, .main :global(input) {
+        font-family: "WIN95FA", "Pixelated MS Sans Serif", Tahoma, sans-serif;
+        font-size: 16px;
+        line-height: 1.3;
+        color: #1a1a1a;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
-    .motto-label {
-        font-family: var(--font-mono);
-        font-size: 12.5px;
-        color: var(--muted);
-        margin-bottom: 4px;
+    .webview :global(*), .main :global(*) { font-family: inherit; -webkit-font-smoothing: inherit; }
+    .details td, .details th { font-size: 16px; }
+    .menubar { display: flex; gap: 2px; padding: 2px 4px; border-bottom: 1px solid #808080; box-shadow: 0 1px #fff; }
+    .menubar > span, .menubar summary { padding: 2px 6px; cursor: default; list-style: none; }
+    .menubar summary::-webkit-details-marker { display: none; }
+    .menubar > span:hover, .menubar summary:hover, .menu[open] summary { background: #000080; color: #fff; }
+    .menu { position: relative; }
+    .menu-pop { position: absolute; top: 100%; left: 0; z-index: 20; min-width: 150px; padding: 2px; display: flex; flex-direction: column; }
+    .menu-pop a { color: #000; text-decoration: none; padding: 4px 18px; }
+    .menu-pop a:hover { background: #000080; color: #fff; }
+    .menu-pop hr { width: 100%; }
+
+    .toolbar { display: flex; align-items: center; gap: 2px; padding: 3px 4px; border-bottom: 1px solid #808080; box-shadow: 0 1px #fff; }
+    .tool {
+        all: unset; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 2px;
+        min-width: 56px; padding: 3px 6px; cursor: pointer; color: #000; font-size: 11px; text-decoration: none;
     }
-    .motto-text {
-        font-size: 17px;
-        font-family: var(--font-mono);
-    }
-    .motto-cite {
-        color: var(--muted);
-        font-size: 13.5px;
-        margin-left: 4px;
-    }
+    .tool:hover:not(:disabled) { box-shadow: inset -1px -1px #808080, inset 1px 1px #fff; }
+    .tool:active:not(:disabled) { box-shadow: inset 1px 1px #808080, inset -1px -1px #fff; }
+    .tool:disabled { color: #808080; text-shadow: 1px 1px #fff; cursor: default; }
+    .arrow { font-size: 18px; line-height: 22px; }
+    .tsep { width: 2px; align-self: stretch; margin: 2px 4px; border-left: 1px solid #808080; border-right: 1px solid #fff; }
+
+    .address { display: flex; align-items: center; gap: 6px; padding: 3px 6px; }
+    .addr-field { flex: 1; display: flex; align-items: center; gap: 4px; background: #fff; padding: 2px 4px; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a; }
+    .addr-field input { flex: 1; border: 0; box-shadow: none; padding: 0; height: auto; }
+
+    .pane { flex: 1; min-height: 0; display: grid; grid-template-columns: 230px 1fr; gap: 0; margin: 0 4px 4px; }
+    .webview { background: #fff; padding: 14px; overflow: auto; border: 2px inset #fff; border-right: 0; }
+    .webview h2 { font-size: 32px; font-weight: normal; margin: 8px 0 4px; }
+    .rule { height: 3px; background: linear-gradient(90deg, #000080, #1084d0 60%, transparent); margin-bottom: 10px; }
+    .webview p { line-height: 1.5; }
+    .detail { display: flex; flex-direction: column; gap: 2px; margin-top: 6px; }
+    .detail .logo { width: 48px; height: 48px; object-fit: contain; margin-bottom: 6px; }
+    .kv { display: flex; justify-content: space-between; border-bottom: 1px dotted #c0c0c0; padding: 2px 0; }
+    .md :global(ul) { padding-left: 16px; margin: 6px 0; }
+    .md :global(li), .md :global(p) { line-height: 1.5; margin-bottom: 4px; }
+    .muted { color: #555; }
+    .small { font-size: 16px; margin-top: 6px; }
+
+    .main { overflow: auto; background: #fff; padding: 0; }
+    .bigicons { list-style: none; margin: 0; padding: 16px; display: grid; grid-template-columns: repeat(auto-fill, 96px); gap: 10px; }
+    .bigicon { all: unset; box-sizing: border-box; width: 96px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 6px; cursor: pointer; text-align: center; color: #000; text-decoration: none; font-size: 16px; }
+    .bigicon:hover span, .bigicon:focus span { background: #000080; color: #fff; outline: 1px dotted #000; }
+
+    .details { width: 100%; border-collapse: collapse; }
+    .details th { position: sticky; top: 0; background: #c0c0c0; text-align: left; font-weight: normal; padding: 4px 8px; box-shadow: inset -1px -1px #808080, inset 1px 1px #fff; }
+    .details td { padding: 5px 8px; white-space: nowrap; }
+    .details td:first-child .px-icon { display: inline-block; vertical-align: -3px; margin-right: 6px; }
+    .details tr[data-row] { cursor: default; }
+    .details tr.sel td, .details tr[data-row]:focus td { background: #000080; color: #fff; outline: none; }
+    .details a { color: inherit; display: flex; align-items: center; gap: 6px; }
+    .art { width: 24px; height: 24px; }
+
+    .notepad { display: grid; grid-template-columns: 200px 1fr; gap: 16px; padding: 16px; }
+    .notepad img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+    .notepad p { line-height: 1.4; margin: 0 0 12px; font-size: 16px; }
+
+    .ugc { padding: 14px; }
+    .ugc-banner { background: linear-gradient(90deg, #000080, #1084d0); color: #fff; padding: 10px 12px; font-size: 16px; }
+    .ugc-banner b { font-size: 32px; font-weight: normal; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+    .stat { display: flex; flex-direction: column; padding: 8px; background: #c0c0c0; box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf; }
+    .stat b { font-size: 32px; font-weight: normal; line-height: 1; }
+    .shots { display: grid; gap: 10px; }
+    .shots figure { margin: 0; }
+    .shots img { display: block; border: 2px inset #fff; }
+    .shots figcaption { margin-top: 3px; }
+    .brands { display: flex; flex-wrap: wrap; gap: 16px; }
+    .brand { display: flex; gap: 8px; align-items: center; }
+    .brand img { width: 32px; height: 32px; object-fit: cover; }
+    .brand img.wordmark { width: auto; object-fit: contain; }
+    .ugc p { line-height: 1.5; margin: 10px 0 0; }
+
+    .music { padding: 12px; }
+    .player { max-width: 520px; margin-bottom: 14px; }
+    .screen { display: flex; gap: 12px; align-items: center; background: linear-gradient(180deg, #000, #102040); color: #9cf; padding: 10px; box-shadow: inset 1px 1px #808080, inset -1px -1px #fff; }
+    .screen img { width: 72px; height: 72px; border: 1px solid #335; flex-shrink: 0; }
+    .np-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+    .np-text a { color: #fff; font-weight: normal; font-size: 32px; line-height: 1; text-decoration: none; }
+    .np-text a:hover { text-decoration: underline; }
+    .np-label { color: #3f3; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; }
+    .np-album { color: #68a; }
+    .eq { display: flex; align-items: flex-end; gap: 2px; height: 40px; }
+    .eq i { width: 4px; height: 20%; background: linear-gradient(0deg, #0f0, #ff0 70%, #f00); }
+    .player[data-state="playing"] .eq i { animation: eq 0.9s ease-in-out infinite alternate; }
+    .eq i:nth-child(3n) { animation-duration: 0.6s; } .eq i:nth-child(4n) { animation-duration: 1.1s; } .eq i:nth-child(5n) { animation-delay: -0.3s; }
+    @keyframes eq { from { height: 10%; } to { height: 100%; } }
+    .seek { height: 6px; margin: 8px 2px; background: #fff; box-shadow: inset 1px 1px #808080, inset -1px -1px #fff; }
+    .seek span { display: block; height: 100%; width: 0; background: #000080; }
+    .player[data-state="playing"] .seek span { animation: seek 30s linear infinite; }
+    @keyframes seek { to { width: 100%; } }
+    .controls { display: flex; gap: 4px; align-items: center; }
+    .controls button { min-width: 36px; }
+    .controls a { margin-left: auto; }
+    .group { margin: 16px 0 8px; font-size: 16px; font-weight: normal; border-bottom: 1px solid #808080; box-shadow: 0 1px #fff; padding-bottom: 3px; }
+    .thumbs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 12px 10px; }
+    .thumbs li { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+    .thumb { width: 100%; aspect-ratio: 1; padding: 4px; background: #fff; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumbs span { font-size: 16px; line-height: 1.2; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .thumbs li:hover span { background: #000080; color: #fff; }
+    .status-bar-field { display: flex; align-items: center; gap: 4px; }
+
     @media (max-width: 720px) {
-        .motto-cite { display: block; margin: 4px 0 0; }
-    }
-
-    /* ============ for-visitors block ============ */
-    /* icons pinned to the left, text takes the rest of the row. flexbox
-       (vs grid) so it stays inline at every viewport without surprises. */
-    .visitors {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    .visitors-icons {
-        display: flex;
-        gap: 8px;
-        flex-shrink: 0;
-    }
-    .visitor-ico {
-        color: var(--ink);
-        line-height: 0;
-        transition: transform 0.15s ease, color 0.15s ease;
-    }
-    .visitor-ico:hover {
-        color: var(--accent);
-        transform: translateY(-1px);
-    }
-    .visitors-text {
-        flex: 1 1 0;
-        min-width: 0;
-        margin: 0;
-        font-size: 15px;
-        line-height: 1.55;
-        color: var(--ink);
-    }
-
-    /* slim "stamp" cta — fills the row but the button itself is short, so
-       the bar reads as a tidy footer rather than a chunky block */
-    .visitors-cta-wrap {
-        margin-top: 14px;
-        padding: 0 6px 6px 0;
-    }
-    .visitors-cta {
-        display: block;
-        text-align: center;
-        padding: 5px 14px;
-        border: 1px solid var(--ink);
-        background: var(--bg);
-        color: var(--ink);
-        text-decoration: none;
-        font-family: var(--font-mono);
-        font-weight: 400;
-        font-size: 12.5px;
-        box-shadow: var(--stamp-shadow);
-        transition:
-            background 0.15s ease,
-            color 0.15s ease,
-            box-shadow 0.12s ease,
-            transform 0.12s ease;
-    }
-    .visitors-cta:hover {
-        text-decoration: none;
-        background: var(--ink);
-        color: var(--bg);
-        transform: translate(1px, 1px);
-        box-shadow: 2px 2px 0 1px rgba(26, 26, 26, 0.42);
-    }
-    [data-theme="dark"] .visitors-cta:hover {
-        box-shadow: 2px 2px 0 1px rgba(243, 241, 231, 0.55);
-    }
-    .visitors-cta:active {
-        transform: translate(3px, 3px);
-        box-shadow: var(--stamp-shadow-pressed);
+        .bg { padding: 0; }
+        .explorer { height: 100vh; height: 100dvh; }
+        .menubar > span { display: none; }
+        .pane { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+        .webview { border: 2px inset #fff; border-bottom: 0; max-height: 38vh; padding: 10px; }
+        .webview .px-icon { display: none; }
+        .webview h2 { font-size: 32px; margin-top: 0; }
+        .hide-sm { display: none; }
+        .details td { white-space: normal; }
+        .notepad { grid-template-columns: 1fr; }
+        .notepad img { aspect-ratio: 4 / 3; }
+        .stats { grid-template-columns: 1fr 1fr 1fr; }
+        .stat b { font-size: 16px; }
+        .bigicons { grid-template-columns: repeat(3, 1fr); padding: 10px; }
+        .bigicon { width: 100%; }
+        .music { padding: 8px; }
+        .thumbs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .eq { display: none; }
     }
 </style>
 
-<style is:global>
-    /* ============ experience / education ============ */
-    .exp {
-        padding: 16px 4px 18px;
-        border-top: 1px solid var(--faint);
-    }
-    .exp:first-of-type {
-        border-top: none;
-        padding-top: 6px;
-    }
-    .exp:last-of-type { padding-bottom: 4px; }
+<script>
+    const views = [...document.querySelectorAll<HTMLElement>("[data-view]")];
+    const sides = [...document.querySelectorAll<HTMLElement>("[data-side]")];
+    const details = [...document.querySelectorAll<HTMLElement>("[data-detail]")];
+    const sideDefault = document.getElementById("side-default")!;
+    const sideTitle = document.getElementById("side-title")!;
+    const addr = document.getElementById("addr") as HTMLInputElement;
+    const titleText = document.getElementById("title-text")!;
+    const back = document.getElementById("back") as HTMLButtonElement;
+    const up = document.getElementById("up") as HTMLButtonElement;
+    const count = document.getElementById("status-count")!;
+    const sel = document.getElementById("status-sel")!;
+    const names: Record<string, string> = { root: "Jordan Otomu", about: "About Me", experience: "Experience", projects: "Projects", ugc: "UGC", education: "Education", music: "Music" };
+    const historyStack: string[] = [];
 
-    .exp-head {
-        display: grid;
-        grid-template-columns: 52px 1fr auto;
-        gap: 16px;
-        align-items: center;
-    }
-
-    .exp-logo {
-        width: 52px;
-        height: 52px;
-        flex-shrink: 0;
-        display: grid;
-        place-items: center;
-        border: 1px solid var(--border);
-        font-family: var(--font-mono);
-        font-weight: 700;
-        font-size: 12px;
-        letter-spacing: 0.04em;
-        background: transparent;
-        overflow: hidden;
-    }
-    .exp-logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        padding: 6px;
-        display: block;
-    }
-    .exp-logo[data-logo="snap"] { background: #fffc00; color: #1a1a1a; border-color: #1a1a1a; }
-    .exp-logo[data-logo="walmart"] { background: #0071ce; color: #ffc220; border-color: #0071ce; font-size: 11.5px; }
-
-    .exp-logo[data-logo="sgp"],
-    .exp-logo[data-logo="uh"],
-    .exp-logo[data-logo="dallas"],
-    .exp-logo[data-logo="mlt"],
-    .exp-logo[data-logo="gpisd"] {
-        background: #ffffff;
-        border-color: var(--border);
-    }
-    [data-theme="dark"] .exp-logo[data-logo="sgp"],
-    [data-theme="dark"] .exp-logo[data-logo="uh"],
-    [data-theme="dark"] .exp-logo[data-logo="dallas"],
-    [data-theme="dark"] .exp-logo[data-logo="mlt"],
-    [data-theme="dark"] .exp-logo[data-logo="gpisd"] {
-        background: #f3f1e7;
-        border-color: rgba(243, 241, 231, 0.35);
+    function show(id: string, push = true) {
+        if (!names[id]) id = "root";
+        const cur = views.find((v) => !v.hidden)?.dataset.view;
+        if (push && cur && cur !== id) historyStack.push(cur);
+        views.forEach((v) => (v.hidden = v.dataset.view !== id));
+        sides.forEach((s) => (s.hidden = s.dataset.side !== id));
+        details.forEach((d) => (d.hidden = true));
+        document.querySelectorAll("tr.sel").forEach((r) => r.classList.remove("sel"));
+        sideDefault.hidden = id !== "root";
+        sideTitle.textContent = names[id];
+        const path = id === "root" ? "C:\\Jordan Otomu" : `C:\\Jordan Otomu\\${names[id]}`;
+        addr.value = path;
+        titleText.textContent = path;
+        back.disabled = historyStack.length === 0;
+        up.disabled = id === "root";
+        const view = views.find((v) => v.dataset.view === id)!;
+        const n = view.querySelectorAll("tbody tr, .bigicon").length;
+        count.textContent = n ? `${n} object(s)` : "";
+        sel.textContent = "";
+        if (location.hash.slice(2) !== (id === "root" ? "" : id)) history.replaceState(null, "", id === "root" ? "#" : `#/${id}`);
     }
 
-    .exp-logo[data-logo="jpmc"],
-    .exp-logo[data-logo="yahoo"],
-    .exp-logo[data-logo="nsbe"] {
-        background: transparent;
-        border-color: var(--border);
-    }
-    .exp-logo[data-logo="snap"] img,
-    .exp-logo[data-logo="sgp"] img,
-    .exp-logo[data-logo="jpmc"] img,
-    .exp-logo[data-logo="yahoo"] img,
-    .exp-logo[data-logo="nsbe"] img {
-        padding: 0;
-        object-fit: cover;
-    }
+    document.querySelectorAll<HTMLElement>("[data-go]").forEach((b) => b.addEventListener("click", () => show(b.dataset.go!)));
+    back.addEventListener("click", () => { const prev = historyStack.pop(); if (prev) show(prev, false); });
+    up.addEventListener("click", () => show("root"));
 
-    .exp-company {
-        font-weight: 600;
-        font-size: 15.5px;
-    }
-    .exp-sub {
-        font-weight: 400;
-        color: var(--muted);
-        font-size: 13.5px;
-        font-family: var(--font-mono);
-        margin-left: 6px;
-    }
-    .exp-role {
-        font-family: var(--font-mono);
-        font-style: italic;
-        font-size: 13px;
-        color: var(--ink);
-        margin-top: 1px;
-    }
-    .exp-place {
-        font-family: var(--font-mono);
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 1px;
-    }
-    .exp-dates {
-        font-family: var(--font-mono);
-        font-size: 12.5px;
-        color: var(--muted);
-        white-space: nowrap;
-    }
+    document.querySelectorAll<HTMLElement>("tr[data-row]").forEach((row) => {
+        const pick = () => {
+            document.querySelectorAll("tr.sel").forEach((r) => r.classList.remove("sel"));
+            row.classList.add("sel");
+            details.forEach((d) => (d.hidden = d.dataset.detail !== row.dataset.row));
+            sides.forEach((s) => (s.hidden = true));
+            sel.textContent = row.querySelector("td")!.textContent ?? "";
+            if (matchMedia("(max-width: 720px)").matches) document.querySelector(".webview")!.scrollTop = 0;
+        };
+        row.addEventListener("click", pick);
+        row.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+    });
 
-    .exp-bullets {
-        list-style: none;
-        margin: 12px 0 0 68px;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-    .exp-bullets ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        margin: 0;
-    }
-    .exp-bullets li {
-        position: relative;
-        padding-left: 16px;
-        font-size: 14px;
-        line-height: 1.55;
-    }
-    .exp-bullets li::before {
-        content: "•";
-        position: absolute;
-        left: 2px;
-        top: 0;
-        color: var(--muted);
-        font-family: var(--font-mono);
-        font-size: 12px;
-        line-height: 1.8;
-    }
-    .exp-bullets p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink); }
-
-    /* ============ projects ============ */
-    .proj {
-        border: 1px solid var(--faint);
-        padding: 14px 16px;
-    }
-    .proj.featured {
-        border-color: var(--border);
-        margin-bottom: 14px;
-        padding: 18px 20px;
-    }
-    .proj.featured-sm {
-        border-color: var(--border);
-        padding: 16px 18px;
-        display: flex;
-        flex-direction: column;
-    }
-    .proj.featured-sm .proj-metrics { margin-top: auto; }
-
-    .proj-head {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 6px;
-    }
-    .proj-head h3 {
-        font-family: var(--font-mono);
-        font-weight: 700;
-        font-size: 15px;
-    }
-    .proj.featured .proj-head h3 { font-size: 18px; }
-    .proj-head h3 a { text-decoration: none; }
-    .proj-head h3 a:hover { text-decoration: underline; }
-
-    .proj-muted {
-        color: var(--muted);
-        font-weight: 400;
-        font-size: 0.85em;
-        margin-left: 4px;
-    }
-
-    .proj-tag {
-        font-family: var(--font-mono);
-        font-size: 10.5px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
-        border: 1px solid var(--faint);
-        padding: 2px 6px;
-        white-space: nowrap;
-    }
-    .proj.featured .proj-tag {
-        color: var(--bg);
-        background: var(--ink);
-        border-color: var(--ink);
-    }
-
-    .proj p {
-        font-size: 14px;
-        color: var(--ink);
-        margin: 4px 0;
-    }
-
-    .proj-metrics {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 22px;
-        margin: 12px 0 10px;
-        padding: 10px 0;
-        border-top: 1px solid var(--faint);
-        border-bottom: 1px solid var(--faint);
-    }
-    .proj-metrics div {
-        display: flex;
-        flex-direction: column;
-        gap: 1px;
-    }
-    .proj-metrics b {
-        font-family: var(--font-mono);
-        font-size: 17px;
-        font-weight: 700;
-        color: var(--ink);
-    }
-    .proj-metrics span {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        color: var(--muted);
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-    }
-
-    .proj-stack {
-        font-family: var(--font-mono);
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 8px;
-    }
-    .proj-stack span { margin: 0 4px; }
-
-    .proj-featured-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 8px;
-    }
-    .proj-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-    }
-
-    /* ============ ugc ============ */
-    .ugc-metrics { margin-top: 0; }
-    .ugc-more { margin-top: 14px; }
-
-    .muted-lead {
-        color: var(--muted);
-        font-family: var(--font-mono);
-        font-size: 13px;
-        margin: -4px 0 12px;
-    }
-    .subhead {
-        color: var(--muted);
-        font-family: var(--font-mono);
-        font-size: 12px;
-        margin: 14px 0 8px;
-    }
-
-    @media (max-width: 720px) {
-        .ugc-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .proj-grid { grid-template-columns: 1fr; }
-        .proj-featured-row { grid-template-columns: 1fr; }
-        .proj-metrics { gap: 18px; }
-        .exp-head { grid-template-columns: 44px 1fr; }
-        .exp-logo { width: 44px; height: 44px; }
-        .exp-dates {
-            grid-column: 2;
-            font-size: 11.5px;
-            margin-top: 4px;
+    // media player: poll spotify now-playing; keep the on-repeat fallback if it's offline
+    const player = document.getElementById("player")!;
+    const npLabel = document.getElementById("np-label")!;
+    async function pollNow() {
+        try {
+            const r = await fetch("/api/now-playing", { cache: "no-store" });
+            if (!r.ok) throw new Error(String(r.status));
+            const d = await r.json();
+            if (!d.title) throw new Error("idle");
+            (document.getElementById("np-art") as HTMLImageElement).src = d.albumArt;
+            const title = document.getElementById("np-title") as HTMLAnchorElement;
+            title.textContent = d.title;
+            if (d.trackUrl) title.href = d.trackUrl;
+            document.getElementById("np-artist")!.textContent = d.artist;
+            document.getElementById("np-album")!.textContent = d.album ?? "";
+            npLabel.textContent = d.isPlaying ? "● now playing on spotify" : "last played";
+            player.dataset.state = d.isPlaying ? "playing" : "idle";
+        } catch {
+            npLabel.textContent = "on repeat";
+            player.dataset.state = "idle";
         }
-        .exp-bullets { margin-left: 0; }
     }
-</style>
+    pollNow();
+    setInterval(pollNow, 30_000);
+    document.getElementById("np-play")!.addEventListener("click", () => {
+        player.dataset.state = player.dataset.state === "playing" ? "idle" : "playing";
+    });
+
+    show(location.hash.replace("#/", "") || "root", false);
+</script>

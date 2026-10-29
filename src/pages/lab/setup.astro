@@ -160,7 +160,7 @@ const installs = [
             </div>
         </div>
 
-        <p class="corner">© 2026 jordan otomu · <a href="/">classic site</a></p>
+        <p class="corner">© 2026 jordan otomu · <a href="/classic">classic site</a></p>
     </div>
 
     <!-- ============ cancel dialog ============ -->
@@ -359,7 +359,7 @@ const installs = [
     const modal = document.getElementById("modal");
     document.querySelectorAll("[data-cancel]").forEach((b) => b.addEventListener("click", () => (modal.hidden = false)));
     document.getElementById("stay").addEventListener("click", () => (modal.hidden = true));
-    document.getElementById("exit").addEventListener("click", () => (location.href = "/"));
+    document.getElementById("exit").addEventListener("click", () => (location.href = "/classic"));
 
     go(0);
 </script>
