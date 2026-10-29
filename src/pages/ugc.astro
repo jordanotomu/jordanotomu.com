@@ -43,14 +43,16 @@ const programs = [
     {
         name: "Halo AI",
         logo: "/assets/logos/halo.png",
-        dates: "Jan – May 2026",
+        dates: "Jan 2026 – now",
     },
     {
         name: "Arcads",
         logo: "/assets/logos/arcads.jpg",
         dates: "Mar 2026",
     },
-];
+    { name: "Undisclosed brand", nda: true, dates: "under NDA" },
+    { name: "Undisclosed brand", nda: true, dates: "under NDA" },
+] as { name: string; logo?: string; dates: string; wordmark?: boolean; nda?: boolean }[];
 ---
 
 <BaseLayout
@@ -123,12 +125,16 @@ const programs = [
             {programs.map((p) => (
                 <div class="brand">
                     <div class="brand-logo">
-                        <img
-                            class:list={[{ wordmark: p.wordmark }]}
-                            src={p.logo}
-                            alt={`${p.name} logo`}
-                            loading="lazy"
-                        />
+                        {p.nda ? (
+                            <span class="brand-slot nda">NDA</span>
+                        ) : (
+                            <img
+                                class:list={[{ wordmark: p.wordmark }]}
+                                src={p.logo}
+                                alt={`${p.name} logo`}
+                                loading="lazy"
+                            />
+                        )}
                     </div>
                     <div class="brand-mark">{p.name}</div>
                     <div class="brand-dates">{p.dates}</div>
@@ -284,7 +290,7 @@ const programs = [
     /* ============ brands ============ */
     .brands {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 12px;
     }
     .brand {
@@ -319,6 +325,7 @@ const programs = [
         font-size: 20px;
         color: var(--muted);
     }
+    .brand-slot.nda { font-size: 11px; letter-spacing: 0.05em; }
     .brand-mark {
         font-family: var(--font-mono);
         font-weight: 700;

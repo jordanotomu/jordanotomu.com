@@ -37,9 +37,11 @@ export const ugc = {
     ],
     brands: [
         { name: "Cantina", logo: "/assets/logos/cantina.png", dates: "Sep 2026 – now", wordmark: true },
-        { name: "Halo AI", logo: "/assets/logos/halo.png", dates: "Jan – May 2026" },
+        { name: "Halo AI", logo: "/assets/logos/halo.png", dates: "Jan 2026 – now" },
         { name: "Arcads", logo: "/assets/logos/arcads.jpg", dates: "Mar 2026" },
-    ],
+        { name: "Undisclosed brand", nda: true, dates: "under NDA" },
+        { name: "Undisclosed brand", nda: true, dates: "under NDA" },
+    ] as { name: string; logo?: string; dates: string; wordmark?: boolean; nda?: boolean }[],
     tool: {
         name: "fakechat",
         url: "https://project-fcz9u.vercel.app",
