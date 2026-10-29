@@ -10,7 +10,7 @@ const { name, size = 32 } = Astro.props;
 const P: Record<string, string> = {
     K: "#000000", W: "#ffffff", L: "#c0c0c0", D: "#808080",
     Y: "#ffe36e", O: "#c99a1e", V: "#fff6c2",
-    R: "#c00000", B: "#0000c0", C: "#00a0ff", G: "#00a000", H: "#5ee05e", N: "#000080",
+    R: "#c00000", B: "#0000c0", C: "#00a0ff", G: "#00a000", N: "#000080",
 };
 
 const G: Record<string, string[]> = {
@@ -160,25 +160,13 @@ const G: Record<string, string[]> = {
     ],
 };
 
-// explorer toolbar arrows: a green left arrow, and the same rotated to point up
-G.back = [
-    "................",
-    "......K.........",
-    ".....KK.........",
-    "....KHK.........",
-    "...KHGKKKKKKKK..",
-    "..KHGGHHHHHHHK..",
-    ".KHGGGGGGGGGGK..",
-    "KHGGGGGGGGGGGK..",
-    ".KGGGGGGGGGGGK..",
-    "..KGGGGGGGGGGK..",
-    "...KGGKKKKKKKK..",
-    "....KGK.........",
-    ".....KK.........",
-    "......K.........",
-    "................",
-    "................",
-];
+// explorer toolbar arrows: solid black triangles (drawn, so ios can't turn them into emoji)
+// both fill the same centered 10×10 box (3..12) so they line up side by side
+G.back = Array.from({ length: 16 }, (_, y) => {
+    if (y < 3 || y > 12) return ".".repeat(16);
+    const start = 3 + Math.floor(Math.abs(y - 7.5)) * 2;
+    return Array.from({ length: 16 }, (_, x) => (x >= start && x <= 12 ? "K" : ".")).join("");
+});
 G.up = Array.from({ length: 16 }, (_, y) => Array.from({ length: 16 }, (_, x) => G.back[15 - x][y]).join(""));
 
 // round icons are generated: a cd and a globe

@@ -45,8 +45,8 @@ const folders = [
             </div>
 
             <div class="toolbar">
-                <button class="tool" id="back" disabled><PixelIcon name="back" size={22} />Back</button>
-                <button class="tool" id="up" disabled><PixelIcon name="up" size={22} />Up</button>
+                <button class="tool" id="back" disabled><span class="tri"><PixelIcon name="back" size={16} /></span>Back</button>
+                <button class="tool" id="up" disabled><span class="tri"><PixelIcon name="up" size={16} /></span>Up</button>
                 <span class="tsep"></span>
                 <a class="tool" href={links.resume} target="_blank" rel="noopener"><PixelIcon name="pdf" size={22} />Resume</a>
                 <a class="tool" href={"mailto:" + links.email}><PixelIcon name="mail" size={22} />Mail</a>
@@ -262,7 +262,9 @@ const folders = [
     .tool:hover:not(:disabled) { box-shadow: inset -1px -1px #808080, inset 1px 1px #fff; }
     .tool:active:not(:disabled) { box-shadow: inset 1px 1px #808080, inset -1px -1px #fff; }
     .tool:disabled { color: #808080; text-shadow: 1px 1px #fff; cursor: default; }
-    .tool:disabled :global(.px-icon) { filter: grayscale(1); opacity: 0.45; }
+    .tool:disabled :global(.px-icon) { opacity: 0.35; }
+    /* the arrows draw at an exact 1:1 pixel scale; pad them to the 22px row the other toolbar icons use */
+    .tri { width: 22px; height: 22px; display: grid; place-items: center; }
     .tsep { width: 2px; align-self: stretch; margin: 2px 4px; border-left: 1px solid #808080; border-right: 1px solid #fff; }
 
     .address { display: flex; align-items: center; gap: 6px; padding: 3px 6px; }
