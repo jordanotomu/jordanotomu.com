@@ -2,7 +2,7 @@
 
 Personal site for Jordan Otomu — minimal cream-and-ink home, a multi-page
 `/work` section, and a `/random/*` playground with a 3D globe, album mosaic,
-flip-card trophies, FAQ mini-games, and a live toolbox terminal.
+and a live toolbox terminal.
 
 Stack: **Astro 5** + **`@astrojs/vercel`** adapter, deployed as a Vercel
 serverless function. Hand-rolled CSS, no framework UI libs.
@@ -37,20 +37,16 @@ npm run dev
 │   │   ├── index.astro           home: portrait + whoami + nav tiles
 │   │   ├── work.astro            experience · education · projects · ugc
 │   │   ├── random/
-│   │   │   ├── index.astro       hub: 5 tiles → sub-pages
+│   │   │   ├── index.astro       hub: tiles → sub-pages
 │   │   │   ├── travel.astro      3D globe + pins (globe.gl)
 │   │   │   ├── music.astro       now-playing + on-repeat + album mosaic
-│   │   │   ├── wins.astro        flip-card trophy case
-│   │   │   ├── lore.astro        FAQ accordion + typing game + guess game
 │   │   │   └── toolbox.astro     live terminal (which / ls / help / whoami)
 │   │   └── api/
 │   │       └── now-playing.js    Vercel endpoint → Spotify API
 │   ├── content/
 │   │   ├── experience/*.md       career content collection
 │   │   ├── education/*.md
-│   │   ├── projects/*.md
-│   │   ├── wins/*.md             trophy case
-│   │   └── lore/*.md             FAQ answers
+│   │   └── projects/*.md
 │   ├── content.config.ts
 │   └── styles/
 │       ├── tokens.css            design tokens (cream+ink)
@@ -94,8 +90,6 @@ and it shows up. Schemas live in `src/content.config.ts`.
 - **experience**: frontmatter `company, role, place, dates, start, logo, order`
 - **education**: `school, degree, place, dates, start, logo, order`
 - **projects**: `title, url?, tag?, tier (hero/featured/sandbox), stack[], metrics[{value,label}], order`
-- **wins**: `title, org, year, emblem, order`
-- **lore**: `q, order` (body = the answer)
 
 Higher `order` = shown first.
 

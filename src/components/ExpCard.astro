@@ -26,12 +26,10 @@ const {
 const title = company ?? school ?? "";
 const subtitle = role ?? degree ?? "";
 
-const imageLogos = ["uh", "dallas", "mlt", "gpisd", "jpmc", "yahoo", "nsbe"];
+const imageLogos = ["snap", "sgp", "uh", "dallas", "mlt", "gpisd", "jpmc", "yahoo", "nsbe"];
 const hasImage = imageLogos.includes(logo);
 const textLogos: Record<string, string> = {
-    snap: "SNAP",
     walmart: "WM",
-    sgp: "SGP",
 };
 const textLabel = textLogos[logo] ?? logo.toUpperCase();
 

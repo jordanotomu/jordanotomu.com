@@ -1,0 +1,191 @@
+---
+// original 16×16 pixel-art icons in a win9x palette, drawn as crisp svg rects.
+// "pc" reuses the site favicon.
+interface Props {
+    name: "folder" | "folder-open" | "doc" | "pdf" | "cd" | "globe" | "mail" | "film" | "pc" | "trash" | "star";
+    size?: number;
+}
+const { name, size = 32 } = Astro.props;
+
+const P: Record<string, string> = {
+    K: "#000000", W: "#ffffff", L: "#c0c0c0", D: "#808080",
+    Y: "#ffe36e", O: "#c99a1e", V: "#fff6c2",
+    R: "#c00000", B: "#0000c0", C: "#00a0ff", G: "#00a000", N: "#000080",
+};
+
+const G: Record<string, string[]> = {
+    folder: [
+        "................",
+        "................",
+        "..KKKKK.........",
+        ".KYYYYYK........",
+        "KYYYYYYYKKKKKKK.",
+        "KYVVVVVVVVVVVVYK",
+        "KYVYYYYYYYYYYYOK",
+        "KYVYYYYYYYYYYYOK",
+        "KYVYYYYYYYYYYYOK",
+        "KYVYYYYYYYYYYYOK",
+        "KYVYYYYYYYYYYYOK",
+        "KYVYYYYYYYYYYYOK",
+        "KYOOOOOOOOOOOOOK",
+        "KKKKKKKKKKKKKKKK",
+        "................",
+        "................",
+    ],
+    "folder-open": [
+        "................",
+        "................",
+        "..KKKKK.........",
+        ".KYYYYYK........",
+        "KYYYYYYYKKKKKK..",
+        "KYVVVVVVVVVVVYK.",
+        "KYVKKKKKKKKKKKKK",
+        "KYKVVVVVVVVVVVVK",
+        "KYKVYYYYYYYYYYOK",
+        "KKVYYYYYYYYYYOK.",
+        "KKVYYYYYYYYYYOK.",
+        "KVYYYYYYYYYYYOK.",
+        "KOOOOOOOOOOOOK..",
+        "KKKKKKKKKKKKKK..",
+        "................",
+        "................",
+    ],
+    doc: [
+        "..KKKKKKKKK.....",
+        "..KWWWWWWWKK....",
+        "..KWWWWWWWKWK...",
+        "..KWDDDDDWKKKK..",
+        "..KWWWWWWWWWWK..",
+        "..KWDDDDDDDDWK..",
+        "..KWWWWWWWWWWK..",
+        "..KWDDDDDDDDWK..",
+        "..KWWWWWWWWWWK..",
+        "..KWDDDDDDDDWK..",
+        "..KWWWWWWWWWWK..",
+        "..KWDDDDDDWWWK..",
+        "..KWWWWWWWWWWK..",
+        "..KKKKKKKKKKKK..",
+        "................",
+        "................",
+    ],
+    pdf: [
+        "..KKKKKKKKK.....",
+        "..KWWWWWWWKK....",
+        "..KWWWWWWWKWK...",
+        "..KWDDDDDWKKKK..",
+        "..KWWWWWWWWWWK..",
+        "..KWDDDDDDDDWK..",
+        "..KWWWWWWWWWWK..",
+        "..KRRRRRRRRRRK..",
+        "..KRWRRWRWWRRK..",
+        "..KRRRRRRRRRRK..",
+        "..KWWWWWWWWWWK..",
+        "..KWDDDDDDWWWK..",
+        "..KWWWWWWWWWWK..",
+        "..KKKKKKKKKKKK..",
+        "................",
+        "................",
+    ],
+    mail: [
+        "................",
+        "................",
+        "................",
+        "KKKKKKKKKKKKKKKK",
+        "KWKWWWWWWWWWWKWK",
+        "KWWKWWWWWWWWKWWK",
+        "KWWWKWWWWWWKWWWK",
+        "KWWWWKWWWWKWWWWK",
+        "KWWWWWKKKKWWWWWK",
+        "KWWWWWWWWWWWWWWK",
+        "KWWWWWWWWWWWWWWK",
+        "KLLLLLLLLLLLLLLK",
+        "KKKKKKKKKKKKKKKK",
+        "................",
+        "................",
+        "................",
+    ],
+    film: [
+        "................",
+        "KKKKKKKKKKKKKKK.",
+        "KWWKKWWKKWWKKWK.",
+        "KKKKKKKKKKKKKKK.",
+        "KDDDDDDDDDDDDDKK",
+        "KDNNNNNNNNNNNDKK",
+        "KDNCCNNNNNNNNDK.",
+        "KDNNNNNNNNNNNDK.",
+        "KDNNNNNNNNNNNDKK",
+        "KDNNNNNNNNNNNDKK",
+        "KDDDDDDDDDDDRDK.",
+        "KKKKKKKKKKKKKKK.",
+        "................",
+        "................",
+        "................",
+        "................",
+    ],
+    trash: [
+        "................",
+        "....KKKKKKK.....",
+        "..KKLLLLLLLKK...",
+        "..KWWWWWWWWLK...",
+        "..KKKKKKKKKKK...",
+        "...KWLWLWLDK....",
+        "...KWLWLWLDK....",
+        "...KWLWLWLDK....",
+        "...KWLWLWLDK....",
+        "...KWLWLWLDK....",
+        "...KWLWLWLDK....",
+        "...KWLWLWLDK....",
+        "....KKKKKKK.....",
+        "................",
+        "................",
+        "................",
+    ],
+    star: [
+        ".......K........",
+        "......KYK.......",
+        "......KYK.......",
+        ".....KYYYK......",
+        "KKKKKKYVYKKKKKK.",
+        ".KYYYYVVVYYYYK..",
+        "..KYYYYVYYYYK...",
+        "...KYYYYYYYK....",
+        "...KYYYYYYYK....",
+        "..KYYYYKYYYYK...",
+        "..KYYYK.KYYYK...",
+        ".KYYK.....KYYK..",
+        ".KKK.......KKK..",
+        "................",
+        "................",
+        "................",
+    ],
+};
+
+// round icons are generated: a cd and a globe
+function circle(fill: (x: number, y: number, r: number) => string) {
+    const rows: string[] = [];
+    for (let y = 0; y < 16; y++) {
+        let row = "";
+        for (let x = 0; x < 16; x++) {
+            const r = Math.hypot(x - 7.5, y - 7.5);
+            row += r > 7.5 ? "." : r > 6.6 ? "K" : fill(x, y, r);
+        }
+        rows.push(row);
+    }
+    return rows;
+}
+G.cd = circle((x, y, r) => (r < 1.6 ? "." : r < 2.6 ? "K" : x + y < 12 ? (x < y ? "C" : "W") : r < 4 ? "L" : "W"));
+const land = ["....GG..", "...GGGG.", "..GGG...", "......GG", ".....GGG", "GG....G.", "GGG.....", ".G......"];
+G.globe = circle((x, y) => (land[(y >> 1) % 8][(x >> 1) % 8] === "G" ? "G" : "B"));
+
+const grid = G[name];
+const rects: { x: number; y: number; c: string }[] = [];
+if (grid) grid.forEach((row, y) => [...row].forEach((ch, x) => ch !== "." && rects.push({ x, y, c: P[ch] })));
+---
+
+{name === "pc" ? (
+    <img class="px-icon" src="/favicon-32.png" width={size} height={size} alt="" style="image-rendering: pixelated" />
+) : (
+    <svg class="px-icon" width={size} height={size} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+        {rects.map((r) => <rect x={r.x} y={r.y} width="1" height="1" fill={r.c} />)}
+    </svg>
+)}

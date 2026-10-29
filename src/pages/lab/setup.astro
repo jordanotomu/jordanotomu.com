@@ -1,0 +1,365 @@
+---
+// lab variant 3 — a fake bios boot, then an installshield-style
+// "Jordan Otomu Setup" wizard that walks through the portfolio. unlisted (noindex).
+import LabLayout from "~/lab/LabLayout.astro";
+import PixelIcon from "~/lab/PixelIcon.astro";
+import { links, bio, motto, ugc, loadContent, logoSrc } from "~/lab/data";
+
+
+const { experience, education, projects } = await loadContent();
+const installs = [
+    ...experience.map((e) => e.data.company),
+    ...education.map((e) => e.data.school),
+];
+---
+
+<LabLayout title="Jordan Otomu Setup">
+    <!-- ============ boot ============ -->
+    <div class="boot" id="boot">
+        <pre id="boot-text"></pre>
+        <p class="boot-skip">press any key to skip</p>
+    </div>
+
+    <!-- ============ setup ============ -->
+    <div class="setup" id="setup" hidden>
+        <h1 class="brand">Jordan Otomu <span>Setup</span></h1>
+
+        <div class="window wizard">
+            <div class="title-bar">
+                <div class="title-bar-text">Jordan Otomu Setup</div>
+                <div class="title-bar-controls"><button aria-label="Close" data-cancel></button></div>
+            </div>
+            <div class="window-body">
+                <div class="steps">
+                    <!-- 1 welcome -->
+                    <section class="step" data-step="0">
+                        <div class="banner"><PixelIcon name="pc" size={64} /></div>
+                        <div class="content">
+                            <h2>Welcome to the Jordan Otomu Setup Wizard</h2>
+                            <p>This wizard will install <b>Jordan Otomu</b> on your team.</p>
+                            <ul class="facts">
+                                <li>cs @ university of houston, finished in 2 years</li>
+                                <li>incoming software engineer @ <b>snap</b>, nyc</li>
+                                <li><b>$30K/mo</b> ugc creator on the side</li>
+                            </ul>
+                            <p>It is strongly recommended that you close all other candidate profiles before continuing.</p>
+                            <p>Click Next to continue.</p>
+                        </div>
+                    </section>
+
+                    <!-- 2 license -->
+                    <section class="step" data-step="1" hidden>
+                        <div class="content full">
+                            <h3>License Agreement</h3>
+                            <p class="sub">Please read the following license agreement carefully.</p>
+                            <div class="eula sunken">
+                                <img src="/assets/photos/jordan-yosemite.jpg" alt="Jordan looking out over a river and pine forest" />
+                                <p><b>JORDAN OTOMU — END USER LICENSE AGREEMENT</b></p>
+                                {bio.map((p) => <p>{p}</p>)}
+                                <p>MOTTO: "{motto.text}" — {motto.by}</p>
+                                <p>CONTACT: {links.email} · <a href={links.linkedin} target="_blank" rel="noopener">linkedin</a></p>
+                            </div>
+                            <div class="field-row"><input type="radio" id="accept" name="eula" /><label for="accept">I accept the terms in the license agreement</label></div>
+                            <div class="field-row"><input type="radio" id="decline" name="eula" checked /><label for="decline">I do not accept the terms in the license agreement</label></div>
+                        </div>
+                    </section>
+
+                    <!-- 3 components -->
+                    <section class="step" data-step="2" hidden>
+                        <div class="content full">
+                            <h3>Select Components</h3>
+                            <p class="sub">Things i've built, shipped, or sold. Select a component to see its description.</p>
+                            <div class="components">
+                                <ul class="comp-list sunken">
+                                    {projects.map(({ data }, i) => (
+                                        <li><input type="checkbox" checked id={`c${i}`} /><label for={`c${i}`} data-comp={i}>{data.title}</label><span class="size">{data.metrics[0]?.value ?? ""}</span></li>
+                                    ))}
+                                </ul>
+                                <fieldset class="comp-desc">
+                                    <legend>Description</legend>
+                                    {projects.map(({ data, Content }, i) => (
+                                        <div data-desc={i} hidden={i !== 0}>
+                                            <b>{data.title}</b>{data.tag && <span class="muted"> — {data.tag}</span>}
+                                            <div class="md"><Content /></div>
+                                            {data.metrics.length > 0 && <p class="muted">{data.metrics.map((m: { value: string; label: string }) => `${m.value} ${m.label}`).join(" · ")}</p>}
+                                        </div>
+                                    ))}
+                                </fieldset>
+                            </div>
+                            <p class="sub">Space required: one desk. Space available: yours.</p>
+                        </div>
+                    </section>
+
+                    <!-- 4 installing (experience + education) -->
+                    <section class="step" data-step="3" hidden>
+                        <div class="content full">
+                            <h3 id="install-h">Installing…</h3>
+                            <p class="sub" id="install-now">Preparing to install…</p>
+                            <div class="progress-indicator segmented"><span class="progress-indicator-bar" id="bar" style="width: 0%"></span></div>
+                            <div class="log sunken" id="log">
+                                {experience.map(({ data, Content }) => (
+                                    <details class="item" hidden>
+                                        <summary>
+                                            {logoSrc[data.logo] && <img src={logoSrc[data.logo]} alt="" />}
+                                            <span><b>{data.company}</b> — {data.role}<br /><span class="muted">{data.place} · {data.dates}</span></span>
+                                        </summary>
+                                        <div class="md"><Content /></div>
+                                    </details>
+                                ))}
+                                {education.map(({ data, Content }) => (
+                                    <details class="item" hidden>
+                                        <summary>
+                                            {logoSrc[data.logo] && <img src={logoSrc[data.logo]} alt="" />}
+                                            <span><b>{data.school}</b> — {data.degree}<br /><span class="muted">{data.dates}</span></span>
+                                        </summary>
+                                        <div class="md"><Content /></div>
+                                    </details>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 5 ugc -->
+                    <section class="step" data-step="4" hidden>
+                        <div class="content full">
+                            <h3>Optional Component: UGC</h3>
+                            <p class="sub"><b>$30K/mo</b> ugc creator. {ugc.sub}</p>
+                            <div class="ugc-scroll sunken">
+                                <div class="stats">
+                                    {ugc.stats.map((s) => <div class="stat"><b>{s.value}</b><span>{s.label}</span></div>)}
+                                </div>
+                                {ugc.results.map((r) => <figure><img src={r.src} alt="" loading="lazy" /><figcaption>{r.caption}</figcaption></figure>)}
+                                <div class="brands">
+                                    {ugc.brands.map((b) => <div class="brand"><img class:list={[{ wordmark: b.wordmark }]} src={b.logo} alt="" /><span><b>{b.name}</b> <span class="muted">{b.dates}</span></span></div>)}
+                                </div>
+                                <p>{ugc.tool.blurb} <a href={ugc.tool.url} target="_blank" rel="noopener">fakechat →</a></p>
+                                <p>brand deals: <b>{links.ugcEmail}</b></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 6 finish -->
+                    <section class="step" data-step="5" hidden>
+                        <div class="banner"><PixelIcon name="star" size={64} /></div>
+                        <div class="content">
+                            <h2>Completing the Jordan Otomu Setup Wizard</h2>
+                            <p>Jordan Otomu has been successfully installed. Click Finish to exit the wizard.</p>
+                            <div class="field-row"><input type="checkbox" id="f-resume" checked /><label for="f-resume">View resume.pdf</label></div>
+                            <div class="field-row"><input type="checkbox" id="f-linkedin" /><label for="f-linkedin">Open LinkedIn</label></div>
+                            <div class="field-row"><input type="checkbox" id="f-github" /><label for="f-github">Open GitHub</label></div>
+                            <p class="sub">questions? {links.email}</p>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="nav">
+                    <button id="prev" disabled>&lt; Back</button>
+                    <button id="next">Next &gt;</button>
+                    <button data-cancel>Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="corner">© 2026 jordan otomu · <a href="/">classic site</a></p>
+    </div>
+
+    <!-- ============ cancel dialog ============ -->
+    <div class="modal" id="modal" hidden>
+        <div class="window dialog">
+            <div class="title-bar"><div class="title-bar-text">Exit Setup</div></div>
+            <div class="window-body">
+                <div class="dialog-row"><span class="warn">!</span><p>Setup is not complete. If you exit now, you might miss a great hire.<br /><br />Exit Setup?</p></div>
+                <div class="nav"><button id="stay">Resume</button><button id="exit">Exit Setup</button></div>
+            </div>
+        </div>
+    </div>
+</LabLayout>
+
+<style>
+    .boot { position: fixed; inset: 0; background: #000; color: #c0c0c0; font: 15px/1.4 "Courier New", monospace; padding: 24px; z-index: 50; cursor: pointer; }
+    .boot pre { margin: 0; white-space: pre-wrap; font: inherit; color: inherit; background: none; box-shadow: none; padding: 0; }
+    .boot-skip { position: absolute; bottom: 20px; left: 24px; color: #555; margin: 0; }
+
+    .setup { min-height: 100vh; background: linear-gradient(180deg, #0000b0 0%, #00003a 100%); padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; font-size: 11px; }
+    .brand { position: absolute; top: 18px; left: 26px; margin: 0; color: #fff; font: italic bold 40px/1 "Times New Roman", Times, serif; text-shadow: 4px 4px #000; }
+    .brand span { color: #ffff80; }
+    .corner { position: absolute; bottom: 10px; left: 26px; color: #8080ff; margin: 0; }
+    .corner a { color: #c0c0ff; }
+
+    .wizard { width: min(620px, 100%); margin-top: 40px; }
+    .steps { height: 380px; display: flex; }
+    .step { display: flex; width: 100%; }
+    .banner { width: 164px; flex-shrink: 0; background: linear-gradient(160deg, #008080, #000080); display: grid; place-items: center; }
+    .content { padding: 16px 18px; overflow: auto; flex: 1; }
+    .content.full { display: flex; flex-direction: column; min-height: 0; padding: 8px 6px; }
+    .content h2 { font-size: 16px; margin: 0 0 14px; }
+    .content h3 { font-size: 12px; margin: 0; }
+    .content p { line-height: 1.5; margin: 0 0 10px; }
+    .sub { color: #444; margin: 2px 0 8px 12px !important; }
+    .facts { margin: 0 0 12px; padding-left: 18px; line-height: 1.7; }
+
+    .sunken { background: #fff; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a; padding: 8px; }
+    .eula { flex: 1; overflow: auto; margin-bottom: 8px; font-family: "Courier New", monospace; }
+    .eula img { float: right; width: 110px; aspect-ratio: 3 / 4; object-fit: cover; margin: 0 0 8px 10px; }
+    .field-row { margin: 3px 0 !important; }
+
+    .components { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1.3fr; gap: 8px; }
+    .comp-list { list-style: none; margin: 0; overflow: auto; }
+    .comp-list li { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
+    .comp-list label { flex: 1; cursor: pointer; }
+    .comp-list label.on { background: #000080; color: #fff; }
+    .size { color: #444; }
+    .comp-desc { margin: 0; overflow: auto; }
+    .md :global(ul) { padding-left: 16px; margin: 6px 0; }
+    .md :global(li), .md :global(p) { line-height: 1.5; margin: 0 0 6px; }
+    .muted { color: #555; }
+
+    .progress-indicator { margin: 0 12px 8px; }
+    .log { flex: 1; overflow: auto; }
+    .item summary { display: flex; gap: 8px; align-items: center; padding: 4px 2px; cursor: pointer; list-style: none; }
+    .item summary::-webkit-details-marker { display: none; }
+    .item summary img { width: 28px; height: 28px; object-fit: contain; }
+    .item[open] summary { background: #000080; color: #fff; }
+    .item[open] summary .muted { color: #ccc; }
+    .item .md { padding: 4px 8px 8px 38px; }
+
+    .ugc-scroll { flex: 1; overflow: auto; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+    .stat { display: flex; flex-direction: column; padding: 6px; background: #c0c0c0; box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf; }
+    .stat b { font-size: 16px; }
+    .ugc-scroll figure { margin: 0 0 8px; }
+    .ugc-scroll figcaption { margin-top: 2px; }
+    .brands { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0 10px; }
+    .brand { display: flex; align-items: center; gap: 6px; }
+    .brand img { width: 24px; height: 24px; object-fit: cover; }
+    .brand img.wordmark { width: auto; object-fit: contain; }
+
+    .nav { display: flex; justify-content: flex-end; gap: 6px; padding-top: 10px; margin-top: 6px; border-top: 1px solid #808080; box-shadow: inset 0 1px #fff; }
+    .nav #next { margin-right: 10px; }
+
+    .modal { position: fixed; inset: 0; display: grid; place-items: center; z-index: 60; }
+    .dialog { width: min(340px, 92vw); }
+    .dialog-row { display: flex; gap: 12px; align-items: flex-start; padding: 8px 4px; }
+    .dialog-row p { margin: 0; line-height: 1.4; }
+    .warn { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: #ffd800; border: 1px solid #000; display: grid; place-items: center; font-weight: bold; font-size: 18px; }
+
+    @media (max-width: 720px) {
+        .setup { padding: 70px 8px 36px; justify-content: flex-start; }
+        .brand { font-size: 28px; left: 12px; }
+        .wizard { margin-top: 0; }
+        .steps { height: calc(100dvh - 190px); min-height: 360px; }
+        .banner { display: none; }
+        .components { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+        .comp-list { max-height: 120px; }
+        .eula img { width: 80px; }
+        .corner { left: 12px; }
+    }
+</style>
+
+<script define:vars={{ installs, resume: "/resume.pdf", linkedin: "https://linkedin.com/in/jordanotomu/", github: "https://github.com/jordanotomu" }}>
+    // ---- boot ----
+    const bootLines = [
+        "JordanBIOS (C) 2004-2026 Otomu Megatrends, Inc.",
+        "",
+        "Main Processor : Caffeine-Powered @ 4.0 GPA",
+        "Memory Test    : 250000000K OK (views)",
+        "",
+        "Detecting Primary Master ... SNAP INC. (NYC, 2027)",
+        "Detecting Primary Slave  ... UNIVERSITY OF HOUSTON",
+        "Detecting Secondary      ... UGC-30K/MO",
+        "",
+        "Starting Jordan Otomu Setup...",
+    ];
+    const boot = document.getElementById("boot");
+    const bootText = document.getElementById("boot-text");
+    const setup = document.getElementById("setup");
+    let bootDone = false;
+    function endBoot() {
+        if (bootDone) return;
+        bootDone = true;
+        boot.hidden = true;
+        setup.hidden = false;
+        try { sessionStorage.setItem("booted", "1"); } catch {}
+    }
+    let booted = false;
+    try { booted = sessionStorage.getItem("booted") === "1"; } catch {}
+    if (booted || matchMedia("(prefers-reduced-motion: reduce)").matches) endBoot();
+    else {
+        let i = 0;
+        const t = setInterval(() => {
+            if (bootDone) return clearInterval(t);
+            bootText.textContent += bootLines[i++] + "\n";
+            if (i >= bootLines.length) { clearInterval(t); setTimeout(endBoot, 700); }
+        }, 160);
+        addEventListener("keydown", endBoot, { once: true });
+        boot.addEventListener("click", endBoot);
+    }
+
+    // ---- wizard ----
+    const steps = [...document.querySelectorAll(".step")];
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    const accept = document.getElementById("accept");
+    let cur = 0;
+    let installed = false;
+
+    function go(n) {
+        cur = n;
+        steps.forEach((s, i) => (s.hidden = i !== n));
+        prev.disabled = n === 0;
+        next.textContent = n === steps.length - 1 ? "Finish" : "Next >";
+        next.disabled = n === 1 && !accept.checked;
+        if (n === 3 && !installed) install();
+        if (n === 3 && !installed) next.disabled = true;
+    }
+    document.querySelectorAll("input[name=eula]").forEach((r) => r.addEventListener("change", () => go(cur)));
+    prev.addEventListener("click", () => go(Math.max(0, cur - 1)));
+    next.addEventListener("click", () => {
+        if (cur < steps.length - 1) return go(cur + 1);
+        if (document.getElementById("f-resume").checked) open(resume, "_blank");
+        if (document.getElementById("f-linkedin").checked) open(linkedin, "_blank");
+        if (document.getElementById("f-github").checked) open(github, "_blank");
+        go(0);
+    });
+
+    // components: click a name to show its description
+    document.querySelectorAll("[data-comp]").forEach((l) =>
+        l.addEventListener("click", (e) => {
+            e.preventDefault();
+            document.querySelectorAll("[data-comp]").forEach((x) => x.classList.remove("on"));
+            l.classList.add("on");
+            document.querySelectorAll("[data-desc]").forEach((d) => (d.hidden = d.dataset.desc !== l.dataset.comp));
+        })
+    );
+    document.querySelector("[data-comp]")?.classList.add("on");
+
+    // install: fill the bar, reveal each entry as it "installs"
+    function install() {
+        const bar = document.getElementById("bar");
+        const now = document.getElementById("install-now");
+        const items = [...document.querySelectorAll("#log .item")];
+        let i = 0;
+        const t = setInterval(() => {
+            if (i < items.length) {
+                now.textContent = "Installing: " + installs[i] + "…";
+                items[i].hidden = false;
+                i++;
+                bar.style.width = Math.round((i / items.length) * 100) + "%";
+                return;
+            }
+            clearInterval(t);
+            installed = true;
+            document.getElementById("install-h").textContent = "Installation complete";
+            now.textContent = "Click an item to see what was installed.";
+            if (cur === 3) next.disabled = false;
+        }, 450);
+    }
+
+    // cancel dialog
+    const modal = document.getElementById("modal");
+    document.querySelectorAll("[data-cancel]").forEach((b) => b.addEventListener("click", () => (modal.hidden = false)));
+    document.getElementById("stay").addEventListener("click", () => (modal.hidden = true));
+    document.getElementById("exit").addEventListener("click", () => (location.href = "/"));
+
+    go(0);
+</script>

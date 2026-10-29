@@ -9,5 +9,6 @@ logoAlt: "University of Houston"
 order: 100
 ---
 
+- Completed in **2 years** (Aug 2025 – May 2027).
 - Relevant coursework: Data Structures & Algorithms, Databases, Software Engineering, Cloud Technologies, AI/ML Concepts, Calculus I & II.
 - Active in **CougarCS · CougarAI · INROADS · NSBE · MLT · ColorStack**.

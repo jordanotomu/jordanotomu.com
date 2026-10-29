@@ -45,23 +45,4 @@ const projects = defineCollection({
     }),
 });
 
-const wins = defineCollection({
-    loader: glob({ pattern: "**/*.md", base: "./src/content/wins" }),
-    schema: z.object({
-        title: z.string(),
-        org: z.string(),
-        year: z.string(),
-        emblem: z.string().optional(),
-        order: z.number().default(0),
-    }),
-});
-
-const lore = defineCollection({
-    loader: glob({ pattern: "**/*.md", base: "./src/content/lore" }),
-    schema: z.object({
-        q: z.string(),
-        order: z.number().default(0),
-    }),
-});
-
-export const collections = { experience, education, projects, wins, lore };
+export const collections = { experience, education, projects };

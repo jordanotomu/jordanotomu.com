@@ -4,9 +4,9 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 // best-of numbers only; no handles, post links or per-video detail
 // (the accounts stay anonymous).
 const stats = [
-    { value: "250M+", label: "total views" },
-    { value: "120K+", label: "followers across platforms" },
-    { value: "10M+", label: "views on a single video" },
+    { value: "250M+", label: "views in 6 months" },
+    { value: "120K+", label: "followers" },
+    { value: "16.1M", label: "on one video" },
 ];
 
 // dashboard screenshots — src null = placeholder until the crop is in
@@ -20,6 +20,16 @@ const results = [
         src: "/assets/ugc/tiktok-365d.jpg",
         alt: "TikTok Studio, last 365 days",
         outcome: "85M+ views and 5M+ likes on TikTok in a year.",
+    },
+    {
+        src: "/assets/ugc/fb-2026.jpg",
+        alt: "Facebook insights, this year",
+        outcome: "65M+ views on Facebook this year.",
+    },
+    {
+        src: "/assets/ugc/sideshift-oct.jpg",
+        alt: "SideShift earnings history, October 2026",
+        outcome: "$29K+ earned in October from one app program.",
     },
 ];
 
@@ -45,14 +55,14 @@ const programs = [
 
 <BaseLayout
     title="UGC · Jordan Otomu"
-    description="Jordan Otomu — $30K/mo AI-prank UGC creator with 250M+ views, and the engineer behind FakeChat, the tool that makes the videos."
+    description="Jordan Otomu — $30K/mo UGC creator. AI prank videos for consumer apps, 250M+ views."
 >
     <fieldset class="box">
         <legend><i>cat ~/ugc/README.md</i></legend>
         <p class="ugc-kicker">ugc · growth · tools</p>
         <h2 class="ugc-headline">
             <span class="big">$30K/mo</span> ugc creator. ai prank videos for
-            consumer apps, made with a tool i built.
+            consumer apps.
         </h2>
         <div class="ugc-links">
             <a class="btn" href="/">software side →</a>
@@ -88,34 +98,23 @@ const programs = [
     </fieldset>
 
     <fieldset class="box">
-        <legend><i>cat ~/ugc/fakechat.md</i></legend>
+        <legend><i>ls ~/ugc/tools</i></legend>
         <div class="tool">
             <div class="tool-text">
-                <h2>FakeChat</h2>
                 <p>
-                    the editor behind every video. script an imessage-style
-                    conversation, drop in an ai photo or video hook, and export a
-                    ready-to-post 1080×2160 mp4 that looks like a phone screen
-                    recording. the live preview plays exactly what gets exported.
-                </p>
-                <p>
-                    other creators in the programs use it too. it's free.
+                    i build my own ugc tools. <b>fakechat</b> is the one i use most:
+                    script an imessage-style chat, add an ai hook, export a
+                    ready-to-post video. free to use.
                 </p>
                 <div class="ugc-links">
-                    <a class="btn" href="https://project-fcz9u.vercel.app" target="_blank" rel="noopener">try fakechat →</a>
+                    <a class="btn" href="https://project-fcz9u.vercel.app" target="_blank" rel="noopener">fakechat →</a>
                 </div>
             </div>
-            <img class="tool-shot" src="/assets/ugc/fakechat-editor.jpg" alt="FakeChat editor: hook and script panels with a live phone preview" loading="lazy" />
+            <picture>
+                <source media="(max-width: 720px)" srcset="/assets/ugc/fakechat-phone.jpg" />
+                <img class="tool-shot" src="/assets/ugc/fakechat-editor.jpg" alt="FakeChat: a chat script plays as a phone screen recording" loading="lazy" />
+            </picture>
         </div>
-    </fieldset>
-
-    <fieldset class="box">
-        <legend><i>cat ~/ugc/format.md</i></legend>
-        <ol class="format">
-            <li><b>the hook.</b> an ai-edited photo or clip that looks real, on screen in the first second.</li>
-            <li><b>the escalation.</b> a parent or boss reacts over text and spirals into ALL-CAPS panic.</li>
-            <li><b>the reveal.</b> "it's fake, i made it with [app]." the product is the punchline, not an ad read.</li>
-        </ol>
     </fieldset>
 
     <fieldset class="box">
@@ -146,8 +145,8 @@ const programs = [
     <fieldset class="box">
         <legend><i>mail jordan</i></legend>
         <p>
-            ugc for your app, campaign or creator management, or the
-            fakechat-style format and tooling for your team.
+            ugc for your app, campaign or creator management, and ugc
+            tools.
         </p>
         <div class="email-row">
             <code class="email" id="ugc-email">jordanotomu@gmail.com</code>
@@ -243,8 +242,8 @@ const programs = [
     /* ============ results ============ */
     .results {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
+        grid-template-columns: 1fr;
+        gap: 24px;
     }
     .result { margin: 0; }
     .result img {
@@ -271,43 +270,15 @@ const programs = [
     /* ============ fakechat ============ */
     .tool {
         display: grid;
-        grid-template-columns: 1fr 1.1fr;
-        gap: 24px;
-        align-items: start;
-    }
-    .tool h2 {
-        font-family: var(--font-mono);
-        font-size: 20px;
-        margin-bottom: 8px;
+        gap: 16px;
     }
     .tool-shot {
         width: 100%;
         display: block;
         border: 1px solid var(--border);
     }
-
-    /* ============ format ============ */
-    .format {
-        list-style: none;
-        counter-reset: step;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    .format li {
-        counter-increment: step;
-        position: relative;
-        padding-left: 34px;
-        max-width: 64ch;
-    }
-    .format li::before {
-        content: "0" counter(step);
-        position: absolute;
-        left: 0;
-        top: 1px;
-        font-family: var(--font-mono);
-        font-size: 12.5px;
-        color: var(--muted);
+    @media (max-width: 720px) {
+        .tool-shot { max-width: 240px; margin: 0 auto; border-radius: 22px; }
     }
 
     /* ============ brands ============ */
@@ -383,8 +354,6 @@ const programs = [
         .ugc-headline { font-size: 19px; }
         .ugc-headline .big { font-size: 48px; }
         .stat b { font-size: 22px; }
-        .results { grid-template-columns: 1fr; }
-        .tool { grid-template-columns: 1fr; }
         .brands { grid-template-columns: 1fr 1fr; }
     }
 </style>

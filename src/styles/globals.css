@@ -281,10 +281,20 @@ a:hover { text-decoration-thickness: 2px; }
     .box { padding: 16px 14px 18px; }
 
     .site-header { flex-direction: column; align-items: flex-start; }
-    .socials { width: 100%; justify-content: flex-start; }
+    /* one tidy row: icon-only chips, resume keeps its label */
+    .socials { width: 100%; flex-wrap: nowrap; justify-content: space-between; }
+    .chip:not(.chip-resume) span { display: none; }
+    .chip { padding: 8px 10px; }
 
+    /* photo first, cropped to a wide banner */
     .whoami { grid-template-columns: 1fr; gap: 16px; }
-    .whoami-photo img { max-width: 200px; }
+    .whoami-photo { order: -1; }
+    .whoami-photo img {
+        max-width: none;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: center 62%;
+    }
 
     .site-footer { flex-direction: column; gap: 6px; align-items: flex-start; }
 }

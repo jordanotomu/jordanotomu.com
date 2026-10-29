@@ -1,0 +1,119 @@
+---
+// retro pixel-sparkle cursor trail. mouse only; off for touch and
+// prefers-reduced-motion. draws in the current --ink so it follows the theme.
+---
+
+<canvas id="cursor-trail" aria-hidden="true"></canvas>
+
+<style>
+    #cursor-trail {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9999;
+    }
+</style>
+
+<script is:inline>
+    (function () {
+        var canvas = document.getElementById("cursor-trail");
+        if (!canvas) return;
+        if (!matchMedia("(pointer: fine)").matches) return canvas.remove();
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return canvas.remove();
+
+        var ctx = canvas.getContext("2d");
+        var PX = 3; // size of one "pixel" in the sprites
+        var SPAWN_GAP = 18; // px of mouse travel per sparkle
+        var MAX = 60;
+
+        // big → small as a sparkle ages
+        var SPRITES = [
+            ["..#..", "..#..", "##.##", "..#..", "..#.."],
+            [".#.", "###", ".#."],
+            ["#"],
+        ];
+
+        var dpr = 1;
+        function resize() {
+            dpr = window.devicePixelRatio || 1;
+            canvas.width = Math.round(innerWidth * dpr);
+            canvas.height = Math.round(innerHeight * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.imageSmoothingEnabled = false;
+        }
+        resize();
+        addEventListener("resize", resize);
+
+        var ink = "#1a1a1a";
+        function readInk() {
+            ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || ink;
+        }
+        readInk();
+        new MutationObserver(readInk).observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["data-theme"],
+        });
+
+        var parts = [];
+        var lastX = null, lastY = null, carry = 0;
+        var running = false;
+
+        function spawn(x, y) {
+            if (parts.length >= MAX) parts.shift();
+            parts.push({
+                x: x + (Math.random() - 0.5) * 10,
+                y: y + (Math.random() - 0.5) * 10,
+                vx: (Math.random() - 0.5) * 0.6,
+                vy: Math.random() * 0.4 + 0.2,
+                life: 1,
+                decay: 0.018 + Math.random() * 0.012,
+            });
+        }
+
+        addEventListener("pointermove", function (e) {
+            if (e.pointerType !== "mouse") return;
+            var x = e.clientX, y = e.clientY;
+            if (lastX === null) { lastX = x; lastY = y; return; }
+            var dx = x - lastX, dy = y - lastY;
+            var dist = Math.hypot(dx, dy) + carry;
+            var n = Math.floor(dist / SPAWN_GAP);
+            carry = dist - n * SPAWN_GAP;
+            for (var i = 1; i <= n; i++) spawn(lastX + (dx * i) / n, lastY + (dy * i) / n);
+            lastX = x; lastY = y;
+            if (n && !running) { running = true; requestAnimationFrame(tick); }
+        }, { passive: true });
+
+        addEventListener("pointerleave", function () { lastX = lastY = null; });
+
+        function draw(p) {
+            var sprite = SPRITES[p.life > 0.6 ? 0 : p.life > 0.3 ? 1 : 2];
+            var h = sprite.length, w = sprite[0].length;
+            // snap to the pixel grid and step the fade for a chunky retro feel
+            var ox = Math.round(p.x / PX) * PX - Math.floor(w / 2) * PX;
+            var oy = Math.round(p.y / PX) * PX - Math.floor(h / 2) * PX;
+            ctx.globalAlpha = Math.ceil(p.life * 4) / 4;
+            for (var r = 0; r < h; r++)
+                for (var c = 0; c < w; c++)
+                    if (sprite[r][c] === "#") ctx.fillRect(ox + c * PX, oy + r * PX, PX, PX);
+        }
+
+        function tick() {
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            ctx.fillStyle = ink;
+            for (var i = parts.length - 1; i >= 0; i--) {
+                var p = parts[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.02;
+                p.life -= p.decay;
+                if (p.life <= 0) { parts.splice(i, 1); continue; }
+                draw(p);
+            }
+            ctx.globalAlpha = 1;
+            if (parts.length) requestAnimationFrame(tick);
+            else running = false;
+        }
+    })();
+</script>

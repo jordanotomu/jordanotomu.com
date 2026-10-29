@@ -13,11 +13,9 @@ const tools: Tool[] = [
     { name: "javascript", category: "languages", blurb: "the substrate. sometimes you just need a quick <script>." },
     { name: "java", category: "languages", blurb: "uh dsa coursework, leetcode heavy lifting." },
     { name: "c++", category: "languages", blurb: "uh systems track. where i built a real feel for memory." },
-    { name: "c#", category: "languages", blurb: "throwbacks — console apps and unity dabbling." },
-    { name: "swift", category: "languages", blurb: "prepping for snap. paired with uikit and objective-c." },
-    { name: "objective-c", category: "languages", blurb: "snap's ios codebase runs on it. learning to love brackets." },
-    { name: "go", category: "languages", blurb: "side-learning. distributed systems feel natural here." },
-    { name: "lua", category: "languages", blurb: "first language i really loved — roblox days." },
+    { name: "swift", category: "languages", blurb: "shipped an ios live activity at snap with it. swiftui for new surfaces." },
+    { name: "objective-c", category: "languages", blurb: "the legacy half of snap's ios client. learned to love brackets." },
+    { name: "kotlin", category: "languages", blurb: "android side of snap's cross-platform mobile stack." },
     { name: "sql", category: "languages", blurb: "everywhere. nothing replaces a well-written join." },
     { name: "html", category: "languages", blurb: "the canvas. paired with css, still one of the best tools ever shipped." },
     { name: "css", category: "languages", blurb: "this whole site is hand-rolled css. no tailwind on personal craft." },
@@ -25,13 +23,17 @@ const tools: Tool[] = [
     // frameworks
     { name: "react", category: "frameworks", blurb: "default ui stack. atsify, sanctify, cooggrid — all react." },
     { name: "react-native", category: "frameworks", blurb: "shipped sanctify on it. the 'write once' dream, mostly true." },
+    { name: "swiftui", category: "frameworks", blurb: "snap live activity ui. declarative ios, finally." },
+    { name: "uikit", category: "frameworks", blurb: "the older half of snapchat's ios ui. still everywhere." },
     { name: "next.js", category: "frameworks", blurb: "for projects that need ssr + the vercel pipeline." },
     { name: "astro", category: "frameworks", blurb: "you're using it right now. content + islands = perfect personal-site stack." },
     { name: "node.js", category: "frameworks", blurb: "backend defaults. express or raw http." },
     { name: "express", category: "frameworks", blurb: "still my go-to for quick api scaffolds." },
-    { name: "fastapi", category: "frameworks", blurb: "python api when i want types and speed. used at jpmc c4g." },
+    { name: "fastapi", category: "frameworks", blurb: "python api when i want types and speed. led a team on it at jpmc code for good." },
     { name: "deno", category: "frameworks", blurb: "atsify runs on deno deploy. serverless typescript without the config hell." },
     { name: "tailwind", category: "frameworks", blurb: "client projects only. this site is hand-rolled css on purpose." },
+    { name: "zod", category: "frameworks", blurb: "runtime validation that matches the types. every api boundary." },
+    { name: "jest", category: "frameworks", blurb: "jest + react testing library for anything with users." },
 
     // ml / data
     { name: "tensorflow", category: "ml/data", blurb: "coursework + a few experiments. mostly keras-level." },
@@ -42,23 +44,27 @@ const tools: Tool[] = [
 
     // databases
     { name: "mongodb", category: "databases", blurb: "nosql escape hatch when the schema is shifting fast." },
+    { name: "postgresql", category: "databases", blurb: "default relational db. supabase runs on it." },
     { name: "mysql", category: "databases", blurb: "classic relational. nothing beats it for reporting." },
     { name: "supabase", category: "databases", blurb: "postgres + auth + realtime. powered sanctify's backend." },
     { name: "sqlite", category: "databases", blurb: "perfect for hackathons. used sqlite cloud at jpmc c4g." },
     { name: "firebase", category: "databases", blurb: "auth is where it earns its keep." },
 
     // cloud
-    { name: "aws", category: "cloud", blurb: "used for compute + s3. ec2 for legacy side-projects." },
-    { name: "azure", category: "cloud", blurb: "touched it in coursework. mostly ad + storage blobs." },
+    { name: "aws", category: "cloud", blurb: "aws certified cloud practitioner. compute, s3, and lambda for side projects." },
+    { name: "azure", category: "cloud", blurb: "microsoft certified: azure data fundamentals." },
     { name: "gcp", category: "cloud", blurb: "firebase, bigquery, a little gemini api." },
     { name: "vercel", category: "cloud", blurb: "where this site and atsify live. next/astro-native." },
 
-    // payments / chain
-    { name: "stripe", category: "payments/chain", blurb: "atsify subscriptions. webhooks, portals, the whole loop." },
-    { name: "solana", category: "payments/chain", blurb: "memecoin + defi experiments. web3.js + jupiter aggregator." },
+    // payments + apis
+    { name: "stripe", category: "apis", blurb: "atsify subscriptions. webhooks, portals, the whole loop." },
+    { name: "openai", category: "apis", blurb: "llm features in atsify and side projects." },
+    { name: "notion", category: "apis", blurb: "notion api for automating my own docs and trackers." },
 
     // tools
     { name: "git", category: "tools", blurb: "table stakes. rebase > merge, usually." },
+    { name: "xcode", category: "tools", blurb: "ios builds, instruments, and the simulator. lived in it at snap." },
+    { name: "docker", category: "tools", blurb: "reproducible dev environments and deploys." },
     { name: "maven", category: "tools", blurb: "java coursework. not my favorite build tool, but it works." },
     { name: "linux", category: "tools", blurb: "arch btw — actually macos daily, but i know my way around." },
     { name: "figma", category: "tools", blurb: "design handoffs + mock screens when i'm thinking in pixels." },
@@ -109,7 +115,7 @@ const categories: string[] = [...new Set(tools.map((t) => t.category))];
 
     <p class="note">
         try: <code>help</code> · <code>ls</code> · <code>which react</code> ·
-        <code>which memecoins</code> · <code>whoami</code> · <code>clear</code>
+        <code>which swift</code> · <code>whoami</code> · <code>clear</code>
     </p>
 </RandomLayout>
 
@@ -153,7 +159,6 @@ const categories: string[] = [...new Set(tools.map((t) => t.category))];
         }
 
         const specials = {
-            "memecoins": "the real sport. pvp markets, real-time liquidity, and the best hackathon UX in crypto. bankroll you can lose, small edge, exit discipline.",
             "spotify": "see /random/music for the live now-playing card.",
         };
 
@@ -232,7 +237,7 @@ const categories: string[] = [...new Set(tools.map((t) => t.category))];
             whoami() {
                 writeLine(
                     "",
-                    "jordan · cs @ university of houston · snap swe intern '26 · builds saas, ships content."
+                    "jordan · cs @ university of houston · incoming swe @ snap, nyc · builds saas, ships content."
                 );
             },
             random() {

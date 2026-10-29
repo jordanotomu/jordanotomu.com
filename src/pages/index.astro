@@ -78,10 +78,8 @@ const sandboxRendered = await Promise.all(
                 </p>
                 <p>
                     most of my time goes into building: systems, infra, saas, and the
-                    occasional side experiment. i also make <a href="/ugc">ugc</a>:
-                    ai prank videos for consumer apps, 250m+ views, built with a
-                    tool i wrote. when i'm not writing code i'm trenching
-                    highly volatile crypto markets (memecoins), watching tv and
+                    occasional side experiment. when i'm not writing code i'm trenching
+                    crypto markets, watching tv and
                     documentaries, listening to music, or deep in history and geography.
                 </p>
                 <p>
@@ -129,17 +127,13 @@ const sandboxRendered = await Promise.all(
 
     <fieldset class="box">
         <legend><i>cat ~/ugc.md</i></legend>
-        <p class="muted-lead">the other job: ai prank videos for consumer apps.</p>
+        <p class="muted-lead">the other job: ugc for consumer apps.</p>
         <div class="proj-metrics ugc-metrics">
             <div><b>$30K/mo</b><span>ugc creator</span></div>
             <div><b>250M+</b><span>total views</span></div>
             <div><b>120K+</b><span>followers</span></div>
-            <div><b>10M+</b><span>on one video</span></div>
+            <div><b>16.1M</b><span>on one video</span></div>
         </div>
-        <p class="ugc-blurb">
-            text-prank videos for <b>cantina</b> and <b>halo ai</b>, made with
-            <b>fakechat</b>, the editor i built for it.
-        </p>
         <a class="btn ugc-more" href="/ugc">see the work →</a>
     </fieldset>
 
@@ -161,7 +155,7 @@ const sandboxRendered = await Promise.all(
 
     <fieldset class="box">
         <legend><i>ls ~/projects.md</i></legend>
-        <p class="muted-lead">a few things i want people to actually click on.</p>
+        <p class="muted-lead">things i've built, shipped, or sold.</p>
 
         {heroRendered && (
             <ProjectCard
@@ -195,7 +189,7 @@ const sandboxRendered = await Promise.all(
 
         {sandboxRendered.length > 0 && (
             <>
-                <div class="subhead"><i>// smaller repos & sandboxes</i></div>
+                <div class="subhead"><i>// smaller builds</i></div>
                 <div class="proj-grid">
                     {sandboxRendered.map(({ data, Content }) => (
                         <ProjectCard
@@ -236,6 +230,9 @@ const sandboxRendered = await Promise.all(
         color: var(--muted);
         font-size: 13.5px;
         margin-left: 4px;
+    }
+    @media (max-width: 720px) {
+        .motto-cite { display: block; margin: 4px 0 0; }
     }
 
     /* ============ for-visitors block ============ */
@@ -350,9 +347,9 @@ const sandboxRendered = await Promise.all(
         display: block;
     }
     .exp-logo[data-logo="snap"] { background: #fffc00; color: #1a1a1a; border-color: #1a1a1a; }
-    .exp-logo[data-logo="sgp"] { background: #8b1a1a; color: #ffffff; border-color: #8b1a1a; font-size: 11px; }
     .exp-logo[data-logo="walmart"] { background: #0071ce; color: #ffc220; border-color: #0071ce; font-size: 11.5px; }
 
+    .exp-logo[data-logo="sgp"],
     .exp-logo[data-logo="uh"],
     .exp-logo[data-logo="dallas"],
     .exp-logo[data-logo="mlt"],
@@ -360,6 +357,7 @@ const sandboxRendered = await Promise.all(
         background: #ffffff;
         border-color: var(--border);
     }
+    [data-theme="dark"] .exp-logo[data-logo="sgp"],
     [data-theme="dark"] .exp-logo[data-logo="uh"],
     [data-theme="dark"] .exp-logo[data-logo="dallas"],
     [data-theme="dark"] .exp-logo[data-logo="mlt"],
@@ -374,6 +372,8 @@ const sandboxRendered = await Promise.all(
         background: transparent;
         border-color: var(--border);
     }
+    .exp-logo[data-logo="snap"] img,
+    .exp-logo[data-logo="sgp"] img,
     .exp-logo[data-logo="jpmc"] img,
     .exp-logo[data-logo="yahoo"] img,
     .exp-logo[data-logo="nsbe"] img {
@@ -457,7 +457,10 @@ const sandboxRendered = await Promise.all(
     .proj.featured-sm {
         border-color: var(--border);
         padding: 16px 18px;
+        display: flex;
+        flex-direction: column;
     }
+    .proj.featured-sm .proj-metrics { margin-top: auto; }
 
     .proj-head {
         display: flex;
@@ -554,7 +557,6 @@ const sandboxRendered = await Promise.all(
 
     /* ============ ugc ============ */
     .ugc-metrics { margin-top: 0; }
-    .ugc-blurb { font-size: 14px; max-width: 64ch; }
     .ugc-more { margin-top: 14px; }
 
     .muted-lead {
@@ -571,6 +573,7 @@ const sandboxRendered = await Promise.all(
     }
 
     @media (max-width: 720px) {
+        .ugc-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .proj-grid { grid-template-columns: 1fr; }
         .proj-featured-row { grid-template-columns: 1fr; }
         .proj-metrics { gap: 18px; }
