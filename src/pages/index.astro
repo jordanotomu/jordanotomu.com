@@ -288,7 +288,7 @@ const folders = [
     .rule { height: 3px; background: linear-gradient(90deg, #000080, #1084d0 60%, transparent); margin-bottom: 10px; }
     .webview p { line-height: 1.5; }
     .detail { display: flex; flex-direction: column; gap: 2px; margin-top: 6px; }
-    .detail .logo { width: 48px; height: 48px; object-fit: contain; margin-bottom: 6px; }
+    .detail .logo { height: 48px; width: auto; max-width: 160px; object-fit: contain; align-self: flex-start; margin-bottom: 6px; }
     .kv { display: flex; justify-content: space-between; border-bottom: 1px dotted #c0c0c0; padding: 2px 0; }
     .md :global(ul) { padding-left: 16px; margin: 6px 0; }
     .md :global(li), .md :global(p) { line-height: 1.5; margin-bottom: 4px; }
@@ -303,7 +303,8 @@ const folders = [
     .details { width: 100%; border-collapse: collapse; }
     .details th { position: sticky; top: 0; background: #c0c0c0; text-align: left; font-weight: normal; padding: 4px 8px; box-shadow: inset -1px -1px #808080, inset 1px 1px #fff; }
     .details td { padding: 5px 8px; white-space: nowrap; }
-    .details td:first-child .px-icon { display: inline-block; vertical-align: -3px; margin-right: 6px; }
+    .details td:nth-child(2) { white-space: normal; }
+    .details td:first-child :global(.px-icon) { display: inline-block; vertical-align: -3px; margin-right: 6px; }
     .details tr[data-row] { cursor: default; }
     .details tr.sel td, .details tr[data-row]:focus td { background: #000080; color: #fff; outline: none; }
     .details a { color: inherit; display: flex; align-items: center; gap: 6px; }

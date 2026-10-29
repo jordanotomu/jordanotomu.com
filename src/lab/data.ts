@@ -75,6 +75,7 @@ export async function loadContent() {
 export const logoSrc: Record<string, string> = {
     snap: "/assets/logos/snap.png",
     jpmc: "/assets/logos/jpmc.png",
+    yahoo: "/assets/logos/yahoo-wordmark.png",
     gpisd: "/assets/logos/gpisd.png",
     uh: "/assets/logos/uh.svg",
     sgp: "/assets/logos/sgp.png",
