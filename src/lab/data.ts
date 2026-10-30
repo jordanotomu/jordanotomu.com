@@ -26,7 +26,7 @@ export const ugc = {
     sub: "ai prank videos for consumer apps.",
     stats: [
         { value: "250M+", label: "views in ~6 months" },
-        { value: "120K+", label: "followers" },
+        { value: "120K+", label: "followers across all platforms" },
         { value: "16.1M", label: "on one video" },
     ],
     results: [

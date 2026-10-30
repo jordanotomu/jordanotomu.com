@@ -1,0 +1,4 @@
+---
+// the classic /random pages were retired; music has a folder in the explorer
+return Astro.redirect(Astro.params.slug === "music" ? "/#/music" : "/", 301);
+---
