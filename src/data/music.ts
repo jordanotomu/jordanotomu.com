@@ -2,6 +2,13 @@
 
 export const onRepeat = [
     {
+        name: "Kissing a Fool - Remastered (2010)",
+        artist: "George Michael",
+        album: "Faith · 1987",
+        url: "https://open.spotify.com/track/1sEGwuvScFU2uNzlI7Aepy",
+        art: "https://i.scdn.co/image/ab67616d00001e02b7a9a6a2bf311630d3fc6956",
+    },
+    {
         name: "Cherry Wine",
         artist: "Nas, Amy Winehouse",
         album: "Life Is Good · 2012",
@@ -21,13 +28,6 @@ export const onRepeat = [
         album: "21 · 2011",
         url: "https://open.spotify.com/track/7nm6DlSzzJTH1rk2e6EgJz",
         art: "https://i.scdn.co/image/ab67616d00001e027e7e5dd9d1ab19fcded8a17f",
-    },
-    {
-        name: "ROS",
-        artist: "Mac Miller",
-        album: "GO:OD AM · 2015",
-        url: "https://open.spotify.com/track/388jD8ko9cvFM9cd9TYDrl",
-        art: "https://i.scdn.co/image/ab67616d00001e02ee0f38410382a255e4fb15f4",
     },
     {
         name: "In This Darkness",
