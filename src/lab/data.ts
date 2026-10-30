@@ -19,7 +19,7 @@ export const bio = [
     "i like small, well-crafted things. i think the best way to learn is to build it badly first, then do it well.",
 ];
 
-export const motto = { text: "be obsessed or be average.", by: "grant cardone" };
+export const motto = { text: "those who know do not speak; those who speak do not know.", by: "laozi" };
 
 export const ugc = {
     headline: "$30K/mo ugc creator",
