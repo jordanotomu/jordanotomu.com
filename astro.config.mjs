@@ -4,7 +4,7 @@ import vercel from "@astrojs/vercel";
 export default defineConfig({
     output: "server",
     adapter: vercel({
-        webAnalytics: { enabled: false },
+        webAnalytics: { enabled: true },
     }),
     site: "https://jordanotomu.com",
     trailingSlash: "never",
