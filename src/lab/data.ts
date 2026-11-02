@@ -23,7 +23,7 @@ export const motto = { text: "those who know do not speak; those who speak do no
 
 export const ugc = {
     headline: "$30K/mo ugc creator",
-    sub: "ai prank videos for consumer apps.",
+    sub: "short-form videos for consumer apps.",
     stats: [
         { value: "250M+", label: "views in ~6 months" },
         { value: "120K+", label: "followers across all platforms" },
